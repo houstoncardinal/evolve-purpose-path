@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import EmailCapture from "@/components/sections/EmailCapture";
+import { ArrowRight, Check } from "lucide-react";
 
 const programs = [
   {
@@ -39,11 +40,16 @@ const programs = [
 const Programs = () => (
   <div>
     {/* Hero */}
-    <section className="section-padding bg-card text-center">
-      <div className="container-narrow">
-        <p className="text-primary font-semibold tracking-widest text-xs uppercase mb-3">Work With Sarah</p>
-        <h1 className="font-heading text-4xl md:text-5xl mb-6 leading-tight">
-          Your Healing Journey <span className="italic font-display">Starts Here</span>
+    <section className="section-padding hero-gradient-bg text-center relative overflow-hidden">
+      <div className="glow-orb w-[500px] h-[500px] top-[-150px] left-[20%]" />
+      <div className="container-narrow relative z-10">
+        <div className="flex items-center gap-3 justify-center mb-4">
+          <div className="ornament-line !w-8" />
+          <p className="text-primary font-semibold letter-luxury text-[10px] uppercase">Work With Sarah</p>
+          <div className="ornament-line !w-8" />
+        </div>
+        <h1 className="font-heading text-5xl md:text-6xl mb-6 leading-tight letter-tight">
+          Your Healing Journey <span className="italic font-display gold-text">Starts Here</span>
         </h1>
         <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
           Every woman's path to wholeness is unique. Explore the offerings below and find the pathway that meets you exactly where you are.
@@ -53,40 +59,49 @@ const Programs = () => (
 
     {/* Programs Grid */}
     <section className="section-padding">
-      <div className="container-wide grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="container-wide grid grid-cols-1 md:grid-cols-2 gap-6">
         {programs.map((p) => (
-          <div key={p.title} className={`rounded-2xl p-8 md:p-10 flex flex-col border ${p.featured ? "border-primary bg-card shadow-lg relative overflow-hidden" : "border-border bg-card"}`}>
-            {p.featured && <div className="absolute top-0 left-0 right-0 h-1 gold-gradient" />}
-            {p.featured && <span className="text-primary text-xs font-semibold tracking-widest uppercase mb-2">Most Popular</span>}
-            <h3 className="font-heading text-2xl mb-2">{p.title}</h3>
-            <p className="text-primary font-semibold mb-4">{p.price}</p>
-            <p className="text-muted-foreground leading-relaxed mb-6">{p.description}</p>
-            <h4 className="font-heading text-sm uppercase tracking-wider mb-3">What's Included</h4>
-            <ul className="space-y-2 mb-8 flex-1">
-              {p.includes.map((item) => (
-                <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <span className="text-primary mt-0.5">✦</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <button className={`px-6 py-3 rounded-full font-semibold text-sm text-center hover-scale ${p.featured ? "gold-gradient text-primary-foreground" : "border border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors"}`}>
-              {p.cta}
-            </button>
+          <div key={p.title} className={`luxury-card flex flex-col ${p.featured ? "ring-1 ring-primary" : ""}`}>
+            {p.featured && <div className="absolute top-0 left-0 right-0 h-[2px] gold-gradient" />}
+            <div className="luxury-card-inner flex flex-col flex-1">
+              {p.featured && (
+                <span className="text-primary text-[10px] font-semibold letter-luxury uppercase mb-3 inline-flex items-center gap-2">
+                  <span className="ornament-diamond !w-1.5 !h-1.5" /> Most Popular
+                </span>
+              )}
+              <h3 className="font-heading text-2xl mb-2 letter-tight">{p.title}</h3>
+              <p className="gold-text font-semibold text-lg mb-5">{p.price}</p>
+              <p className="text-muted-foreground leading-relaxed mb-8">{p.description}</p>
+              <div className="ornament-line !w-8 !mx-0 mb-6" />
+              <h4 className="font-heading text-sm letter-luxury uppercase mb-4">What's Included</h4>
+              <ul className="space-y-3 mb-10 flex-1">
+                {p.includes.map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm text-muted-foreground">
+                    <Check size={14} className="text-primary mt-0.5 flex-shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <button className={`px-6 py-3.5 rounded-full font-semibold text-sm text-center hover-scale transition-all duration-300 ${p.featured ? "gold-gradient text-primary-foreground shadow-lg" : "border border-primary text-primary hover:bg-primary hover:text-primary-foreground"}`}>
+                {p.cta}
+              </button>
+            </div>
           </div>
         ))}
       </div>
     </section>
 
     {/* FAQ */}
-    <section className="section-padding bg-card">
-      <div className="container-narrow text-center">
-        <h2 className="font-heading text-3xl mb-4">Not Sure Where to Start?</h2>
-        <p className="text-muted-foreground max-w-xl mx-auto mb-8">
+    <section className="section-padding bg-card relative overflow-hidden">
+      <div className="glow-orb w-[400px] h-[400px] bottom-[-100px] right-[-100px]" />
+      <div className="container-narrow text-center relative z-10">
+        <div className="ornament-line-wide mb-8" />
+        <h2 className="font-heading text-4xl md:text-5xl mb-5 letter-tight">Not Sure Where to Start?</h2>
+        <p className="text-muted-foreground max-w-xl mx-auto mb-10 text-lg">
           If you're feeling drawn to healing but aren't sure which pathway is right for you, start with the free Healing & Alignment Guide. It will help you identify where you are and what you need most.
         </p>
-        <Link to="/free-guide" className="gold-gradient text-primary-foreground px-8 py-4 rounded-full font-semibold hover-scale inline-block">
-          Get Your Free Guide
+        <Link to="/free-guide" className="gold-gradient text-primary-foreground px-10 py-4 rounded-full font-semibold hover-scale inline-flex items-center gap-2 shadow-lg">
+          Get Your Free Guide <ArrowRight size={16} />
         </Link>
       </div>
     </section>

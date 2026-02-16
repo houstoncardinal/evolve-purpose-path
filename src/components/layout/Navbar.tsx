@@ -4,8 +4,8 @@ import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { label: "Home", path: "/" },
-  { label: "About Sarah", path: "/about" },
-  { label: "The Framework", path: "/framework" },
+  { label: "About", path: "/about" },
+  { label: "Framework", path: "/framework" },
   { label: "Programs", path: "/programs" },
   { label: "Testimonials", path: "/testimonials" },
   { label: "Shop", path: "/shop" },
@@ -17,10 +17,10 @@ const Navbar = () => {
   const location = useLocation();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
-      <div className="container-wide flex items-center justify-between px-6 py-4 lg:px-12">
-        <Link to="/" className="font-display text-xl md:text-2xl font-semibold tracking-wide text-foreground">
-          Evolve <span className="gold-text font-bold">The Number</span> To Purpose
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
+      <div className="container-wide flex items-center justify-between px-6 py-5 lg:px-12">
+        <Link to="/" className="font-display text-lg md:text-xl tracking-wide text-foreground">
+          <span className="letter-luxury text-[10px] md:text-xs uppercase font-body font-semibold">Evolve <span className="gold-text font-bold">The Number</span> To Purpose</span>
         </Link>
 
         {/* Desktop */}
@@ -29,10 +29,10 @@ const Navbar = () => {
             <Link
               key={link.path}
               to={link.path}
-              className={`text-sm font-body tracking-wide transition-colors duration-200 ${
+              className={`text-xs letter-luxury uppercase font-body transition-colors duration-300 ${
                 location.pathname === link.path
-                  ? "text-primary font-bold"
-                  : "text-muted-foreground hover:text-primary"
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {link.label}
@@ -40,7 +40,7 @@ const Navbar = () => {
           ))}
           <Link
             to="/programs"
-            className="gold-gradient text-primary-foreground px-6 py-2.5 rounded-full text-sm font-semibold tracking-wide hover-scale"
+            className="gold-gradient text-primary-foreground px-7 py-2.5 rounded-full text-xs font-semibold letter-luxury uppercase hover-scale shadow-md"
           >
             Book a Session
           </Link>
@@ -48,21 +48,21 @@ const Navbar = () => {
 
         {/* Mobile toggle */}
         <button onClick={() => setOpen(!open)} className="lg:hidden text-foreground">
-          {open ? <X size={24} /> : <Menu size={24} />}
+          {open ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
       {/* Mobile menu */}
       {open && (
-        <div className="lg:hidden bg-background border-t border-border animate-fade-up">
-          <div className="flex flex-col px-6 py-6 gap-4">
+        <div className="lg:hidden bg-background/95 backdrop-blur-xl border-t border-border/50">
+          <div className="flex flex-col px-6 py-8 gap-5">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
                 onClick={() => setOpen(false)}
-                className={`text-base font-body py-2 ${
-                  location.pathname === link.path ? "text-primary font-bold" : "text-muted-foreground"
+                className={`text-xs letter-luxury uppercase font-body py-1 ${
+                  location.pathname === link.path ? "text-primary" : "text-muted-foreground"
                 }`}
               >
                 {link.label}
@@ -71,7 +71,7 @@ const Navbar = () => {
             <Link
               to="/programs"
               onClick={() => setOpen(false)}
-              className="gold-gradient text-primary-foreground px-6 py-3 rounded-full text-center font-semibold mt-2"
+              className="gold-gradient text-primary-foreground px-6 py-3 rounded-full text-center text-xs font-semibold letter-luxury uppercase mt-3 shadow-md"
             >
               Book a Session
             </Link>

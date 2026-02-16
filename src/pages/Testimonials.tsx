@@ -1,5 +1,6 @@
 import EmailCapture from "@/components/sections/EmailCapture";
 import { Link } from "react-router-dom";
+import { Star, ArrowRight } from "lucide-react";
 
 const testimonials = [
   {
@@ -42,11 +43,16 @@ const testimonials = [
 
 const Testimonials = () => (
   <div>
-    <section className="section-padding bg-card text-center">
-      <div className="container-narrow">
-        <p className="text-primary font-semibold tracking-widest text-xs uppercase mb-3">Real Stories, Real Healing</p>
-        <h1 className="font-heading text-4xl md:text-5xl mb-6">
-          Lives <span className="italic font-display">Transformed</span> Through Healing
+    <section className="section-padding hero-gradient-bg text-center relative overflow-hidden">
+      <div className="glow-orb w-[500px] h-[500px] top-[-150px] left-[30%]" />
+      <div className="container-narrow relative z-10">
+        <div className="flex items-center gap-3 justify-center mb-4">
+          <div className="ornament-line !w-8" />
+          <p className="text-primary font-semibold letter-luxury text-[10px] uppercase">Real Stories, Real Healing</p>
+          <div className="ornament-line !w-8" />
+        </div>
+        <h1 className="font-heading text-5xl md:text-6xl mb-6 letter-tight">
+          Lives <span className="italic font-display gold-text">Transformed</span> Through Healing
         </h1>
         <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
           These are real women who chose to say yes to their healing. Their stories are proof that God's restoration power is real — and available to you, too.
@@ -55,33 +61,43 @@ const Testimonials = () => (
     </section>
 
     <section className="section-padding">
-      <div className="container-wide grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="container-wide grid grid-cols-1 md:grid-cols-2 gap-6">
         {testimonials.map((t, i) => (
-          <div key={i} className="bg-card rounded-2xl p-8 md:p-10 border border-border relative">
-            <div className="gold-text font-display text-7xl absolute -top-2 left-6 opacity-20">"</div>
-            <p className="text-foreground leading-relaxed mb-6 relative z-10 italic text-lg">{t.quote}</p>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-heading font-semibold">{t.name}</p>
-                <p className="text-muted-foreground text-sm">{t.detail}</p>
+          <div key={i} className="luxury-card">
+            <div className="luxury-card-inner relative">
+              <div className="gold-text font-display text-8xl absolute -top-2 left-0 opacity-10 leading-none">"</div>
+              <div className="flex gap-1 mb-5">
+                {[...Array(5)].map((_, j) => (
+                  <Star key={j} size={12} className="text-primary fill-primary" />
+                ))}
               </div>
-              <span className="text-primary text-xs font-semibold tracking-wide bg-secondary px-3 py-1 rounded-full hidden sm:block">
-                {t.transformation}
-              </span>
+              <p className="text-foreground leading-relaxed mb-8 relative z-10 italic text-lg">{t.quote}</p>
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <div className="ornament-line !w-6 !mx-0 mb-3" />
+                  <p className="font-heading font-semibold">{t.name}</p>
+                  <p className="text-muted-foreground text-sm">{t.detail}</p>
+                </div>
+                <span className="text-primary text-[10px] font-semibold letter-luxury bg-secondary px-4 py-2 rounded-full hidden sm:block">
+                  {t.transformation}
+                </span>
+              </div>
             </div>
           </div>
         ))}
       </div>
     </section>
 
-    <section className="section-padding bg-card text-center">
-      <div className="container-narrow">
-        <h2 className="font-heading text-3xl md:text-4xl mb-4">Your Story Could Be Next</h2>
-        <p className="text-muted-foreground max-w-xl mx-auto mb-8">
+    <section className="section-padding bg-card text-center relative overflow-hidden">
+      <div className="glow-orb w-[400px] h-[400px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+      <div className="container-narrow relative z-10">
+        <div className="ornament-line-wide mb-8" />
+        <h2 className="font-heading text-4xl md:text-5xl mb-5 letter-tight">Your Story Could Be Next</h2>
+        <p className="text-muted-foreground max-w-xl mx-auto mb-10 text-lg">
           Healing is not reserved for the "special few." It's for every woman willing to say yes. Are you ready?
         </p>
-        <Link to="/programs" className="gold-gradient text-primary-foreground px-10 py-4 rounded-full font-semibold text-lg hover-scale inline-block">
-          Begin Your Journey
+        <Link to="/programs" className="gold-gradient text-primary-foreground px-12 py-5 rounded-full font-semibold text-lg hover-scale inline-flex items-center gap-3 shadow-lg">
+          Begin Your Journey <ArrowRight size={18} />
         </Link>
       </div>
     </section>

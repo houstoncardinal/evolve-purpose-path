@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import EmailCapture from "@/components/sections/EmailCapture";
+import { ArrowRight } from "lucide-react";
 
 const frameworkSteps = [
   {
@@ -43,12 +44,17 @@ const frameworkSteps = [
 const Framework = () => (
   <div>
     {/* Hero */}
-    <section className="section-padding bg-card text-center">
-      <div className="container-narrow">
-        <p className="text-primary font-semibold tracking-widest text-xs uppercase mb-3">The Signature Process</p>
-        <h1 className="font-heading text-4xl md:text-5xl mb-6 leading-tight">
+    <section className="section-padding hero-gradient-bg text-center relative overflow-hidden">
+      <div className="glow-orb w-[600px] h-[600px] top-[-200px] right-[-100px]" />
+      <div className="container-narrow relative z-10">
+        <div className="flex items-center gap-3 justify-center mb-4">
+          <div className="ornament-line !w-8" />
+          <p className="text-primary font-semibold letter-luxury text-[10px] uppercase">The Signature Process</p>
+          <div className="ornament-line !w-8" />
+        </div>
+        <h1 className="font-heading text-5xl md:text-6xl mb-6 leading-tight letter-tight">
           The 4-Step Healing &<br />
-          <span className="italic font-display">Inner Restoration</span> Framework
+          <span className="italic font-display gold-text">Inner Restoration</span> Framework
         </h1>
         <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
           A Spirit-led, proven pathway from pain to purpose — designed to bring deep, lasting transformation to every area of your life. This is not surface-level coaching. This is root-level restoration.
@@ -58,29 +64,35 @@ const Framework = () => (
 
     {/* Steps */}
     {frameworkSteps.map((step, i) => (
-      <section key={step.num} className={`section-padding ${i % 2 === 0 ? "" : "bg-card"}`}>
-        <div className="container-wide max-w-4xl">
-          <div className="flex items-start gap-6 mb-8">
-            <span className="gold-text font-display text-7xl font-bold leading-none">{step.num}</span>
-            <div>
-              <h2 className="font-heading text-3xl md:text-4xl">{step.title}</h2>
-              <p className="text-primary italic font-display text-xl mt-1">{step.subtitle}</p>
+      <section key={step.num} className={`section-padding relative overflow-hidden ${i % 2 === 0 ? "" : "bg-card"}`}>
+        <div className="glow-orb w-[300px] h-[300px] top-[20%] right-[-50px] opacity-50" />
+        <div className="container-wide max-w-5xl relative z-10">
+          <div className="flex flex-col md:flex-row items-start gap-8 mb-12">
+            <span className="gold-text font-display text-8xl md:text-9xl font-bold leading-none">{step.num}</span>
+            <div className="pt-2 md:pt-4">
+              <h2 className="font-heading text-4xl md:text-5xl letter-tight">{step.title}</h2>
+              <p className="text-primary italic font-display text-xl mt-2">{step.subtitle}</p>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-              <p className="text-muted-foreground leading-relaxed mb-6">{step.description}</p>
-              <h4 className="font-heading text-lg mb-2">What You'll Experience</h4>
-              <p className="text-muted-foreground leading-relaxed">{step.experience}</p>
+              <p className="text-muted-foreground leading-relaxed mb-8 text-lg">{step.description}</p>
+              <div className="ornament-line !w-12 !mx-0 mb-6" />
+              <h4 className="font-heading text-lg mb-3">What You'll Experience</h4>
+              <p className="text-muted-foreground leading-relaxed text-base">{step.experience}</p>
             </div>
-            <div>
-              <div className="bg-card rounded-2xl p-8 border border-border mb-6">
-                <h4 className="font-heading text-lg mb-2">The Transformation</h4>
-                <p className="text-muted-foreground leading-relaxed">{step.outcome}</p>
+            <div className="space-y-6">
+              <div className="luxury-card">
+                <div className="luxury-card-inner">
+                  <h4 className="font-heading text-lg mb-3">The Transformation</h4>
+                  <p className="text-muted-foreground leading-relaxed">{step.outcome}</p>
+                </div>
               </div>
-              <div className="bg-secondary rounded-2xl p-8">
-                <h4 className="font-heading text-lg mb-2">This Step Is For You If…</h4>
-                <p className="text-muted-foreground leading-relaxed">{step.forWho}</p>
+              <div className="luxury-card !bg-secondary">
+                <div className="luxury-card-inner">
+                  <h4 className="font-heading text-lg mb-3">This Step Is For You If…</h4>
+                  <p className="text-muted-foreground leading-relaxed">{step.forWho}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -89,14 +101,16 @@ const Framework = () => (
     ))}
 
     {/* CTA */}
-    <section className="section-padding text-center bg-card">
-      <div className="container-narrow">
-        <h2 className="font-heading text-3xl md:text-4xl mb-4">Ready to Begin Your Restoration?</h2>
-        <p className="text-muted-foreground max-w-xl mx-auto mb-8">
+    <section className="section-padding text-center relative overflow-hidden">
+      <div className="glow-orb w-[500px] h-[500px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+      <div className="container-narrow relative z-10">
+        <div className="ornament-line-wide mb-8" />
+        <h2 className="font-heading text-4xl md:text-5xl mb-5 letter-tight">Ready to Begin Your Restoration?</h2>
+        <p className="text-muted-foreground max-w-xl mx-auto mb-10 text-lg">
           The framework is proven. The anointing is real. All that's missing is you.
         </p>
-        <Link to="/programs" className="gold-gradient text-primary-foreground px-10 py-4 rounded-full font-semibold text-lg hover-scale inline-block">
-          Explore Programs
+        <Link to="/programs" className="gold-gradient text-primary-foreground px-12 py-5 rounded-full font-semibold text-lg hover-scale inline-flex items-center gap-3 shadow-lg">
+          Explore Programs <ArrowRight size={18} />
         </Link>
       </div>
     </section>
