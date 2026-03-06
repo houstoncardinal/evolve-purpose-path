@@ -39,7 +39,7 @@ const products = [
     price: "$19.99",
     priceNum: 19.99,
     description:
-      "40 beautifully designed cards with daily declarations and affirmations rooted in the Evole 2 Purpose framework. Carry your healing with you — into your car, your office, your mirror, your daily ritual.",
+      "40 beautifully designed cards with daily declarations and affirmations rooted in the Evolve 2 Purpose framework. Carry your healing with you — into your car, your office, your mirror, your daily ritual.",
     category: "Card Deck",
     badge: "New",
     features: ["40 premium card deck", "4 themed categories", "Matte finish, durable stock", "Keepsake box included", "Digital companion PDF"],
@@ -110,7 +110,7 @@ const bundles = [
   },
   {
     title: "The Complete Toolkit",
-    desc: "Every physical and digital resource in one comprehensive package. The full Evole 2 Purpose resource library.",
+    desc: "Every physical and digital resource in one comprehensive package. The full Evolve 2 Purpose resource library.",
     includes: ["Healing Journal", "Breaking Cycles Workbook", "Card Deck", "Masterclass", "Audio Collection"],
     price: "$174.99",
     savings: "Save $32",
@@ -127,13 +127,13 @@ const guarantees = [
 const Shop = () => {
   useSEO({
     title: "Shop — Books, Journals & Digital Resources",
-    description: "Shop purpose-driven books, healing journals, digital programs, and coaching bundles from Evole 2 Purpose. Tools to support your transformation journey.",
-    keywords: "life transformation books, healing journal, purpose coaching resources, women empowerment products, evole 2 purpose shop, coaching digital products",
+    description: "Shop purpose-driven books, healing journals, digital programs, and coaching bundles from Evolve 2 Purpose. Tools to support your transformation journey.",
+    keywords: "life transformation books, healing journal, purpose coaching resources, women empowerment products, evolve 2 purpose shop, coaching digital products",
     schema: {
       "@context": "https://schema.org",
       "@type": "Store",
-      name: "Evole 2 Purpose Shop",
-      url: "https://evole2purpose.com/shop",
+      name: "Evolve 2 Purpose Shop",
+      url: "https://evolve2purpose.com/shop",
       description: "Purpose-driven books, journals, digital programs, and coaching bundles.",
       seller: { "@type": "Person", name: "Sarah Adams" },
     },

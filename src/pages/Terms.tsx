@@ -5,11 +5,11 @@ import useSEO from "@/hooks/useSEO";
 const sections = [
   {
     title: "Acceptance of Terms",
-    body: `By accessing or using the Evole 2 Purpose website and any services offered through it, you agree to be bound by these Terms of Use. If you do not agree to these terms, please do not use our website or services.`,
+    body: `By accessing or using the Evolve 2 Purpose website and any services offered through it, you agree to be bound by these Terms of Use. If you do not agree to these terms, please do not use our website or services.`,
   },
   {
     title: "Services",
-    body: `Evole 2 Purpose offers personal development coaching, group programs, speaking engagements, digital products, and community membership services. All service offerings, pricing, and availability are subject to change without notice. Descriptions of programs and services on this website are for informational purposes only.`,
+    body: `Evolve 2 Purpose offers personal development coaching, group programs, speaking engagements, digital products, and community membership services. All service offerings, pricing, and availability are subject to change without notice. Descriptions of programs and services on this website are for informational purposes only.`,
   },
   {
     title: "Purchases and Payments",
@@ -17,11 +17,11 @@ const sections = [
   },
   {
     title: "Refund Policy",
-    body: `Due to the nature of digital products and coaching services, all sales are generally final. Exceptions may be made on a case-by-case basis at the sole discretion of Evole 2 Purpose. For live programs or intensives, cancellations made more than 14 days before the event may be eligible for a credit toward a future program. No cash refunds will be issued for cancellations made fewer than 14 days before a live event.`,
+    body: `Due to the nature of digital products and coaching services, all sales are generally final. Exceptions may be made on a case-by-case basis at the sole discretion of Evolve 2 Purpose. For live programs or intensives, cancellations made more than 14 days before the event may be eligible for a credit toward a future program. No cash refunds will be issued for cancellations made fewer than 14 days before a live event.`,
   },
   {
     title: "Intellectual Property",
-    body: `All content on this website — including but not limited to text, graphics, logos, images, audio, video, and the 4-Step Transform Your Life Framework — is the intellectual property of Evole 2 Purpose and Sarah Adams. You may not reproduce, distribute, modify, or create derivative works from any content on this site without explicit written permission.`,
+    body: `All content on this website — including but not limited to text, graphics, logos, images, audio, video, and the 4-Step Transform Your Life Framework — is the intellectual property of Evolve 2 Purpose and Sarah Adams. You may not reproduce, distribute, modify, or create derivative works from any content on this site without explicit written permission.`,
   },
   {
     title: "Disclaimer of Warranties",
@@ -29,11 +29,11 @@ const sections = [
   },
   {
     title: "Limitation of Liability",
-    body: `To the fullest extent permitted by law, Evole 2 Purpose and Sarah Adams shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of this website or our services, including but not limited to loss of data, revenue, or emotional distress. Our total liability for any claim shall not exceed the amount you paid for the specific service giving rise to the claim.`,
+    body: `To the fullest extent permitted by law, Evolve 2 Purpose and Sarah Adams shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of this website or our services, including but not limited to loss of data, revenue, or emotional distress. Our total liability for any claim shall not exceed the amount you paid for the specific service giving rise to the claim.`,
   },
   {
     title: "Community Guidelines",
-    body: `Members of the Evole 2 Purpose community agree to engage respectfully and constructively. Any conduct that is abusive, harassing, discriminatory, or harmful to other members may result in immediate removal from the community without refund. We reserve the right to remove any content or member that violates these standards at our sole discretion.`,
+    body: `Members of the Evolve 2 Purpose community agree to engage respectfully and constructively. Any conduct that is abusive, harassing, discriminatory, or harmful to other members may result in immediate removal from the community without refund. We reserve the right to remove any content or member that violates these standards at our sole discretion.`,
   },
   {
     title: "External Links",
@@ -49,12 +49,12 @@ const sections = [
   },
   {
     title: "Contact",
-    body: `For questions about these Terms of Use, please contact us at: hello@evole2purpose.com`,
+    body: `For questions about these Terms of Use, please contact us at: hello@evolve2purpose.com`,
   },
 ];
 
 const Terms = () => {
-  useSEO({ title: "Terms of Use", description: "Review the terms and conditions for using Evole 2 Purpose website and services.", noindex: true });
+  useSEO({ title: "Terms of Use", description: "Review the terms and conditions for using Evolve 2 Purpose website and services.", noindex: true });
   return (
   <div>
     <section className="section-padding hero-gradient-bg relative overflow-hidden">
@@ -78,7 +78,7 @@ const Terms = () => {
     <section className="section-padding">
       <div className="container-narrow">
         <p className="text-muted-foreground leading-relaxed mb-10 text-base">
-          Please read these Terms of Use carefully before using the Evole 2 Purpose website or purchasing any services. These terms constitute a legally binding agreement between you and Evole 2 Purpose.
+          Please read these Terms of Use carefully before using the Evolve 2 Purpose website or purchasing any services. These terms constitute a legally binding agreement between you and Evolve 2 Purpose.
         </p>
 
         <div className="space-y-8">

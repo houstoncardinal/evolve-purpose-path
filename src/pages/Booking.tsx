@@ -26,7 +26,7 @@ const topics = [
   },
   {
     icon: Globe,
-    title: "Evole 2 Purpose",
+    title: "Evolve 2 Purpose",
     desc: "The full 4-step transformation framework as a keynote or workshop experience for your audience.",
   },
   {
@@ -87,7 +87,7 @@ const Booking = () => {
         "@type": "Service",
         name: "Speaking Engagements — Sarah Adams",
         description: "Sarah Adams delivers powerful keynotes and workshops for women's conferences, churches, corporate events, and retreats on topics of healing, purpose, and transformation.",
-        url: "https://evole2purpose.com/booking",
+        url: "https://evolve2purpose.com/booking",
         provider: { "@type": "Person", name: "Sarah Adams", jobTitle: "Speaker & Life Transformation Coach" },
         serviceType: "Speaking Engagement",
         areaServed: "Worldwide",
@@ -389,7 +389,7 @@ const Booking = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mb-5">
                 <div>
                   <label className="block text-xs font-bold letter-luxury uppercase mb-2 text-foreground">Event Type *</label>
                   <select

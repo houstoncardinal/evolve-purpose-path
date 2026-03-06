@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import EmailCapture from "@/components/sections/EmailCapture";
 import useSEO from "@/hooks/useSEO";
-import { ArrowRight, Mic, BookOpen, Sparkles, Shield, Heart, Users } from "lucide-react";
+import { ArrowRight, Mic, Sparkles, Shield, Heart, Users } from "lucide-react";
 
 const outcomes = [
   { icon: Heart, text: "Heal abandonment and betrayal wounds" },
@@ -47,18 +47,18 @@ const About = () => {
   useSEO({
     title: "About Sarah Adams",
     description:
-      "Sarah Adams is a Christian counselor, prophetess, seer, and founder of Evole 2 Purpose — a healing movement dedicated to breaking generational cycles and restoring identity through Christ-centered emotional healing.",
+      "Sarah Adams is a Christian counselor, prophetess, seer, and founder of Evolve 2 Purpose — a healing movement dedicated to breaking generational cycles and restoring identity through Christ-centered emotional healing.",
     keywords:
-      "Sarah Adams Christian counselor, prophetess seer coach, generational cycle breaking, identity restoration Christ, abandonment wound healing, trauma healing coach, evole 2 purpose founder, becoming a lotus book",
+      "Sarah Adams Christian counselor, prophetess seer coach, generational cycle breaking, identity restoration Christ, abandonment wound healing, trauma healing coach, evolve 2 purpose founder, inspirational speaker",
     schema: {
       "@context": "https://schema.org",
       "@type": "Person",
-      "@id": "https://evole2purpose.com/#sarah-adams",
+      "@id": "https://evolve2purpose.com/#sarah-adams",
       name: "Sarah Adams",
       jobTitle: "Christian Counselor, Prophetess & Transformation Coach",
       description:
         "Sarah Adams is a Christian counselor, prophetess, seer, and the founder of EVOLVE 2 PURPOSE — a transformational healing movement dedicated to breaking generational cycles and restoring identity through Christ-centered emotional healing.",
-      url: "https://evole2purpose.com/about",
+      url: "https://evolve2purpose.com/about",
       knowsAbout: [
         "Generational Cycle Breaking",
         "Christian Counseling",
@@ -69,9 +69,9 @@ const About = () => {
         "Abandonment Wound Healing",
       ],
       sameAs: [
-        "https://instagram.com/evole2purpose",
-        "https://facebook.com/evole2purpose",
-        "https://youtube.com/@evole2purpose",
+        "https://instagram.com/evolve2purpose",
+        "https://facebook.com/evolve2purpose",
+        "https://youtube.com/@evolve2purpose",
       ],
     },
   });
@@ -88,14 +88,24 @@ const About = () => {
         style={{ background: "radial-gradient(circle at 80% 20%, rgba(255,45,170,0.16), transparent 65%)" }}
       />
 
+      {/* Mobile hero image */}
+      <div className="lg:hidden relative h-[50vw] max-h-72 overflow-hidden">
+        <img
+          src="/53DE7570-D7E8-4E05-A9FC-6B56FDC74685.JPG"
+          alt="Sarah Adams — Founder of Evolve 2 Purpose"
+          className="w-full h-full object-cover object-top"
+        />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, #0B0B0F 0%, transparent 30%, transparent 60%, #0B0B0F 100%)" }} />
+      </div>
+
       <div className="container-wide grid grid-cols-1 lg:grid-cols-2 min-h-[90vh] relative z-10">
 
         {/* Left — text */}
-        <div className="flex flex-col justify-center px-6 py-20 lg:py-32 lg:pr-16">
+        <div className="flex flex-col justify-center px-6 py-12 lg:py-32 lg:pr-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px" style={{ background: "#FF2DAA" }} />
             <p className="font-semibold letter-luxury text-[10px] uppercase" style={{ color: "#FF2DAA" }}>
-              Founder — Evole 2 Purpose
+              Founder — Evolve 2 Purpose
             </p>
           </div>
 
@@ -112,8 +122,8 @@ const About = () => {
             {[
               "Christian Counselor",
               "Prophetess & Seer",
-              "Transformation Coach & Speaker",
-              "Author — Becoming a Lotus",
+              "Transformation Coach",
+              "Inspirational Speaker",
             ].map((title) => (
               <div key={title} className="flex items-center gap-3">
                 <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#FF2DAA" }} />
@@ -144,7 +154,7 @@ const About = () => {
           />
           <img
             src="/53DE7570-D7E8-4E05-A9FC-6B56FDC74685.JPG"
-            alt="Sarah Adams — Founder of Evole 2 Purpose"
+            alt="Sarah Adams — Founder of Evolve 2 Purpose"
             className="w-full h-full object-cover object-top"
             style={{ maxHeight: "90vh" }}
           />
@@ -291,41 +301,6 @@ const About = () => {
       </div>
     </section>
 
-    {/* ── BOOK: BECOMING A LOTUS ───────────────────────────────── */}
-    <section
-      className="section-padding relative overflow-hidden"
-      style={{ backgroundColor: "#0B0B0F" }}
-    >
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] pointer-events-none blur-3xl"
-        style={{ background: "radial-gradient(ellipse, rgba(255,45,170,0.1), transparent 70%)" }}
-      />
-      <div className="container-narrow text-center relative z-10">
-        <div className="flex items-center gap-3 justify-center mb-5">
-          <div className="w-8 h-px" style={{ background: "rgba(255,45,170,0.4)" }} />
-          <p className="font-semibold letter-luxury text-[10px] uppercase" style={{ color: "#FF2DAA" }}>
-            Published Author
-          </p>
-          <div className="w-8 h-px" style={{ background: "rgba(255,45,170,0.4)" }} />
-        </div>
-        <div className="inline-flex items-center gap-2 mb-5">
-          <BookOpen size={15} style={{ color: "rgba(255,45,170,0.5)" }} />
-          <p className="text-white/30 text-xs font-bold letter-luxury uppercase">Evole 2 Purpose Presents</p>
-        </div>
-        <h2 className="font-heading text-5xl md:text-7xl text-white letter-tight mb-6 leading-tight">
-          Becoming<br />a <span className="italic" style={{ color: "#FF2DAA" }}>Lotus</span>
-        </h2>
-        <p className="text-white/50 text-lg leading-relaxed max-w-2xl mx-auto mb-10">
-          A transformational guide to emotional and spiritual restoration. Like the lotus flower — which rises from muddy water into breathtaking bloom — this book walks you through the journey from wounding to wholeness, from survival to purpose.
-        </p>
-        <div className="w-16 h-px mx-auto mb-10" style={{ background: "rgba(255,45,170,0.35)" }} />
-        <blockquote className="font-heading text-xl md:text-2xl text-white/60 italic leading-relaxed">
-          "Her mission is simple:<br />
-          <span className="text-white font-bold not-italic">Heal the root. Break the pattern. Evolve with intention.</span>"
-        </blockquote>
-      </div>
-    </section>
-
     {/* ── SPEAKING TOPICS ──────────────────────────────────────── */}
     <section className="section-padding relative overflow-hidden">
       <div className="glow-orb w-[500px] h-[500px] top-[-50px] left-[-100px]" />
@@ -334,18 +309,22 @@ const About = () => {
         <div className="text-center mb-14">
           <div className="flex items-center gap-3 justify-center mb-4">
             <div className="ornament-line !w-8" />
-            <p className="text-primary font-semibold letter-luxury text-[10px] uppercase">Speaking Ministry</p>
+            <p className="text-primary font-semibold letter-luxury text-[10px] uppercase">Booking Opportunities</p>
             <div className="ornament-line !w-8" />
           </div>
-          <h2 className="font-heading text-4xl md:text-5xl letter-tight">
-            Book Sarah <span className="italic neon-text">to Speak</span>
+          <h2 className="font-heading text-4xl md:text-5xl letter-tight mb-4">
+            Book Sarah <span className="italic neon-text">as a Speaker</span>
           </h2>
+          <p className="text-muted-foreground text-base max-w-xl mx-auto">
+            Sarah is available to speak at conferences, church services, panel discussions, retreats, workshops, and virtual events. Her messages bring healing, clarity, and divine activation to every room.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
 
           {/* Topics */}
           <div className="space-y-5">
+            <p className="text-xs font-bold letter-luxury uppercase text-muted-foreground mb-2 tracking-widest">Speaking Topic Overviews</p>
             {speakingTopics.map((topic) => (
               <div key={topic.num} className="luxury-card hover:-translate-y-1 transition-transform duration-200">
                 <div className="luxury-card-inner">
@@ -365,9 +344,12 @@ const About = () => {
               </div>
             ))}
 
-            <div className="pt-4">
+            <div className="pt-4 flex flex-col sm:flex-row gap-3">
               <Link to="/booking" className="btn-neon-solid shadow-lg">
-                <Mic size={16} /> Submit a Speaking Request
+                <Mic size={16} /> Book Sarah to Speak
+              </Link>
+              <Link to="/booking" className="btn-neon-outline">
+                Submit an Inquiry
               </Link>
             </div>
           </div>
@@ -377,14 +359,14 @@ const About = () => {
             <div className="relative rounded-3xl overflow-hidden shadow-2xl" style={{ aspectRatio: "3/4" }}>
               <img
                 src="/0F3996CA-9B2E-418F-9F61-1244D42ACB9B.JPG"
-                alt="Sarah Adams — Speaker"
+                alt="Sarah Adams — Inspirational Speaker"
                 className="w-full h-full object-cover object-center"
               />
               <div
                 className="absolute inset-0 pointer-events-none"
-                style={{ background: "linear-gradient(to top, rgba(11,11,15,0.85) 0%, rgba(11,11,15,0.1) 50%, transparent 100%)" }}
+                style={{ background: "linear-gradient(to top, rgba(11,11,15,0.90) 0%, rgba(11,11,15,0.15) 55%, transparent 100%)" }}
               />
-              <div className="absolute bottom-0 left-0 right-0 p-8">
+              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
                 <p className="font-bold letter-luxury text-[10px] uppercase mb-4" style={{ color: "#FF2DAA" }}>
                   Available For
                 </p>

@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-export const SITE_NAME = "Evole 2 Purpose";
-export const BASE_URL = "https://evole2purpose.com";
+export const SITE_NAME = "Evolve 2 Purpose";
+export const BASE_URL = "https://evolve2purpose.com";
 export const DEFAULT_OG_IMAGE =
   "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/255f801d-7682-4f2b-894f-a92eb8be2585/id-preview-6e5b844a--78b9cfc3-6a84-4d5e-9f35-91efe17597b8.lovable.app-1771273688901.png";
-export const TWITTER_HANDLE = "@evole2purpose";
+export const TWITTER_HANDLE = "@evolve2purpose";
 
 export interface SEOConfig {
   title: string;
@@ -80,7 +80,7 @@ export const ORGANIZATION_SCHEMA: Record<string, unknown> = {
   logo: `${BASE_URL}/logo.png`,
   image: DEFAULT_OG_IMAGE,
   description:
-    "Evole 2 Purpose is a personal development coaching practice founded by Sarah Adams. We help women break generational cycles, heal their roots, and step fully into a life of love, accountability, and purpose.",
+    "Evolve 2 Purpose is a personal development coaching practice founded by Sarah Adams. We help women break generational cycles, heal their roots, and step fully into a life of love, accountability, and purpose.",
   founder: {
     "@type": "Person",
     name: "Sarah Adams",
@@ -96,9 +96,9 @@ export const ORGANIZATION_SCHEMA: Record<string, unknown> = {
   ],
   areaServed: "Worldwide",
   sameAs: [
-    "https://instagram.com/evole2purpose",
-    "https://facebook.com/evole2purpose",
-    "https://youtube.com/@evole2purpose",
+    "https://instagram.com/evolve2purpose",
+    "https://facebook.com/evolve2purpose",
+    "https://youtube.com/@evolve2purpose",
   ],
   aggregateRating: {
     "@type": "AggregateRating",
@@ -134,7 +134,7 @@ const useSEO = ({
     setMeta("name", "description", description);
     if (keywords) setMeta("name", "keywords", keywords);
     setMeta("name", "robots", noindex ? "noindex, nofollow" : "index, follow");
-    setMeta("name", "author", "Sarah Adams — Evole 2 Purpose");
+    setMeta("name", "author", "Sarah Adams — Evolve 2 Purpose");
 
     // Canonical
     setLink("canonical", canonicalUrl);

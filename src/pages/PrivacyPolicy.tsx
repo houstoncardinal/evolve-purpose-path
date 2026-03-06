@@ -13,7 +13,7 @@ const sections = [
   },
   {
     title: "Email Communications",
-    body: `By submitting your email through our website, you agree to receive communications from Evole 2 Purpose. You may unsubscribe from marketing emails at any time by clicking the unsubscribe link in any email or by contacting us directly. Transactional emails related to purchases or bookings may still be sent after unsubscribing.`,
+    body: `By submitting your email through our website, you agree to receive communications from Evolve 2 Purpose. You may unsubscribe from marketing emails at any time by clicking the unsubscribe link in any email or by contacting us directly. Transactional emails related to purchases or bookings may still be sent after unsubscribing.`,
   },
   {
     title: "Cookies and Tracking",
@@ -41,12 +41,12 @@ const sections = [
   },
   {
     title: "Contact",
-    body: `For questions or requests related to this Privacy Policy, please contact us at: hello@evole2purpose.com`,
+    body: `For questions or requests related to this Privacy Policy, please contact us at: hello@evolve2purpose.com`,
   },
 ];
 
 const PrivacyPolicy = () => {
-  useSEO({ title: "Privacy Policy", description: "Learn how Evole 2 Purpose collects, uses, and protects your personal information.", noindex: true });
+  useSEO({ title: "Privacy Policy", description: "Learn how Evolve 2 Purpose collects, uses, and protects your personal information.", noindex: true });
   return (
   <div>
     <section className="section-padding hero-gradient-bg relative overflow-hidden">
@@ -70,7 +70,7 @@ const PrivacyPolicy = () => {
     <section className="section-padding">
       <div className="container-narrow">
         <p className="text-muted-foreground leading-relaxed mb-10 text-base">
-          At Evole 2 Purpose, your privacy matters to us. This Privacy Policy explains how we collect, use, and protect your personal information when you visit our website or engage with our services.
+          At Evolve 2 Purpose, your privacy matters to us. This Privacy Policy explains how we collect, use, and protect your personal information when you visit our website or engage with our services.
         </p>
 
         <div className="space-y-8">

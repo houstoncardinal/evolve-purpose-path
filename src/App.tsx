@@ -38,6 +38,7 @@ const App = () => (
             <Route path="/shop" element={<Shop />} />
             <Route path="/free-guide" element={<FreeGuide />} />
             <Route path="/evole-2-purpose" element={<EvolePurpose />} />
+            <Route path="/evolve-2-purpose" element={<EvolePurpose />} />
             <Route path="/booking" element={<Booking />} />
             <Route path="/community" element={<Community />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />

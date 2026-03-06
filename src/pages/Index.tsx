@@ -91,7 +91,7 @@ const faqItems = [
   },
   {
     q: "How does this framework connect to finding my purpose?",
-    a: "Each step of the Evole 2 Purpose framework builds on the last. When you lead with love, take ownership, heal your wounds, and share your lessons — you naturally step into the life you were designed to live. Purpose isn't found; it's revealed through the process.",
+    a: "Each step of the Evolve 2 Purpose framework builds on the last. When you lead with love, take ownership, heal your wounds, and share your lessons — you naturally step into the life you were designed to live. Purpose isn't found; it's revealed through the process.",
   },
 ];
 
@@ -99,16 +99,16 @@ const INDEX_SCHEMA = [
   {
     "@context": "https://schema.org",
     "@type": "Person",
-    "@id": "https://evole2purpose.com/#sarah-adams",
+    "@id": "https://evolve2purpose.com/#sarah-adams",
     name: "Sarah Adams",
     jobTitle: "Certified Life & Transformation Coach",
     description:
-      "Sarah Adams is a certified life and transformation coach, speaker, and founder of the Evole 2 Purpose movement. She has helped 500+ women break generational cycles and walk in purpose.",
-    url: "https://evole2purpose.com/about",
+      "Sarah Adams is a certified life and transformation coach, speaker, and founder of the Evolve 2 Purpose movement. She has helped 500+ women break generational cycles and walk in purpose.",
+    url: "https://evolve2purpose.com/about",
     sameAs: [
-      "https://instagram.com/evole2purpose",
-      "https://facebook.com/evole2purpose",
-      "https://youtube.com/@evole2purpose",
+      "https://instagram.com/evolve2purpose",
+      "https://facebook.com/evolve2purpose",
+      "https://youtube.com/@evolve2purpose",
     ],
     knowsAbout: [
       "Life Coaching",
@@ -117,7 +117,7 @@ const INDEX_SCHEMA = [
       "Accountability Coaching",
       "Women's Empowerment",
     ],
-    founder: { "@type": "Organization", name: "Evole 2 Purpose" },
+    founder: { "@type": "Organization", name: "Evolve 2 Purpose" },
   },
   {
     "@context": "https://schema.org",
@@ -133,10 +133,10 @@ const INDEX_SCHEMA = [
       },
       {
         "@type": "Question",
-        name: "Who is Evole 2 Purpose coaching for?",
+        name: "Who is Evolve 2 Purpose coaching for?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Evole 2 Purpose primarily serves women who are ready to break generational cycles, heal past wounds, and live a life of intentional purpose. The programs range from 1:1 deep-dive coaching to group programs and healing intensives.",
+          text: "Evolve 2 Purpose primarily serves women who are ready to break generational cycles, heal past wounds, and live a life of intentional purpose. The programs range from 1:1 deep-dive coaching to group programs and healing intensives.",
         },
       },
       {
@@ -157,7 +157,7 @@ const Index = () => {
     description:
       "Discover Sarah Adams' proven 4-Step System: Lead in Love, Take Accountability, Manage Your Triggers, and Teach Others. 500+ women transformed. Start your journey today.",
     keywords:
-      "life transformation coaching, 4 step transformation system, purpose coaching women, Sarah Adams coach, break generational cycles, evole 2 purpose, healing coaching, women empowerment",
+      "life transformation coaching, 4 step transformation system, purpose coaching women, Sarah Adams coach, break generational cycles, evolve 2 purpose, healing coaching, women empowerment",
     schema: INDEX_SCHEMA,
   });
   useEffect(() => {
@@ -193,7 +193,7 @@ const Index = () => {
             <div className="flex items-center gap-3 justify-center lg:justify-start mb-8 animate-fade-up">
               <div className="ornament-line !w-8 !mx-0" />
               <p className="text-primary font-semibold letter-luxury text-[10px] uppercase">
-                Evole 2 Purpose
+                Evolve 2 Purpose
               </p>
               <div className="ornament-line !w-8 !mx-0" />
             </div>
@@ -259,7 +259,7 @@ const Index = () => {
           <span className="flex items-center gap-2"><span className="ornament-diamond" /> Take Accountability</span>
           <span className="flex items-center gap-2"><span className="ornament-diamond" /> Manage Your Triggers</span>
           <span className="flex items-center gap-2"><span className="ornament-diamond" /> Teach What You Know</span>
-          <span className="flex items-center gap-2"><span className="ornament-diamond" /> Evole 2 Purpose</span>
+          <span className="flex items-center gap-2"><span className="ornament-diamond" /> Evolve 2 Purpose</span>
         </div>
       </section>
 
@@ -296,7 +296,7 @@ const Index = () => {
               I know what it feels like to carry wounds you didn't ask for — the kind that echo through generations and whisper that you'll never be free. But I also know that healing is possible, because I've lived it.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-8 text-lg">
-              Through the Evole 2 Purpose framework — rooted in love, accountability, and radical self-awareness — I help women just like you break free from cycles, face their truth, and step into the extraordinary purpose they were created for.
+              Through the Evolve 2 Purpose framework — rooted in love, accountability, and radical self-awareness — I help women just like you break free from cycles, face their truth, and step into the extraordinary purpose they were created for.
             </p>
             <Link to="/about" className="inline-flex items-center gap-3 text-primary font-semibold text-sm group">
               <span>Read My Full Story</span>
@@ -345,7 +345,7 @@ const Index = () => {
           {/* Section header */}
           <div className="text-center mb-16">
             <p className="text-muted-foreground font-semibold text-[10px] letter-luxury uppercase mb-2">By Sarah Adams</p>
-            <p className="neon-text font-bold text-sm letter-luxury uppercase mb-5">Evole 2 Purpose</p>
+            <p className="neon-text font-bold text-sm letter-luxury uppercase mb-5">Evolve 2 Purpose</p>
             <h2 className="font-heading text-4xl md:text-5xl letter-tight mb-5">Transform Your Life in 4 Steps</h2>
             <div className="ornament-line-wide" />
           </div>
@@ -372,7 +372,7 @@ const Index = () => {
                   className="font-heading text-xs font-bold letter-luxury uppercase mb-8 relative z-10"
                   style={{ color: "#FF2DAA" }}
                 >
-                  Evole 2 Purpose
+                  Evolve 2 Purpose
                 </p>
                 <blockquote className="font-heading text-2xl md:text-3xl leading-snug text-white mb-8 relative z-10 font-semibold">
                   "Your healing is not just for you — it's the light that guides someone else home."
@@ -426,8 +426,8 @@ const Index = () => {
 
           {/* CTA row */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-16">
-            <Link to="/evole-2-purpose" className="btn-neon-outline">
-              Explore Evole 2 Purpose
+            <Link to="/evolve-2-purpose" className="btn-neon-outline">
+              Explore Evolve 2 Purpose
             </Link>
             <Link to="/programs" className="btn-neon-solid shadow-lg">
               Work With Sarah Adams <ArrowRight size={16} />
@@ -555,7 +555,7 @@ const Index = () => {
           <p className="text-muted-foreground text-lg leading-relaxed max-w-xl mx-auto mb-10">
             Every lesson you've lived through has been preparing you for this moment. The pain you've carried has a purpose — and your healing is the doorway to the life you were always designed for.
           </p>
-          <Link to="/programs" className="btn-neon-solid !text-lg !px-12 !py-5 shadow-lg">
+          <Link to="/programs" className="btn-neon-solid shadow-lg">
             Start Your Journey Now <ArrowRight size={18} />
           </Link>
         </div>

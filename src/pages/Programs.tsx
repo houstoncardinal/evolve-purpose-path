@@ -36,7 +36,7 @@ const programs = [
   {
     id: "group",
     tag: "Best Value",
-    title: "The Evole 2 Purpose Group Program",
+    title: "The Evolve 2 Purpose Group Program",
     subtitle: "8-Week Guided Transformation Journey",
     price: "Starting at $497",
     priceNote: "Payment plans available",
@@ -160,14 +160,14 @@ const Programs = () => {
       {
         "@context": "https://schema.org",
         "@type": "ItemList",
-        name: "Evole 2 Purpose Coaching Programs",
-        url: "https://evole2purpose.com/programs",
+        name: "Evolve 2 Purpose Coaching Programs",
+        url: "https://evolve2purpose.com/programs",
         numberOfItems: 4,
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "1:1 Deep-Dive Coaching", url: "https://evole2purpose.com/programs#one-on-one" },
-          { "@type": "ListItem", position: 2, name: "Group Transformation Program", url: "https://evole2purpose.com/programs#group" },
-          { "@type": "ListItem", position: 3, name: "Purpose Clarity Session", url: "https://evole2purpose.com/programs#clarity" },
-          { "@type": "ListItem", position: 4, name: "Healing Intensive Weekend", url: "https://evole2purpose.com/programs#intensive" },
+          { "@type": "ListItem", position: 1, name: "1:1 Deep-Dive Coaching", url: "https://evolve2purpose.com/programs#one-on-one" },
+          { "@type": "ListItem", position: 2, name: "Group Transformation Program", url: "https://evolve2purpose.com/programs#group" },
+          { "@type": "ListItem", position: 3, name: "Purpose Clarity Session", url: "https://evolve2purpose.com/programs#clarity" },
+          { "@type": "ListItem", position: 4, name: "Healing Intensive Weekend", url: "https://evolve2purpose.com/programs#intensive" },
         ],
       },
       {
@@ -219,7 +219,7 @@ const Programs = () => {
     <section className="py-14 bg-[#F6F6F8] premium-border-top">
       <div className="container-wide px-6">
         <p className="text-center text-xs font-bold letter-luxury uppercase text-muted-foreground mb-8">Find your starting point</p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
           {[
             { need: "I need deep, root-level healing", result: "1:1 Coaching", link: "#one-on-one" },
             { need: "I want community and structure", result: "Group Program", link: "#group" },

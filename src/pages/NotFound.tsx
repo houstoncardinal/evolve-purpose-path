@@ -12,7 +12,7 @@ const quickLinks = [
 ];
 
 const NotFound = () => {
-  useSEO({ title: "Page Not Found", description: "The page you were looking for could not be found. Return to Evole 2 Purpose.", noindex: true });
+  useSEO({ title: "Page Not Found", description: "The page you were looking for could not be found. Return to Evolve 2 Purpose.", noindex: true });
   const location = useLocation();
 
   useEffect(() => {
@@ -79,7 +79,7 @@ const NotFound = () => {
 
         {/* Brand note */}
         <p className="text-white/20 text-xs mt-16 letter-luxury uppercase">
-          Evole 2 Purpose — Walking in Your Purpose
+          Evolve 2 Purpose — Walking in Your Purpose
         </p>
       </div>
     </div>

@@ -6,7 +6,7 @@
 
   <!-- Homepage -->
   <url>
-    <loc>https://evole2purpose.com/</loc>
+    <loc>https://evolve2purpose.com/</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -14,28 +14,28 @@
 
   <!-- Core pages -->
   <url>
-    <loc>https://evole2purpose.com/about</loc>
+    <loc>https://evolve2purpose.com/about</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://evole2purpose.com/framework</loc>
+    <loc>https://evolve2purpose.com/framework</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://evole2purpose.com/programs</loc>
+    <loc>https://evolve2purpose.com/programs</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.95</priority>
   </url>
 
   <url>
-    <loc>https://evole2purpose.com/testimonials</loc>
+    <loc>https://evolve2purpose.com/testimonials</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -43,21 +43,21 @@
 
   <!-- Lead gen + conversion pages -->
   <url>
-    <loc>https://evole2purpose.com/free-guide</loc>
+    <loc>https://evolve2purpose.com/free-guide</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
 
   <url>
-    <loc>https://evole2purpose.com/booking</loc>
+    <loc>https://evolve2purpose.com/booking</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
 
   <url>
-    <loc>https://evole2purpose.com/community</loc>
+    <loc>https://evolve2purpose.com/community</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -65,14 +65,14 @@
 
   <!-- Brand + shop -->
   <url>
-    <loc>https://evole2purpose.com/evole-2-purpose</loc>
+    <loc>https://evolve2purpose.com/evolve-2-purpose</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
 
   <url>
-    <loc>https://evole2purpose.com/shop</loc>
+    <loc>https://evolve2purpose.com/shop</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
@@ -80,14 +80,14 @@
 
   <!-- Legal -->
   <url>
-    <loc>https://evole2purpose.com/privacy-policy</loc>
+    <loc>https://evolve2purpose.com/privacy-policy</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
 
   <url>
-    <loc>https://evole2purpose.com/terms</loc>
+    <loc>https://evolve2purpose.com/terms</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>

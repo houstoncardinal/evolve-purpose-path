@@ -28,9 +28,9 @@ const pillars = [
 
 const EvolePurpose = () => {
   useSEO({
-    title: "The Evole 2 Purpose Movement",
-    description: "Evole 2 Purpose is a personal development movement rooted in four powerful pillars: Lead in Love, Take Accountability, Manage Your Triggers, and Teach Others.",
-    keywords: "evole 2 purpose movement, personal development framework, women transformation movement, purpose activation",
+    title: "The Evolve 2 Purpose Movement",
+    description: "Evolve 2 Purpose is a personal development movement rooted in four powerful pillars: Lead in Love, Take Accountability, Manage Your Triggers, and Teach Others.",
+    keywords: "evolve 2 purpose movement, personal development framework, women transformation movement, purpose activation",
   });
   return (
   <div>
@@ -44,10 +44,10 @@ const EvolePurpose = () => {
           <div className="ornament-line !w-8" />
         </div>
         <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl mb-6 leading-tight letter-tight">
-          <span className="neon-text">Evole 2 Purpose</span>
+          <span className="neon-text">Evolve 2 Purpose</span>
         </h1>
         <p className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-10">
-          A movement built on love, accountability, self-mastery, and service. Evole 2 Purpose is not just a framework — it's a commitment to becoming the fullest version of yourself so you can lift others along the way.
+          A movement built on love, accountability, self-mastery, and service. Evolve 2 Purpose is not just a framework — it's a commitment to becoming the fullest version of yourself so you can lift others along the way.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link to="/framework" className="btn-neon-solid shadow-lg">
@@ -60,7 +60,7 @@ const EvolePurpose = () => {
       </div>
     </section>
 
-    {/* What Is Evole 2 Purpose */}
+    {/* What Is Evolve 2 Purpose */}
     <section className="section-padding bg-[#F6F6F8] relative overflow-hidden">
       <div className="container-wide grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <div>
@@ -69,16 +69,16 @@ const EvolePurpose = () => {
             <p className="text-primary font-semibold letter-luxury text-[10px] uppercase">The Mission</p>
           </div>
           <h2 className="font-heading text-4xl md:text-5xl mb-8 letter-tight">
-            What Is <span className="italic neon-text">Evole 2 Purpose?</span>
+            What Is <span className="italic neon-text">Evolve 2 Purpose?</span>
           </h2>
           <p className="text-muted-foreground leading-relaxed mb-5 text-lg">
-            Evole 2 Purpose is a personal development brand and movement founded by Sarah Adams. It exists to help people break free from emotional cycles, heal at their roots, and step boldly into a life of meaning and service.
+            Evolve 2 Purpose is a personal development brand and movement founded by Sarah Adams. It exists to help people break free from emotional cycles, heal at their roots, and step boldly into a life of meaning and service.
           </p>
           <p className="text-muted-foreground leading-relaxed mb-5 text-lg">
-            The name is intentional: to "evole" is to evolve — to grow, to shed what no longer serves you, and to rise into the person you were always designed to be. And that evolution has a destination: purpose.
+            The name is intentional: to evolve is to grow, to shed what no longer serves you, and to rise into the person you were always designed to be. And that evolution has a destination: purpose.
           </p>
           <p className="text-muted-foreground leading-relaxed text-lg">
-            Through the 4-step framework, coaching programs, and community, Evole 2 Purpose equips individuals with the tools, language, and support to do the real work — and to share it with the world.
+            Through the 4-step framework, coaching programs, and community, Evolve 2 Purpose equips individuals with the tools, language, and support to do the real work — and to share it with the world.
           </p>
         </div>
 
@@ -95,7 +95,7 @@ const EvolePurpose = () => {
             className="font-heading text-xs font-bold letter-luxury uppercase mb-6 relative z-10"
             style={{ color: "#FF2DAA" }}
           >
-            Evole 2 Purpose
+            Evolve 2 Purpose
           </p>
           <blockquote className="font-heading text-2xl leading-snug text-white mb-8 relative z-10 font-semibold">
             "You were not designed to stay where pain placed you. You were designed to rise — and to reach back for someone else."
@@ -106,7 +106,7 @@ const EvolePurpose = () => {
             className="text-xs letter-luxury uppercase relative z-10 mt-1"
             style={{ color: "#FF2DAA" }}
           >
-            Founder, Evole 2 Purpose
+            Founder, Evolve 2 Purpose
           </p>
         </div>
       </div>
@@ -124,7 +124,7 @@ const EvolePurpose = () => {
           </div>
           <h2 className="font-heading text-4xl md:text-5xl mb-5 letter-tight">The 4 Pillars</h2>
           <p className="text-muted-foreground max-w-xl mx-auto text-lg">
-            Every transformation in the Evole 2 Purpose community is built on these four principles.
+            Every transformation in the Evolve 2 Purpose community is built on these four principles.
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -168,7 +168,7 @@ const EvolePurpose = () => {
           className="font-heading text-xs font-bold letter-luxury uppercase mb-6"
           style={{ color: "#FF2DAA" }}
         >
-          Evole 2 Purpose
+          Evolve 2 Purpose
         </p>
         <h2 className="font-heading text-4xl md:text-5xl mb-6 letter-tight text-white">
           Ready to Begin Your Evolution?

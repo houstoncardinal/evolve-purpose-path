@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const SITE_NAME = "Evole 2 Purpose";
+const SITE_NAME = "Evolve 2 Purpose";
 
 const usePageTitle = (title: string) => {
   useEffect(() => {

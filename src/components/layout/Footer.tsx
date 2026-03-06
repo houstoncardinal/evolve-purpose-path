@@ -4,15 +4,15 @@ import { Download, Instagram, Youtube, Facebook } from "lucide-react";
 const Footer = () => (
   <footer style={{ backgroundColor: "#0B0B0F" }} className="text-white">
     <div className="container-wide px-6 py-20 lg:px-12">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16">
 
         {/* Brand */}
-        <div className="md:col-span-1">
+        <div className="col-span-2 md:col-span-1">
           <Link to="/" className="inline-block mb-5">
             <img
               src="/logo.png"
-              alt="Evole 2 Purpose"
-              className="h-10 w-auto object-contain max-w-[160px]"
+              alt="Evolve 2 Purpose"
+              className="h-10 w-auto object-contain max-w-[140px] md:max-w-[160px]"
               style={{ filter: "brightness(0) invert(1)" }}
             />
           </Link>
@@ -22,9 +22,9 @@ const Footer = () => (
           {/* Social links */}
           <div className="flex items-center gap-3">
             {[
-              { icon: Instagram, label: "Instagram", href: "https://instagram.com/evole2purpose" },
-              { icon: Facebook, label: "Facebook", href: "https://facebook.com/evole2purpose" },
-              { icon: Youtube, label: "YouTube", href: "https://youtube.com/@evole2purpose" },
+              { icon: Instagram, label: "Instagram", href: "https://instagram.com/evolve2purpose" },
+              { icon: Facebook, label: "Facebook", href: "https://facebook.com/evolve2purpose" },
+              { icon: Youtube, label: "YouTube", href: "https://youtube.com/@evolve2purpose" },
             ].map(({ icon: Icon, label, href }) => (
               <a
                 key={label}
@@ -69,7 +69,7 @@ const Footer = () => (
             {[
               { label: "Community", path: "/community" },
               { label: "Book Sarah", path: "/booking" },
-              { label: "Evole 2 Purpose", path: "/evole-2-purpose" },
+              { label: "Evolve 2 Purpose", path: "/evolve-2-purpose" },
               { label: "Free Guide", path: "/free-guide" },
             ].map((link) => (
               <Link
@@ -104,7 +104,7 @@ const Footer = () => (
       {/* Bottom bar */}
       <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-white/25 text-xs letter-luxury uppercase">
-          © {new Date().getFullYear()} Evole 2 Purpose — Sarah Adams. All rights reserved.
+          © {new Date().getFullYear()} Evolve 2 Purpose — Sarah Adams. All rights reserved.
         </p>
         <div className="flex items-center gap-6">
           <Link to="/privacy-policy" className="text-white/25 hover:text-white/60 text-xs letter-luxury uppercase transition-colors duration-200">

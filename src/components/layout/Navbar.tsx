@@ -23,7 +23,7 @@ const Navbar = () => {
         <Link to="/" className="flex-shrink-0">
           <img
             src="/logo.png"
-            alt="Evole 2 Purpose"
+            alt="Evolve 2 Purpose"
             className="h-10 md:h-12 w-auto object-contain max-w-[180px]"
           />
         </Link>

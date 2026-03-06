@@ -52,7 +52,7 @@ const Framework = () => {
       "@type": "HowTo",
       name: "The 4-Step System to Transform Your Life",
       description: "A proven four-step personal development framework created by Sarah Adams to help women break cycles, heal their roots, and activate lasting purpose.",
-      url: "https://evole2purpose.com/framework",
+      url: "https://evolve2purpose.com/framework",
       author: { "@type": "Person", name: "Sarah Adams" },
       step: [
         { "@type": "HowToStep", position: 1, name: "Lead in Love", text: "Choose alignment over reaction. Leading in love means trusting that peace will protect what pride would destroy. Step into divine alignment instead of emotional chaos." },
@@ -91,7 +91,7 @@ const Framework = () => {
         <div className="container-wide max-w-5xl relative z-10">
           <div className="flex flex-col md:flex-row items-start gap-8 mb-12">
             <span
-              className="font-heading text-8xl md:text-9xl font-bold leading-none"
+              className="font-heading text-6xl md:text-8xl lg:text-9xl font-bold leading-none"
               style={{ color: "#FF2DAA" }}
             >
               {step.num}
@@ -142,8 +142,8 @@ const Framework = () => {
           The framework is proven. The path is clear. All that's missing is your first step.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link to="/evole-2-purpose" className="btn-neon-outline">
-            Explore Evole 2 Purpose
+          <Link to="/evolve-2-purpose" className="btn-neon-outline">
+            Explore Evolve 2 Purpose
           </Link>
           <Link to="/programs" className="btn-neon-solid shadow-lg">
             Work With Sarah Adams <ArrowRight size={16} />

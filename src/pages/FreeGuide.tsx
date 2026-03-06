@@ -61,7 +61,7 @@ const FreeGuide = () => {
         "@type": "DigitalDocument",
         name: "4-Step System to Transform Your Life",
         description: "A free working guide filled with self-assessments, reflection exercises, and a personalized roadmap to help you understand exactly where you are and what to do next.",
-        url: "https://evole2purpose.com/free-guide",
+        url: "https://evolve2purpose.com/free-guide",
         author: { "@type": "Person", name: "Sarah Adams" },
         isAccessibleForFree: true,
         fileFormat: "application/pdf",
@@ -190,7 +190,7 @@ const FreeGuide = () => {
               <p className="text-white/30 text-xs mt-4 relative z-10">Free — no purchase required</p>
             </div>
             {/* Floating stats chip */}
-            <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl border border-border shadow-lg px-5 py-4">
+            <div className="hidden sm:block absolute -bottom-4 -left-4 bg-white rounded-2xl border border-border shadow-lg px-5 py-4">
               <p className="neon-text font-heading text-2xl font-bold">2,500+</p>
               <p className="text-muted-foreground text-xs font-semibold letter-luxury uppercase">Guides Downloaded</p>
             </div>
@@ -235,7 +235,7 @@ const FreeGuide = () => {
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] blur-3xl pointer-events-none"
           style={{ background: "radial-gradient(circle, rgba(255,45,170,0.1), transparent 70%)" }}
         />
-        <div className="container-wide px-6 grid grid-cols-3 gap-6 text-center relative z-10">
+        <div className="container-wide px-6 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center relative z-10">
           {[
             { stat: "2,500+", label: "Guides Downloaded" },
             { stat: "500+", label: "Women Served" },

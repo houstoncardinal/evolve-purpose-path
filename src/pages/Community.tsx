@@ -104,16 +104,16 @@ const upcomingEvents = [
 const Community = () => {
   useSEO({
     title: "Join the Community",
-    description: "Join the Evole 2 Purpose private community — 1,200+ members growing together in love, accountability, and purpose. Access posts, events, and direct connection with Sarah Adams.",
-    keywords: "women empowerment community, purpose community online, healing community women, accountability group women, evole 2 purpose community, Sarah Adams community",
+    description: "Join the Evolve 2 Purpose private community — 1,200+ members growing together in love, accountability, and purpose. Access posts, events, and direct connection with Sarah Adams.",
+    keywords: "women empowerment community, purpose community online, healing community women, accountability group women, evolve 2 purpose community, Sarah Adams community",
     schema: {
       "@context": "https://schema.org",
       "@type": "Organization",
-      name: "Evole 2 Purpose Community",
+      name: "Evolve 2 Purpose Community",
       description: "A private membership community for women committed to living with love, accountability, and purpose — with 1,200+ active members.",
-      url: "https://evole2purpose.com/community",
+      url: "https://evolve2purpose.com/community",
       founder: { "@type": "Person", name: "Sarah Adams" },
-      memberOf: { "@type": "Organization", name: "Evole 2 Purpose" },
+      memberOf: { "@type": "Organization", name: "Evolve 2 Purpose" },
       numberOfMembers: 1200,
     },
   });
@@ -152,7 +152,7 @@ const Community = () => {
             and Be Seen
           </h1>
           <p className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-10">
-            The Evole 2 Purpose Community is an exclusive, members-only space where Sarah shows up personally, members hold each other accountable, and transformation happens in real time.
+            The Evolve 2 Purpose Community is an exclusive, members-only space where Sarah shows up personally, members hold each other accountable, and transformation happens in real time.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="#join" className="btn-neon-solid shadow-lg">
@@ -477,7 +477,7 @@ const Community = () => {
             className="font-heading text-xs font-bold letter-luxury uppercase mb-6"
             style={{ color: "#FF2DAA" }}
           >
-            Evole 2 Purpose Community
+            Evolve 2 Purpose Community
           </p>
           <h2 className="font-heading text-4xl md:text-5xl mb-6 letter-tight text-white">
             You were not meant to grow alone.

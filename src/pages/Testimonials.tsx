@@ -93,13 +93,13 @@ const Testimonials = () => {
     schema: {
       "@context": "https://schema.org",
       "@type": "ItemList",
-      name: "Client Transformation Reviews — Evole 2 Purpose",
+      name: "Client Transformation Reviews — Evolve 2 Purpose",
       description: "Testimonials from clients who completed Sarah Adams' coaching programs and healing intensives.",
-      url: "https://evole2purpose.com/testimonials",
+      url: "https://evolve2purpose.com/testimonials",
       itemListElement: [
-        { "@type": "ListItem", position: 1, item: { "@type": "Review", author: { "@type": "Person", name: "Keisha L." }, reviewBody: "I came to Sarah completely shattered. Three months into working with her, something cracked open that I didn't even know was locked. She didn't just help me heal. She helped me find out who I actually am.", reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" }, itemReviewed: { "@type": "ProfessionalService", name: "Evole 2 Purpose" } } },
-        { "@type": "ListItem", position: 2, item: { "@type": "Review", author: { "@type": "Person", name: "Tamara J." }, reviewBody: "Sarah's guidance helped me see what I had been carrying for years. For the first time in my life, I feel truly free to walk in my purpose.", reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" }, itemReviewed: { "@type": "ProfessionalService", name: "Evole 2 Purpose" } } },
-        { "@type": "ListItem", position: 3, item: { "@type": "Review", author: { "@type": "Person", name: "Angela M." }, reviewBody: "The Purpose Clarity Session alone was worth more than two years of therapy. Sarah spoke truth over my life that I had been avoiding for years. I finally have direction.", reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" }, itemReviewed: { "@type": "ProfessionalService", name: "Evole 2 Purpose" } } },
+        { "@type": "ListItem", position: 1, item: { "@type": "Review", author: { "@type": "Person", name: "Keisha L." }, reviewBody: "I came to Sarah completely shattered. Three months into working with her, something cracked open that I didn't even know was locked. She didn't just help me heal. She helped me find out who I actually am.", reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" }, itemReviewed: { "@type": "ProfessionalService", name: "Evolve 2 Purpose" } } },
+        { "@type": "ListItem", position: 2, item: { "@type": "Review", author: { "@type": "Person", name: "Tamara J." }, reviewBody: "Sarah's guidance helped me see what I had been carrying for years. For the first time in my life, I feel truly free to walk in my purpose.", reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" }, itemReviewed: { "@type": "ProfessionalService", name: "Evolve 2 Purpose" } } },
+        { "@type": "ListItem", position: 3, item: { "@type": "Review", author: { "@type": "Person", name: "Angela M." }, reviewBody: "The Purpose Clarity Session alone was worth more than two years of therapy. Sarah spoke truth over my life that I had been avoiding for years. I finally have direction.", reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" }, itemReviewed: { "@type": "ProfessionalService", name: "Evolve 2 Purpose" } } },
       ],
     },
   });
