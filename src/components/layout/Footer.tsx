@@ -1,26 +1,51 @@
 import { Link } from "react-router-dom";
-import { Download, Instagram, Youtube, Facebook } from "lucide-react";
+import { Download, Instagram, Youtube, Facebook, Mail, ArrowRight } from "lucide-react";
 
 const Footer = () => (
-  <footer style={{ backgroundColor: "#0B0B0F" }} className="text-white">
-    <div className="container-wide px-6 py-20 lg:px-12">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16">
+  <footer className="bg-white border-t border-border">
 
-        {/* Brand */}
-        <div className="col-span-2 md:col-span-1">
-          <Link to="/" className="inline-block mb-5">
+    {/* Pre-footer CTA strip */}
+    <div style={{ background: "linear-gradient(135deg, #0B0B0F 0%, #1a0a11 100%)" }}>
+      <div className="container-wide px-6 lg:px-12 py-12 flex flex-col md:flex-row items-center justify-between gap-8">
+        <div>
+          <p className="font-heading text-xs font-bold letter-luxury uppercase mb-3" style={{ color: "#FF2DAA" }}>
+            Free Resource
+          </p>
+          <h3 className="font-heading text-2xl md:text-3xl text-white font-bold letter-tight mb-2">
+            The 4-Step System to Transform Your Life
+          </h3>
+          <p className="text-white/50 text-sm">A working guide — free, no credit card required.</p>
+        </div>
+        <a
+          href="/4step.pdf"
+          download="4-Step-System-Transform-Your-Life.pdf"
+          className="btn-neon-solid shadow-lg flex-shrink-0"
+          style={{ whiteSpace: "nowrap" }}
+        >
+          <Download size={15} /> Download Free PDF
+        </a>
+      </div>
+    </div>
+
+    {/* Main footer */}
+    <div className="container-wide px-6 lg:px-12 py-16 md:py-20">
+      <div className="grid grid-cols-2 md:grid-cols-12 gap-8 md:gap-10 mb-14">
+
+        {/* Brand — spans wider */}
+        <div className="col-span-2 md:col-span-4">
+          <Link to="/" className="inline-block mb-6">
             <img
               src="/logo.png"
               alt="Evolve 2 Purpose"
-              className="h-10 w-auto object-contain max-w-[140px] md:max-w-[160px]"
-              style={{ filter: "brightness(0) invert(1)" }}
+              className="h-12 w-auto object-contain max-w-[180px]"
             />
           </Link>
-          <p className="text-white/45 text-sm leading-relaxed max-w-xs mb-7">
-            Helping people break cycles, heal their roots, and step fully into a life of love, accountability, and purpose.
+          <p className="text-muted-foreground text-sm leading-relaxed mb-6 max-w-xs">
+            A Christ-centered transformation movement helping women break generational cycles, heal their roots, and walk fully in purpose.
           </p>
-          {/* Social links */}
-          <div className="flex items-center gap-3">
+
+          {/* Social */}
+          <div className="flex items-center gap-2.5">
             {[
               { icon: Instagram, label: "Instagram", href: "https://instagram.com/evolve2purpose" },
               { icon: Facebook, label: "Facebook", href: "https://facebook.com/evolve2purpose" },
@@ -32,20 +57,20 @@ const Footer = () => (
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={label}
-                className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 transition-all duration-200"
+                className="w-9 h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/40 hover:bg-primary/5 transition-all duration-200"
               >
-                <Icon size={14} />
+                <Icon size={15} />
               </a>
             ))}
           </div>
         </div>
 
         {/* Navigate */}
-        <div>
-          <h4 className="font-heading text-xs letter-luxury uppercase mb-6 text-white/60">Navigate</h4>
-          <div className="flex flex-col gap-3">
+        <div className="md:col-span-2 md:col-start-6">
+          <h4 className="font-heading text-[10px] font-bold letter-luxury uppercase mb-5 text-foreground">Navigate</h4>
+          <nav className="flex flex-col gap-2.5">
             {[
-              { label: "About", path: "/about" },
+              { label: "About Sarah", path: "/about" },
               { label: "Framework", path: "/framework" },
               { label: "Programs", path: "/programs" },
               { label: "Testimonials", path: "/testimonials" },
@@ -54,18 +79,18 @@ const Footer = () => (
               <Link
                 key={link.path}
                 to={link.path}
-                className="text-white/40 hover:text-white text-sm transition-colors duration-300"
+                className="text-muted-foreground hover:text-primary text-sm transition-colors duration-200 hover:translate-x-0.5 transform"
               >
                 {link.label}
               </Link>
             ))}
-          </div>
+          </nav>
         </div>
 
-        {/* Community & Booking */}
-        <div>
-          <h4 className="font-heading text-xs letter-luxury uppercase mb-6 text-white/60">Connect</h4>
-          <div className="flex flex-col gap-3">
+        {/* Connect */}
+        <div className="md:col-span-2">
+          <h4 className="font-heading text-[10px] font-bold letter-luxury uppercase mb-5 text-foreground">Connect</h4>
+          <nav className="flex flex-col gap-2.5">
             {[
               { label: "Community", path: "/community" },
               { label: "Book Sarah", path: "/booking" },
@@ -75,42 +100,64 @@ const Footer = () => (
               <Link
                 key={link.path}
                 to={link.path}
-                className="text-white/40 hover:text-white text-sm transition-colors duration-300"
+                className="text-muted-foreground hover:text-primary text-sm transition-colors duration-200 hover:translate-x-0.5 transform"
               >
                 {link.label}
               </Link>
             ))}
-          </div>
+          </nav>
         </div>
 
-        {/* PDF Download CTA */}
-        <div>
-          <h4 className="font-heading text-xs letter-luxury uppercase mb-6 text-white/60">Free Download</h4>
-          <p className="text-white/45 text-sm mb-5 leading-relaxed">
-            Get the free PDF guide to the 4-Step System to Transform Your Life.
-          </p>
+        {/* Contact */}
+        <div className="col-span-2 md:col-span-2">
+          <h4 className="font-heading text-[10px] font-bold letter-luxury uppercase mb-5 text-foreground">Contact</h4>
+          <p className="text-muted-foreground text-xs mb-1.5">Speaking &amp; Media Inquiries</p>
           <a
-            href="/4step.pdf"
-            download="4-Step-System-Transform-Your-Life.pdf"
-            className="btn-neon-outline inline-flex items-center gap-2 !text-xs !px-5 !py-2.5"
-            style={{ color: "#FF2DAA", borderColor: "#FF2DAA" }}
+            href="mailto:hello@evolve2purpose.com"
+            className="text-primary font-semibold text-sm hover:opacity-75 transition-opacity flex items-center gap-1.5"
           >
-            <Download size={12} />
-            Download Free PDF
+            <Mail size={13} />
+            hello@evolve2purpose.com
           </a>
+
+          <div className="mt-7 pt-5 border-t border-border">
+            <Link
+              to="/booking"
+              className="inline-flex items-center gap-1.5 text-[10px] font-bold letter-luxury uppercase text-muted-foreground hover:text-primary transition-colors"
+            >
+              Book a Speaking Engagement <ArrowRight size={10} />
+            </Link>
+          </div>
         </div>
       </div>
 
+      {/* Ornament divider */}
+      <div className="flex items-center gap-4 mb-8">
+        <div className="flex-1 h-px bg-border" />
+        <span
+          className="w-1.5 h-1.5 rounded-full rotate-45 flex-shrink-0"
+          style={{ background: "#FF2DAA" }}
+        />
+        <div className="flex-1 h-px bg-border" />
+      </div>
+
       {/* Bottom bar */}
-      <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-        <p className="text-white/25 text-xs letter-luxury uppercase">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        <p className="text-muted-foreground/50 text-xs letter-luxury uppercase text-center md:text-left">
           © {new Date().getFullYear()} Evolve 2 Purpose — Sarah Adams. All rights reserved.
         </p>
-        <div className="flex items-center gap-6">
-          <Link to="/privacy-policy" className="text-white/25 hover:text-white/60 text-xs letter-luxury uppercase transition-colors duration-200">
+        <div className="flex items-center gap-1">
+          <Link
+            to="/privacy-policy"
+            className="text-muted-foreground/50 hover:text-primary text-xs letter-luxury uppercase transition-colors duration-200 px-3 py-1"
+          >
             Privacy Policy
           </Link>
-          <Link to="/terms" className="text-white/25 hover:text-white/60 text-xs letter-luxury uppercase transition-colors duration-200">
+          <span className="w-px h-3 bg-border" />
+          <Link
+            to="/terms"
+            className="text-muted-foreground/50 hover:text-primary text-xs letter-luxury uppercase transition-colors duration-200 px-3 py-1"
+          >
             Terms of Use
           </Link>
         </div>

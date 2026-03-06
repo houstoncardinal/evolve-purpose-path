@@ -181,7 +181,7 @@
   }
 
   .luxury-card-inner {
-    @apply p-8 md:p-10 lg:p-12;
+    @apply p-6 md:p-8 lg:p-10;
   }
 
   /* Step card — white with neon pink glow on hover */
@@ -258,6 +258,29 @@
 
   .letter-luxury {
     letter-spacing: 0.3em;
+  }
+
+  /* Focus visible — accessible but minimal */
+  :focus-visible {
+    outline: 2px solid hsl(var(--neon-pink) / 0.6);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Image rendering — crisp logos and photos */
+  img {
+    image-rendering: -webkit-optimize-contrast;
+  }
+
+  /* Smooth scroll */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Selection highlight */
+  ::selection {
+    background: hsl(var(--neon-pink) / 0.18);
+    color: hsl(var(--foreground));
   }
 }
 
