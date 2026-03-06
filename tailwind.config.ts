@@ -14,9 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        heading: ['"Playfair Display"', 'serif'],
-        display: ['"Cormorant Garamond"', 'serif'],
-        body: ['"Lato"', 'sans-serif'],
+        heading: ['"Plus Jakarta Sans"', 'sans-serif'],
+        display: ['"Plus Jakarta Sans"', 'sans-serif'],
+        body: ['"Inter"', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -56,6 +56,10 @@ export default {
           DEFAULT: "hsl(var(--gold))",
           light: "hsl(var(--gold-light))",
           dark: "hsl(var(--gold-dark))",
+        },
+        neon: {
+          DEFAULT: "#FF2DAA",
+          deep: "#E6008D",
         },
         cream: {
           DEFAULT: "hsl(var(--cream))",

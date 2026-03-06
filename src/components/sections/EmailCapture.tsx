@@ -1,31 +1,51 @@
 import { useState } from "react";
-import { Mail, ArrowRight } from "lucide-react";
+import { Mail, ArrowRight, Check, AlertCircle } from "lucide-react";
+
+const isValidEmail = (val: string) =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.trim());
 
 const EmailCapture = ({ variant = "default" }: { variant?: "default" | "hero" | "fullwidth" }) => {
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
-      setSubmitted(true);
-      setEmail("");
+    if (!email.trim()) {
+      setError("Please enter your email address.");
+      return;
     }
+    if (!isValidEmail(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    setError("");
+    setSubmitted(true);
+    setEmail("");
   };
 
   if (submitted) {
     return (
       <div className={`text-center ${variant === "fullwidth" ? "py-20 section-padding bg-card" : "py-8"}`}>
-        <div className="animate-fade-up">
-          <div className="w-16 h-16 rounded-full gold-gradient flex items-center justify-center mx-auto mb-5 shadow-lg">
-            <Mail className="text-primary-foreground" size={24} />
+        <div>
+          <div
+            className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-5 shadow-lg"
+            style={{ background: "rgba(255,45,170,0.12)" }}
+          >
+            <Check size={22} style={{ color: "#FF2DAA" }} />
           </div>
-          <h3 className="font-heading text-2xl mb-2">Welcome to the Journey</h3>
-          <p className="text-muted-foreground">Check your inbox for your free Healing & Alignment Starter Guide.</p>
+          <h3 className="font-heading text-2xl mb-2">You're In!</h3>
+          <p className="text-muted-foreground text-sm">Check your inbox — your free guide is on its way.</p>
         </div>
       </div>
     );
   }
+
+  const inputClass =
+    "flex-1 px-6 py-3.5 rounded-full border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 text-sm transition-all " +
+    (error
+      ? "border-red-400 focus:ring-red-200"
+      : "border-border focus:ring-primary/30");
 
   if (variant === "fullwidth") {
     return (
@@ -41,18 +61,24 @@ const EmailCapture = ({ variant = "default" }: { variant?: "default" | "hero" | 
           <p className="text-muted-foreground max-w-xl mx-auto mb-10 text-lg">
             Download the free Healing & Alignment Starter Guide — your first step toward breaking cycles and walking in purpose.
           </p>
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-              className="flex-1 px-6 py-3.5 rounded-full border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm transition-all"
-            />
-            <button type="submit" className="gold-gradient text-primary-foreground px-8 py-3.5 rounded-full font-semibold text-sm hover-scale whitespace-nowrap inline-flex items-center justify-center gap-2 shadow-lg">
-              Send My Guide <ArrowRight size={14} />
-            </button>
+          <form onSubmit={handleSubmit} className="max-w-md mx-auto">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); if (error) setError(""); }}
+                placeholder="Enter your email"
+                className={inputClass}
+              />
+              <button type="submit" className="btn-neon-solid !py-3.5 !px-8 whitespace-nowrap !text-sm shadow-lg">
+                Send My Guide <ArrowRight size={14} />
+              </button>
+            </div>
+            {error && (
+              <p className="flex items-center gap-1.5 text-red-500 text-xs mt-2 justify-center">
+                <AlertCircle size={12} /> {error}
+              </p>
+            )}
           </form>
         </div>
       </section>
@@ -60,18 +86,24 @@ const EmailCapture = ({ variant = "default" }: { variant?: "default" | "hero" | 
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md">
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Enter your email"
-        required
-        className="flex-1 px-6 py-3.5 rounded-full border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm transition-all"
-      />
-      <button type="submit" className="gold-gradient text-primary-foreground px-8 py-3.5 rounded-full font-semibold text-sm hover-scale whitespace-nowrap inline-flex items-center justify-center gap-2 shadow-lg">
-        {variant === "hero" ? "Start Healing" : "Get the Guide"} <ArrowRight size={14} />
-      </button>
+    <form onSubmit={handleSubmit} className="max-w-md">
+      <div className="flex flex-col sm:flex-row gap-3">
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => { setEmail(e.target.value); if (error) setError(""); }}
+          placeholder="Enter your email"
+          className={inputClass}
+        />
+        <button type="submit" className="btn-neon-solid !py-3.5 !px-8 whitespace-nowrap !text-sm shadow-lg">
+          {variant === "hero" ? "Start Healing" : "Get the Guide"} <ArrowRight size={14} />
+        </button>
+      </div>
+      {error && (
+        <p className="flex items-center gap-1.5 text-red-500 text-xs mt-2">
+          <AlertCircle size={12} /> {error}
+        </p>
+      )}
     </form>
   );
 };

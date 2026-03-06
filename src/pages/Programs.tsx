@@ -1,113 +1,443 @@
 import { Link } from "react-router-dom";
 import EmailCapture from "@/components/sections/EmailCapture";
-import { ArrowRight, Check } from "lucide-react";
+import useSEO from "@/hooks/useSEO";
+import { ArrowRight, Check, Star, Clock, Users, Zap, Shield } from "lucide-react";
 
 const programs = [
   {
-    title: "1:1 Healing Sessions",
-    price: "Investment varies",
-    description: "Deep, personalized prophetic healing work tailored to your specific wounds, patterns, and breakthrough needs. This is the most intimate and powerful pathway to transformation.",
-    includes: ["Prophetic assessment & healing plan", "Guided inner healing prayer sessions", "Personalized breakthrough strategies", "Between-session support", "Prophetic insights for your journey"],
-    cta: "Apply for 1:1 Sessions",
+    id: "one-on-one",
+    tag: "Most Transformative",
+    title: "1:1 Deep-Dive Coaching",
+    subtitle: "Private, Personalized Transformation",
+    price: "Custom Investment",
+    priceNote: "Application required — limited availability",
+    description:
+      "The most powerful and intimate pathway Sarah offers. This is reserved for women who are serious about deep, lasting change — not surface-level shifts. You get Sarah's full attention, custom strategy, and ongoing support.",
+    includes: [
+      "Comprehensive intake & healing assessment",
+      "Fully customized transformation roadmap",
+      "Weekly 60-minute private sessions",
+      "Unlimited WhatsApp support between sessions",
+      "Personalized resources, exercises & tools",
+      "Real-time accountability and course correction",
+      "Priority access to new programs and content",
+      "Post-program integration session",
+    ],
+    cta: "Apply for 1:1 Coaching",
+    ctaLink: "/booking",
     featured: true,
+    color: "#0B0B0F",
+    testimonial: {
+      quote: "Working with Sarah 1:1 was the single greatest investment I've ever made in myself. Within 90 days my entire life had shifted.",
+      name: "Denise W.",
+      detail: "Purpose-activated entrepreneur",
+    },
   },
   {
-    title: "Group Restoration Program",
+    id: "group",
+    tag: "Best Value",
+    title: "The Evole 2 Purpose Group Program",
+    subtitle: "8-Week Guided Transformation Journey",
     price: "Starting at $497",
-    description: "Heal alongside a powerful sisterhood of women walking the same journey. Experience the 4-Step Framework in a guided group setting with community support and accountability.",
-    includes: ["8-week guided group journey", "Weekly live sessions with Sarah", "Private community access", "Healing journal & workbook", "Bonus prophetic prayer sessions"],
+    priceNote: "Payment plans available",
+    description:
+      "Walk the full 4-step framework in a powerful, supportive group environment led personally by Sarah. You'll experience deep healing, build real relationships, and grow alongside women who get it.",
+    includes: [
+      "8 weeks of live group sessions with Sarah",
+      "Full 4-Step Framework curriculum",
+      "Private community access (members portal)",
+      "Weekly accountability partner matching",
+      "Healing journal & workbook included",
+      "Session recordings for lifetime replay",
+      "Live Q&A sessions each week",
+      "Graduation & next-steps planning session",
+    ],
     cta: "Join the Waitlist",
+    ctaLink: "/community",
     featured: false,
   },
   {
-    title: "Prophetic Guidance Session",
-    price: "Starting at $150",
-    description: "Receive Spirit-led prophetic insight and divine clarity for your current season. Perfect for women at a crossroads seeking directional guidance.",
-    includes: ["60-minute prophetic session", "Recorded session for replay", "Written prophetic summary", "Prayer & declaration guide", "30-day follow-up support"],
-    cta: "Book Your Session",
+    id: "guidance",
+    tag: "Quickest Entry Point",
+    title: "Purpose Clarity Session",
+    subtitle: "90-Minute Breakthrough Intensive",
+    price: "Starting at $197",
+    priceNote: "Book directly online",
+    description:
+      "If you're at a crossroads, feeling stuck, or need rapid clarity on your next move — this session delivers. In 90 minutes, Sarah helps you cut through the noise and identify exactly what's holding you back and what your next step is.",
+    includes: [
+      "90-minute private video session with Sarah",
+      "Pre-session intake questionnaire",
+      "Full session recording delivered within 24hrs",
+      "Written summary & personalized action plan",
+      "Targeted resource recommendations",
+      "14-day follow-up support via email",
+    ],
+    cta: "Book a Session",
+    ctaLink: "/booking",
     featured: false,
   },
   {
+    id: "intensive",
+    tag: "Accelerated Breakthrough",
     title: "Healing Intensive Weekend",
+    subtitle: "2-Day Immersive Experience",
     price: "Starting at $997",
-    description: "An immersive 2-day experience designed for women ready for accelerated breakthrough. Experience all 4 steps of the framework in an intimate, Spirit-filled environment.",
-    includes: ["2-day intensive experience", "Small group (max 10 women)", "Personalized prophetic ministry", "Healing resources & materials", "60-day post-intensive support"],
+    priceNote: "Maximum 12 women per cohort",
+    description:
+      "For women who want to compress months of healing into a single transformative weekend. This is an intimate, high-touch experience that moves through all 4 steps of the framework in a sacred, focused environment.",
+    includes: [
+      "2 full days of immersive healing work",
+      "Small group (max 12 women) for depth and safety",
+      "Direct access to Sarah throughout the weekend",
+      "All materials, resources & tools included",
+      "Personalized breakthrough action plan",
+      "60-day post-intensive group support",
+      "Exclusive alumni community access",
+    ],
     cta: "Reserve Your Spot",
+    ctaLink: "/booking",
     featured: false,
   },
 ];
 
-const Programs = () => (
+const process = [
+  {
+    num: "01",
+    title: "Submit Your Application",
+    desc: "Fill out a short intake form so Sarah can understand where you are, what you're carrying, and what kind of support will serve you best.",
+  },
+  {
+    num: "02",
+    title: "Discovery Conversation",
+    desc: "For 1:1 and Intensive programs, you'll have a brief call to ensure it's the right fit. This is a two-way conversation — no pressure, just clarity.",
+  },
+  {
+    num: "03",
+    title: "Custom Roadmap & Kickoff",
+    desc: "Once accepted, you receive your personalized roadmap, welcome materials, and a confirmed start date. Your transformation begins here.",
+  },
+  {
+    num: "04",
+    title: "Do the Work. Transform.",
+    desc: "Show up fully. Do the inner work. Trust the process. Sarah will be with you every step of the way — not just as a coach, but as a witness to your becoming.",
+  },
+];
+
+const faqs = [
+  {
+    q: "How do I know which program is right for me?",
+    a: "The best starting point depends on your goal and readiness. If you want the deepest, fastest transformation and can invest in yourself — 1:1 Coaching is unmatched. If you want community and structure at an accessible price point, the Group Program is perfect. If you need clarity quickly, start with a Purpose Clarity Session.",
+  },
+  {
+    q: "Do I need to have experience with coaching or therapy?",
+    a: "Not at all. Many of Sarah's clients have never worked with a coach before. The only requirement is a genuine desire to grow and a willingness to do honest inner work. Sarah meets you exactly where you are.",
+  },
+  {
+    q: "Is there a payment plan option?",
+    a: "Yes. Payment plans are available for the Group Program and Healing Intensive Weekend. Details are provided during the application process. Sarah's heart is for this work to be accessible to women who are truly called to it.",
+  },
+  {
+    q: "What if I start and it doesn't feel like the right fit?",
+    a: "Sarah's commitment to your transformation is non-negotiable. If at any point something isn't working, she adjusts. For the Purpose Clarity Session specifically, if you feel the session didn't deliver value, Sarah will personally offer a complimentary follow-up.",
+  },
+  {
+    q: "How quickly will I see results?",
+    a: "Many women report significant shifts after just the first session. Real, lasting transformation unfolds over weeks and months — but the clarity, hope, and momentum begin almost immediately when you commit to the process.",
+  },
+  {
+    q: "Are these programs faith-based?",
+    a: "Sarah's work is rooted in her personal faith, and spiritual principles are woven throughout her approach. However, her framework — Love, Accountability, Triggers, Teaching — is universal and has transformed women from all backgrounds and belief systems.",
+  },
+];
+
+const Programs = () => {
+  useSEO({
+    title: "Coaching Programs",
+    description: "Transform your life through Sarah Adams' coaching programs: 1:1 Deep-Dive Coaching, Group Programs, Purpose Clarity Sessions, and Healing Intensives. Investment in lasting change.",
+    keywords: "life coaching programs for women, 1 on 1 coaching, group coaching program, healing intensive, purpose clarity session, transformation coaching packages, Sarah Adams programs",
+    schema: [
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: "Evole 2 Purpose Coaching Programs",
+        url: "https://evole2purpose.com/programs",
+        numberOfItems: 4,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "1:1 Deep-Dive Coaching", url: "https://evole2purpose.com/programs#one-on-one" },
+          { "@type": "ListItem", position: 2, name: "Group Transformation Program", url: "https://evole2purpose.com/programs#group" },
+          { "@type": "ListItem", position: 3, name: "Purpose Clarity Session", url: "https://evole2purpose.com/programs#clarity" },
+          { "@type": "ListItem", position: 4, name: "Healing Intensive Weekend", url: "https://evole2purpose.com/programs#intensive" },
+        ],
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: [
+          { "@type": "Question", name: "Is coaching available online or in person?", acceptedAnswer: { "@type": "Answer", text: "All programs are available online via video call, making them accessible worldwide. In-person intensives may be available in select locations." } },
+          { "@type": "Question", name: "How do I know which program is right for me?", acceptedAnswer: { "@type": "Answer", text: "The best starting point is a Purpose Clarity Session — a single session that helps identify exactly where you are and what kind of support will move the needle most for your specific situation." } },
+          { "@type": "Question", name: "What results can I expect from coaching?", acceptedAnswer: { "@type": "Answer", text: "98% of Sarah's clients report lasting change. You can expect greater clarity, stronger relationships, improved emotional regulation, and a clearer sense of direction and purpose." } },
+        ],
+      },
+    ],
+  });
+  return (
   <div>
     {/* Hero */}
     <section className="section-padding hero-gradient-bg text-center relative overflow-hidden">
-      <div className="glow-orb w-[500px] h-[500px] top-[-150px] left-[20%]" />
+      <div className="glow-orb w-[600px] h-[600px] top-[-150px] right-[-100px]" />
+      <div className="glow-orb w-[400px] h-[400px] bottom-[-100px] left-[-50px]" />
       <div className="container-narrow relative z-10">
         <div className="flex items-center gap-3 justify-center mb-4">
           <div className="ornament-line !w-8" />
           <p className="text-primary font-semibold letter-luxury text-[10px] uppercase">Work With Sarah</p>
           <div className="ornament-line !w-8" />
         </div>
-        <h1 className="font-heading text-5xl md:text-6xl mb-6 leading-tight letter-tight">
-          Your Healing Journey <span className="italic font-display gold-text">Starts Here</span>
+        <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl mb-6 leading-tight letter-tight">
+          Choose Your Path to{" "}
+          <span className="neon-text italic">Transformation</span>
         </h1>
-        <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-          Every woman's path to wholeness is unique. Explore the offerings below and find the pathway that meets you exactly where you are.
+        <p className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-10">
+          Every woman's journey is different. Sarah offers four distinct pathways — each one designed to meet you exactly where you are and take you exactly where you're meant to go.
         </p>
+        <div className="flex flex-wrap gap-6 justify-center text-sm text-muted-foreground">
+          {[
+            { icon: Shield, label: "Results-Guaranteed Approach" },
+            { icon: Star, label: "500+ Women Served" },
+            { icon: Clock, label: "10+ Years Experience" },
+          ].map(({ icon: Icon, label }) => (
+            <span key={label} className="flex items-center gap-2">
+              <Icon size={14} style={{ color: "#FF2DAA" }} />
+              {label}
+            </span>
+          ))}
+        </div>
       </div>
     </section>
 
-    {/* Programs Grid */}
+    {/* Quick path selector */}
+    <section className="py-14 bg-[#F6F6F8] premium-border-top">
+      <div className="container-wide px-6">
+        <p className="text-center text-xs font-bold letter-luxury uppercase text-muted-foreground mb-8">Find your starting point</p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
+          {[
+            { need: "I need deep, root-level healing", result: "1:1 Coaching", link: "#one-on-one" },
+            { need: "I want community and structure", result: "Group Program", link: "#group" },
+            { need: "I need clarity on my next step", result: "Clarity Session", link: "#guidance" },
+          ].map((item) => (
+            <a
+              key={item.need}
+              href={item.link}
+              className="bg-white border border-border rounded-2xl p-6 text-center hover:border-primary transition-all duration-300 group"
+            >
+              <p className="text-muted-foreground text-sm mb-3 leading-snug">"{item.need}"</p>
+              <p className="font-heading font-bold text-sm text-foreground group-hover:text-primary transition-colors flex items-center justify-center gap-1">
+                <ArrowRight size={12} /> {item.result}
+              </p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Programs */}
     <section className="section-padding">
-      <div className="container-wide grid grid-cols-1 md:grid-cols-2 gap-6">
-        {programs.map((p) => (
-          <div key={p.title} className={`luxury-card flex flex-col ${p.featured ? "ring-1 ring-primary" : ""}`}>
-            {p.featured && <div className="absolute top-0 left-0 right-0 h-[2px] gold-gradient" />}
-            <div className="luxury-card-inner flex flex-col flex-1">
-              {p.featured && (
-                <span className="text-primary text-[10px] font-semibold letter-luxury uppercase mb-3 inline-flex items-center gap-2">
-                  <span className="ornament-diamond !w-1.5 !h-1.5" /> Most Popular
-                </span>
+      <div className="container-wide space-y-8">
+
+        {/* Featured 1:1 Program */}
+        {programs.filter((p) => p.featured).map((p) => (
+          <div
+            key={p.id}
+            id={p.id}
+            className="rounded-3xl overflow-hidden grid grid-cols-1 lg:grid-cols-2"
+          >
+            {/* Left: dark */}
+            <div
+              className="p-10 md:p-14 text-white relative overflow-hidden"
+              style={{ backgroundColor: "#0B0B0F" }}
+            >
+              <div
+                className="absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl pointer-events-none"
+                style={{ background: "radial-gradient(circle, rgba(255,45,170,0.18), transparent 70%)" }}
+              />
+              <span
+                className="inline-block text-[10px] font-bold letter-luxury uppercase px-3 py-1.5 rounded-full mb-6 relative z-10"
+                style={{ background: "rgba(255,45,170,0.15)", color: "#FF2DAA" }}
+              >
+                {p.tag}
+              </span>
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-2 relative z-10 letter-tight">{p.title}</h2>
+              <p className="text-white/50 text-sm mb-6 relative z-10">{p.subtitle}</p>
+              <p className="text-white/70 text-base leading-relaxed mb-8 relative z-10">{p.description}</p>
+              <div className="w-10 h-px mb-6 relative z-10" style={{ background: "#FF2DAA" }} />
+              {p.testimonial && (
+                <div className="relative z-10">
+                  <p className="text-white/60 italic text-sm leading-relaxed mb-4">"{p.testimonial.quote}"</p>
+                  <p className="font-heading font-bold text-sm text-white">{p.testimonial.name}</p>
+                  <p className="text-white/40 text-xs mt-0.5">{p.testimonial.detail}</p>
+                </div>
               )}
-              <h3 className="font-heading text-2xl mb-2 letter-tight">{p.title}</h3>
-              <p className="gold-text font-semibold text-lg mb-5">{p.price}</p>
-              <p className="text-muted-foreground leading-relaxed mb-8">{p.description}</p>
-              <div className="ornament-line !w-8 !mx-0 mb-6" />
-              <h4 className="font-heading text-sm letter-luxury uppercase mb-4">What's Included</h4>
-              <ul className="space-y-3 mb-10 flex-1">
+            </div>
+            {/* Right: white */}
+            <div className="bg-white border-y border-r border-border p-10 md:p-14 flex flex-col">
+              <div className="mb-6">
+                <p
+                  className="font-heading text-3xl font-bold mb-1"
+                  style={{ color: "#FF2DAA" }}
+                >
+                  {p.price}
+                </p>
+                <p className="text-muted-foreground text-xs">{p.priceNote}</p>
+              </div>
+              <h4 className="font-heading text-xs font-bold letter-luxury uppercase text-foreground mb-5">Everything Included</h4>
+              <ul className="space-y-3.5 flex-1 mb-10">
                 {p.includes.map((item) => (
                   <li key={item} className="flex items-start gap-3 text-sm text-muted-foreground">
-                    <Check size={14} className="text-primary mt-0.5 flex-shrink-0" />
+                    <Check size={14} className="flex-shrink-0 mt-0.5" style={{ color: "#FF2DAA" }} />
                     {item}
                   </li>
                 ))}
               </ul>
-              <button className={`px-6 py-3.5 rounded-full font-semibold text-sm text-center hover-scale transition-all duration-300 ${p.featured ? "gold-gradient text-primary-foreground shadow-lg" : "border border-primary text-primary hover:bg-primary hover:text-primary-foreground"}`}>
-                {p.cta}
-              </button>
+              <Link
+                to={p.ctaLink}
+                className="btn-neon-solid !py-5 text-center shadow-lg"
+              >
+                {p.cta} <ArrowRight size={16} />
+              </Link>
             </div>
+          </div>
+        ))}
+
+        {/* Other programs grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {programs.filter((p) => !p.featured).map((p) => (
+            <div key={p.id} id={p.id} className="luxury-card flex flex-col">
+              <div className="luxury-card-inner flex flex-col flex-1">
+                <span
+                  className="inline-block text-[10px] font-bold letter-luxury uppercase px-3 py-1.5 rounded-full mb-4 self-start"
+                  style={{ background: "rgba(255,45,170,0.08)", color: "#FF2DAA" }}
+                >
+                  {p.tag}
+                </span>
+                <h3 className="font-heading text-xl font-bold mb-1 letter-tight">{p.title}</h3>
+                <p className="text-muted-foreground text-xs mb-4">{p.subtitle}</p>
+                <p className="font-heading text-xl font-bold mb-1" style={{ color: "#FF2DAA" }}>{p.price}</p>
+                <p className="text-muted-foreground text-xs mb-5">{p.priceNote}</p>
+                <p className="text-muted-foreground text-sm leading-relaxed mb-6">{p.description}</p>
+                <div className="ornament-line !w-8 !mx-0 mb-5" />
+                <h4 className="font-heading text-xs font-bold letter-luxury uppercase text-foreground mb-4">What's Included</h4>
+                <ul className="space-y-2.5 flex-1 mb-8">
+                  {p.includes.map((item) => (
+                    <li key={item} className="flex items-start gap-2.5 text-xs text-muted-foreground">
+                      <Check size={12} className="flex-shrink-0 mt-0.5" style={{ color: "#FF2DAA" }} />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  to={p.ctaLink}
+                  className="btn-neon-outline !py-3.5 !text-xs text-center"
+                >
+                  {p.cta} <ArrowRight size={13} />
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* What Happens Next — process */}
+    <section className="section-padding bg-[#F6F6F8] relative overflow-hidden">
+      <div className="container-wide">
+        <div className="text-center mb-14">
+          <div className="flex items-center gap-3 justify-center mb-4">
+            <div className="ornament-line !w-8" />
+            <p className="text-primary font-semibold letter-luxury text-[10px] uppercase">The Process</p>
+            <div className="ornament-line !w-8" />
+          </div>
+          <h2 className="font-heading text-4xl md:text-5xl mb-5 letter-tight">What Happens After You Apply</h2>
+          <p className="text-muted-foreground max-w-xl mx-auto text-lg">
+            No guessing. No waiting in the dark. Here's exactly what the process looks like from inquiry to transformation.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {process.map((step, i) => (
+            <div key={step.num} className="relative">
+              {i < process.length - 1 && (
+                <div className="hidden lg:block absolute top-8 left-full w-full h-px z-0"
+                  style={{ background: "linear-gradient(90deg, rgba(255,45,170,0.3), transparent)" }}
+                />
+              )}
+              <div className="bg-white rounded-2xl border border-border p-7 relative z-10 h-full">
+                <span
+                  className="font-heading text-5xl font-bold block mb-4 leading-none"
+                  style={{ color: "#FF2DAA" }}
+                >
+                  {step.num}
+                </span>
+                <h3 className="font-heading text-lg font-bold mb-3">{step.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{step.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Social proof strip */}
+    <section className="py-16 relative overflow-hidden" style={{ backgroundColor: "#0B0B0F" }}>
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] blur-3xl pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(255,45,170,0.1), transparent 70%)" }}
+      />
+      <div className="container-wide px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center relative z-10">
+        {[
+          { stat: "500+", label: "Women Transformed" },
+          { stat: "98%", label: "Report Life-Changing Results" },
+          { stat: "10+", label: "Years of Experience" },
+          { stat: "4-Step", label: "Proven Framework" },
+        ].map((item) => (
+          <div key={item.label}>
+            <p className="neon-text font-heading text-4xl md:text-5xl font-bold mb-2">{item.stat}</p>
+            <p className="text-white/50 text-xs letter-luxury uppercase font-semibold">{item.label}</p>
           </div>
         ))}
       </div>
     </section>
 
     {/* FAQ */}
-    <section className="section-padding bg-card relative overflow-hidden">
-      <div className="glow-orb w-[400px] h-[400px] bottom-[-100px] right-[-100px]" />
-      <div className="container-narrow text-center relative z-10">
-        <div className="ornament-line-wide mb-8" />
-        <h2 className="font-heading text-4xl md:text-5xl mb-5 letter-tight">Not Sure Where to Start?</h2>
-        <p className="text-muted-foreground max-w-xl mx-auto mb-10 text-lg">
-          If you're feeling drawn to healing but aren't sure which pathway is right for you, start with the free Healing & Alignment Guide. It will help you identify where you are and what you need most.
-        </p>
-        <Link to="/free-guide" className="gold-gradient text-primary-foreground px-10 py-4 rounded-full font-semibold hover-scale inline-flex items-center gap-2 shadow-lg">
-          Get Your Free Guide <ArrowRight size={16} />
-        </Link>
+    <section className="section-padding relative overflow-hidden">
+      <div className="glow-orb w-[400px] h-[400px] top-[-100px] right-[-100px]" />
+      <div className="container-narrow relative z-10">
+        <div className="text-center mb-14">
+          <div className="flex items-center gap-3 justify-center mb-4">
+            <div className="ornament-line !w-8" />
+            <p className="text-primary font-semibold letter-luxury text-[10px] uppercase">Questions & Answers</p>
+            <div className="ornament-line !w-8" />
+          </div>
+          <h2 className="font-heading text-4xl md:text-5xl letter-tight">Everything You're Wondering</h2>
+        </div>
+        <div className="space-y-4">
+          {faqs.map((item, i) => (
+            <div key={i} className="bg-[#F6F6F8] rounded-2xl border border-border p-7 md:p-8">
+              <h3 className="font-heading text-lg font-bold text-foreground mb-3">{item.q}</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">{item.a}</p>
+            </div>
+          ))}
+        </div>
+        <div className="text-center mt-12">
+          <p className="text-muted-foreground text-sm mb-6">Still have questions? Sarah's team is here to help.</p>
+          <Link to="/booking" className="btn-neon-solid shadow-lg">
+            Talk to Someone <ArrowRight size={16} />
+          </Link>
+        </div>
       </div>
     </section>
 
     <EmailCapture variant="fullwidth" />
   </div>
 );
+};
 
 export default Programs;

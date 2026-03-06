@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Lato:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,34 +6,42 @@
 
 @layer base {
   :root {
-    --background: 40 33% 97%;
-    --foreground: 25 25% 15%;
-    --card: 38 30% 95%;
-    --card-foreground: 25 25% 15%;
-    --popover: 40 33% 97%;
-    --popover-foreground: 25 25% 15%;
-    --primary: 38 72% 44%;
-    --primary-foreground: 40 33% 97%;
-    --secondary: 25 30% 91%;
-    --secondary-foreground: 25 25% 15%;
-    --muted: 30 15% 90%;
-    --muted-foreground: 25 12% 45%;
-    --accent: 20 25% 88%;
-    --accent-foreground: 25 25% 15%;
+    --background: 0 0% 100%;
+    --foreground: 240 10% 4%;
+    --card: 240 10% 97%;
+    --card-foreground: 240 10% 4%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 4%;
+    --primary: 325 100% 59%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 10% 93%;
+    --secondary-foreground: 240 10% 4%;
+    --muted: 240 10% 93%;
+    --muted-foreground: 240 5% 42%;
+    --accent: 240 10% 93%;
+    --accent-foreground: 240 10% 4%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 35 20% 87%;
-    --input: 35 20% 87%;
-    --ring: 38 72% 44%;
-    --radius: 0.5rem;
-    --gold: 38 72% 44%;
-    --gold-light: 40 60% 70%;
-    --gold-dark: 35 65% 30%;
-    --cream: 40 33% 97%;
-    --cream-dark: 38 25% 92%;
-    --warm-brown: 25 25% 15%;
-    --rose: 15 40% 90%;
-    --rose-dark: 12 30% 75%;
+    --border: 240 10% 88%;
+    --input: 240 10% 88%;
+    --ring: 325 100% 59%;
+    --radius: 0.75rem;
+
+    /* Neon pink mapped to --gold for backward compat with existing classes */
+    --gold: 325 100% 59%;
+    --gold-light: 325 100% 72%;
+    --gold-dark: 323 100% 45%;
+
+    /* Semantic design tokens */
+    --neon-pink: 325 100% 59%;
+    --neon-pink-deep: 323 100% 45%;
+    --jet-black: 240 10% 4%;
+    --off-white: 240 10% 97%;
+    --cream: 0 0% 100%;
+    --cream-dark: 240 10% 97%;
+    --rose: 325 50% 96%;
+    --rose-dark: 325 40% 90%;
+
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -41,37 +49,38 @@
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 325 100% 59%;
   }
 
   .dark {
-    --background: 25 20% 8%;
-    --foreground: 40 20% 90%;
-    --card: 25 18% 12%;
-    --card-foreground: 40 20% 90%;
-    --popover: 25 20% 8%;
-    --popover-foreground: 40 20% 90%;
-    --primary: 38 72% 50%;
-    --primary-foreground: 25 20% 8%;
-    --secondary: 25 15% 18%;
-    --secondary-foreground: 40 20% 90%;
-    --muted: 25 12% 20%;
-    --muted-foreground: 30 10% 55%;
-    --accent: 25 15% 18%;
-    --accent-foreground: 40 20% 90%;
+    --background: 240 10% 4%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 8%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 4%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 325 100% 62%;
+    --primary-foreground: 240 10% 4%;
+    --secondary: 240 10% 14%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 10% 14%;
+    --muted-foreground: 240 5% 60%;
+    --accent: 240 10% 14%;
+    --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 25 12% 20%;
-    --input: 25 12% 20%;
-    --ring: 38 72% 50%;
-    --gold: 38 72% 50%;
-    --gold-light: 40 50% 60%;
-    --gold-dark: 35 60% 35%;
-    --cream: 25 20% 8%;
-    --cream-dark: 25 15% 12%;
-    --warm-brown: 40 20% 90%;
-    --rose: 15 20% 15%;
-    --rose-dark: 12 15% 25%;
+    --border: 240 10% 16%;
+    --input: 240 10% 16%;
+    --ring: 325 100% 62%;
+    --gold: 325 100% 62%;
+    --gold-light: 325 100% 72%;
+    --gold-dark: 323 100% 50%;
+    --neon-pink: 325 100% 62%;
+    --neon-pink-deep: 323 100% 50%;
+    --cream: 240 10% 4%;
+    --cream-dark: 240 10% 8%;
+    --rose: 325 15% 12%;
+    --rose-dark: 325 12% 18%;
   }
 }
 
@@ -102,23 +111,36 @@
     @apply max-w-7xl mx-auto;
   }
 
+  /* Neon pink gradient — replaces old gold-gradient */
   .gold-gradient {
-    background: linear-gradient(135deg, hsl(var(--gold)), hsl(var(--gold-light)));
+    background: linear-gradient(135deg, hsl(var(--neon-pink)), hsl(var(--neon-pink-deep)));
   }
 
+  .neon-gradient {
+    background: linear-gradient(135deg, hsl(var(--neon-pink)), hsl(var(--neon-pink-deep)));
+  }
+
+  /* Neon pink gradient text — replaces old gold-text */
   .gold-text {
-    background: linear-gradient(135deg, hsl(var(--gold)), hsl(var(--gold-light)));
+    background: linear-gradient(135deg, hsl(var(--neon-pink)), hsl(var(--neon-pink-deep)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .neon-text {
+    background: linear-gradient(135deg, hsl(var(--neon-pink)), hsl(var(--neon-pink-deep)));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .gold-border {
-    border-color: hsl(var(--gold) / 0.3);
+    border-color: hsl(var(--neon-pink) / 0.3);
   }
 
   .warm-overlay {
-    background: linear-gradient(180deg, hsl(var(--cream) / 0) 0%, hsl(var(--cream)) 100%);
+    background: linear-gradient(180deg, hsl(var(--background) / 0) 0%, hsl(var(--background)) 100%);
   }
 
   .story-link * {
@@ -129,30 +151,32 @@
     @apply transition-transform duration-200 hover:scale-105;
   }
 
-  /* Premium decorative elements */
+  /* Decorative elements — neon pink */
   .ornament-line {
     @apply w-16 h-px mx-auto;
-    background: linear-gradient(90deg, transparent, hsl(var(--gold)), transparent);
+    background: linear-gradient(90deg, transparent, hsl(var(--neon-pink)), transparent);
   }
 
   .ornament-line-wide {
     @apply w-32 h-px mx-auto;
-    background: linear-gradient(90deg, transparent, hsl(var(--gold)), transparent);
+    background: linear-gradient(90deg, transparent, hsl(var(--neon-pink)), transparent);
   }
 
   .ornament-diamond {
     @apply inline-block w-2 h-2 rotate-45;
-    background: hsl(var(--gold));
+    background: hsl(var(--neon-pink));
   }
 
+  /* Main card — white with neon pink hover glow */
   .luxury-card {
-    @apply bg-card rounded-3xl border border-border relative overflow-hidden;
-    box-shadow: 0 4px 40px -12px hsl(var(--gold) / 0.08);
-    transition: box-shadow 0.4s ease, transform 0.4s ease;
+    @apply bg-white rounded-3xl border border-border relative overflow-hidden;
+    box-shadow: 0 4px 40px -12px rgba(255, 45, 170, 0.04);
+    transition: box-shadow 0.4s ease, transform 0.4s ease, border-color 0.4s ease;
   }
 
   .luxury-card:hover {
-    box-shadow: 0 12px 60px -12px hsl(var(--gold) / 0.15);
+    box-shadow: 0 12px 60px -12px rgba(255, 45, 170, 0.18), 0 0 0 1.5px rgba(255, 45, 170, 0.25);
+    border-color: rgba(255, 45, 170, 0.25);
     transform: translateY(-4px);
   }
 
@@ -160,16 +184,56 @@
     @apply p-8 md:p-10 lg:p-12;
   }
 
+  /* Step card — white with neon pink glow on hover */
+  .step-card {
+    @apply bg-white rounded-2xl border border-border overflow-hidden;
+    box-shadow: 0 2px 20px -8px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.35s ease, transform 0.35s ease, border-color 0.35s ease;
+  }
+
+  .step-card:hover {
+    box-shadow: 0 8px 40px -8px rgba(255, 45, 170, 0.2), 0 0 0 1.5px rgba(255, 45, 170, 0.3);
+    border-color: rgba(255, 45, 170, 0.3);
+    transform: translateY(-2px);
+  }
+
+  /* Neon pink outline button */
+  .btn-neon-outline {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold text-base transition-all duration-300;
+    border: 1.5px solid hsl(var(--neon-pink));
+    color: hsl(var(--neon-pink));
+    background: transparent;
+  }
+
+  .btn-neon-outline:hover {
+    background: hsl(var(--neon-pink));
+    color: white;
+    box-shadow: 0 0 28px rgba(255, 45, 170, 0.4);
+    transform: translateY(-2px);
+  }
+
+  /* Solid neon pink button */
+  .btn-neon-solid {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold text-base text-white transition-all duration-300;
+    background: hsl(var(--neon-pink));
+  }
+
+  .btn-neon-solid:hover {
+    background: hsl(var(--neon-pink-deep));
+    box-shadow: 0 0 32px rgba(255, 45, 170, 0.5);
+    transform: translateY(-2px);
+  }
+
   .glow-orb {
     @apply absolute rounded-full blur-3xl pointer-events-none;
-    background: radial-gradient(circle, hsl(var(--gold) / 0.12), transparent 70%);
+    background: radial-gradient(circle, hsl(var(--neon-pink) / 0.07), transparent 70%);
   }
 
   .hero-gradient-bg {
-    background: 
-      radial-gradient(ellipse 80% 60% at 20% 50%, hsl(var(--gold) / 0.06), transparent),
-      radial-gradient(ellipse 60% 80% at 80% 30%, hsl(var(--rose) / 0.08), transparent),
-      radial-gradient(ellipse 50% 50% at 50% 80%, hsl(var(--gold) / 0.04), transparent),
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 50%, hsl(var(--neon-pink) / 0.04), transparent),
+      radial-gradient(ellipse 60% 80% at 80% 30%, hsl(var(--rose) / 0.06), transparent),
+      radial-gradient(ellipse 50% 50% at 50% 80%, hsl(var(--neon-pink) / 0.03), transparent),
       hsl(var(--background));
   }
 
@@ -181,7 +245,7 @@
     content: '';
     @apply absolute top-0 left-1/2 -translate-x-1/2 h-px;
     width: min(80%, 600px);
-    background: linear-gradient(90deg, transparent, hsl(var(--gold) / 0.4), transparent);
+    background: linear-gradient(90deg, transparent, hsl(var(--neon-pink) / 0.4), transparent);
   }
 
   .text-balance {
@@ -228,6 +292,18 @@
 
   .animate-pulse-slow {
     animation: pulseSlow 4s ease-in-out infinite;
+  }
+
+  /* Scroll-reveal — triggered by JS adding .revealed class */
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.65s ease-out, transform 0.65s ease-out;
+  }
+
+  .scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

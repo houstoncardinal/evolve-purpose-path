@@ -1,47 +1,68 @@
 import { Link } from "react-router-dom";
 import EmailCapture from "@/components/sections/EmailCapture";
+import useSEO from "@/hooks/useSEO";
 import { ArrowRight } from "lucide-react";
 
 const frameworkSteps = [
   {
     num: "01",
-    title: "Awareness",
-    subtitle: "See What's Been Hidden",
-    description: "Before you can heal, you must see. In this foundational step, we gently uncover the root wounds, inherited patterns, and unconscious beliefs that have been shaping your life from the shadows.",
-    experience: "Through guided reflection, prophetic insight, and compassionate inquiry, you'll begin to identify what you've been carrying — often for decades — and understand how it has been affecting your relationships, your faith, and your sense of self.",
-    outcome: "Clarity. For the first time, you'll see the full picture — not to overwhelm you, but to empower you with the truth that sets you free.",
-    forWho: "Women who feel stuck in cycles they can't explain, who sense there's something deeper beneath the surface of their struggles.",
+    title: "Lead in Love",
+    subtitle: "Choose Alignment Over Reaction",
+    description: "When you choose love over reaction, you step into divine alignment instead of emotional chaos. Leading in love doesn't mean weakness — it means trusting that peace will protect what pride would destroy.",
+    experience: "Through guided reflection and intentional practice, you'll discover how to respond from a place of grounded love rather than reactive emotion. You'll identify the patterns that have caused you to lead with pride or fear, and begin replacing them with responses rooted in peace and purpose.",
+    outcome: "Alignment. You'll find that the right relationships, opportunities, and clarity flow naturally when you stop forcing and start leading with love. What once felt like conflict begins to transform into genuine connection.",
+    forWho: "Anyone who finds themselves constantly reacting — to others, to circumstances, to their own emotions — and is ready to break the cycle by leading from a place of intention.",
   },
   {
     num: "02",
-    title: "Healing",
-    subtitle: "Release the Weight You Were Never Meant to Carry",
-    description: "This is where the deep, sacred work happens. Healing isn't about forgetting — it's about releasing. In this step, we move into Spirit-led inner healing work that addresses trauma at its root.",
-    experience: "Through prophetic prayer, inner healing sessions, and guided restoration exercises, you'll experience the gentle but powerful hand of God reaching into the places of deepest pain and bringing restoration, peace, and wholeness.",
-    outcome: "Freedom. The chains of bitterness, fear, shame, and unforgiveness begin to break. You'll feel lighter, clearer, and more spiritually alive than you have in years.",
-    forWho: "Women carrying trauma — whether from childhood, relationships, loss, or systemic harm — who are ready to let God heal what the world could not.",
+    title: "Take Accountability for Your Action",
+    subtitle: "Ownership Is the Beginning of Transformation",
+    description: "Growth begins when you stop pointing fingers and start taking ownership. Accountability isn't about guilt — it's about maturity, healing, and the courage to see where you can evolve.",
+    experience: "We explore the patterns of avoidance and blame that have kept you stuck. Through honest self-assessment and compassionate inquiry, you'll develop the clarity to see your role in your story — not to condemn yourself, but to empower yourself with the truth that sets you free.",
+    outcome: "Freedom from the victimhood cycle. When you own your actions, you reclaim your power. You stop waiting for others to change and start making the changes that actually transform your life.",
+    forWho: "Those who recognize a pattern of deflecting, blaming, or minimizing their role in difficult situations — and who are ready to step into the maturity that real growth requires.",
   },
   {
     num: "03",
-    title: "Alignment",
-    subtitle: "Return to Who You Were Always Created to Be",
-    description: "Healing clears the path. Alignment sets the direction. In this step, we recalibrate your identity, your beliefs, and your spiritual posture to match God's original design for your life.",
-    experience: "We'll work together to dismantle false identities, renew your mindset, and rebuild your spiritual foundation. You'll learn to recognize God's voice with clarity and move in sync with His timing and His plan.",
-    outcome: "Peace and confidence. You'll no longer question your worth or your direction. You'll know — deep in your spirit — who you are and where you're going.",
-    forWho: "Women in transition who have experienced healing but still feel disconnected from their identity, their faith, or their next steps.",
+    title: "Learn from Your Actions & Manage Your Triggers",
+    subtitle: "Your Triggers Are Teachers, Not Life Sentences",
+    description: "Every reaction reveals a wound that still needs your attention. When you learn from your mistakes and manage your triggers, you break the cycles that once controlled you.",
+    experience: "We dive deep into the emotional responses that have been running on autopilot. You'll identify your core triggers, understand their origin, and build practical tools to pause, process, and respond — rather than react and regret.",
+    outcome: "Mastery. You'll no longer feel at the mercy of your emotions. You'll develop the inner stability to navigate hard conversations, difficult seasons, and unexpected challenges with grace and intention.",
+    forWho: "Anyone who struggles with emotional reactivity, who says things they don't mean, or who finds the same patterns of conflict appearing repeatedly in their relationships and circumstances.",
   },
   {
     num: "04",
-    title: "Purpose Activation",
-    subtitle: "Step Boldly Into Your Calling",
-    description: "This is the moment everything has been leading to. You are healed. You are aligned. Now it's time to move. Purpose Activation is about stepping into the calling, the vision, and the life that God has been preparing you for all along.",
-    experience: "Through prophetic guidance, strategic clarity, and spiritual empowerment, you'll identify your purpose, develop a plan to walk in it, and receive the spiritual covering and confidence to launch boldly.",
-    outcome: "Activation. You'll leave this step not just knowing your purpose — but living it. Boldly. Unapologetically. With heaven backing every step.",
-    forWho: "Women who are healed and ready — ready to lead, serve, create, and build the life and legacy they were always designed for.",
+    title: "Teach Someone Else What You Just Learned",
+    subtitle: "Your Story Is Someone Else's Survival Guide",
+    description: "Healing becomes wisdom when it's shared. The lessons you've lived through can become someone else's breakthrough — that's how purpose is born.",
+    experience: "In this final step, you move from student to guide. You'll discover how to articulate what you've learned, identify who needs your message, and step into the role of mentor, teacher, or simply a friend who shows up differently than before.",
+    outcome: "Purpose activated. When you share your journey, you don't just help others — you cement your own transformation. The act of teaching what you've learned locks it into your identity and gives your pain a reason.",
+    forWho: "Those who have done the inner work and are ready to turn their personal growth into something that serves others — whether through a business, ministry, or simply in their everyday relationships.",
   },
 ];
 
-const Framework = () => (
+const Framework = () => {
+  useSEO({
+    title: "The 4-Step Transformation Framework",
+    description: "Explore Sarah Adams' 4-Step System: Lead in Love, Take Accountability, Manage Your Triggers, and Teach Others. A proven roadmap for lasting life transformation.",
+    keywords: "4 step transformation framework, lead in love, take accountability, manage triggers, teach others, healing framework for women, Sarah Adams framework",
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      name: "The 4-Step System to Transform Your Life",
+      description: "A proven four-step personal development framework created by Sarah Adams to help women break cycles, heal their roots, and activate lasting purpose.",
+      url: "https://evole2purpose.com/framework",
+      author: { "@type": "Person", name: "Sarah Adams" },
+      step: [
+        { "@type": "HowToStep", position: 1, name: "Lead in Love", text: "Choose alignment over reaction. Leading in love means trusting that peace will protect what pride would destroy. Step into divine alignment instead of emotional chaos." },
+        { "@type": "HowToStep", position: 2, name: "Take Accountability", text: "Stop waiting for someone else to fix what only you can fix. Ownership is where transformation begins — not blame, not excuses, but radical responsibility for your own growth." },
+        { "@type": "HowToStep", position: 3, name: "Manage Your Triggers", text: "Your emotional reactions are data, not destiny. Learn to trace them back to their roots — wounds, beliefs, and patterns formed long ago — and begin to respond instead of react." },
+        { "@type": "HowToStep", position: 4, name: "Teach Others", text: "Your healing was never just for you. When you share what you have learned, you multiply your impact, solidify your own growth, and become the very person someone else desperately needed." },
+      ],
+    },
+  });
+  return (
   <div>
     {/* Hero */}
     <section className="section-padding hero-gradient-bg text-center relative overflow-hidden">
@@ -53,25 +74,36 @@ const Framework = () => (
           <div className="ornament-line !w-8" />
         </div>
         <h1 className="font-heading text-5xl md:text-6xl mb-6 leading-tight letter-tight">
-          The 4-Step Healing &<br />
-          <span className="italic font-display gold-text">Inner Restoration</span> Framework
+          Transform Your Life in<br />
+          <span className="italic neon-text">4 Steps</span>
         </h1>
-        <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
-          A Spirit-led, proven pathway from pain to purpose — designed to bring deep, lasting transformation to every area of your life. This is not surface-level coaching. This is root-level restoration.
+        <p className="text-muted-foreground text-xs font-semibold letter-luxury uppercase mb-2">By Sarah Adams</p>
+        <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed mt-4">
+          A proven, practical pathway built on love, accountability, self-awareness, and service. This is not surface-level coaching. This is root-level transformation.
         </p>
       </div>
     </section>
 
     {/* Steps */}
     {frameworkSteps.map((step, i) => (
-      <section key={step.num} className={`section-padding relative overflow-hidden ${i % 2 === 0 ? "" : "bg-card"}`}>
+      <section key={step.num} className={`section-padding relative overflow-hidden ${i % 2 === 0 ? "" : "bg-[#F6F6F8]"}`}>
         <div className="glow-orb w-[300px] h-[300px] top-[20%] right-[-50px] opacity-50" />
         <div className="container-wide max-w-5xl relative z-10">
           <div className="flex flex-col md:flex-row items-start gap-8 mb-12">
-            <span className="gold-text font-display text-8xl md:text-9xl font-bold leading-none">{step.num}</span>
+            <span
+              className="font-heading text-8xl md:text-9xl font-bold leading-none"
+              style={{ color: "#FF2DAA" }}
+            >
+              {step.num}
+            </span>
             <div className="pt-2 md:pt-4">
               <h2 className="font-heading text-4xl md:text-5xl letter-tight">{step.title}</h2>
-              <p className="text-primary italic font-display text-xl mt-2">{step.subtitle}</p>
+              <p
+                className="italic font-heading text-xl mt-2"
+                style={{ color: "#FF2DAA" }}
+              >
+                {step.subtitle}
+              </p>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -88,7 +120,7 @@ const Framework = () => (
                   <p className="text-muted-foreground leading-relaxed">{step.outcome}</p>
                 </div>
               </div>
-              <div className="luxury-card !bg-secondary">
+              <div className="luxury-card">
                 <div className="luxury-card-inner">
                   <h4 className="font-heading text-lg mb-3">This Step Is For You If…</h4>
                   <p className="text-muted-foreground leading-relaxed">{step.forWho}</p>
@@ -105,18 +137,24 @@ const Framework = () => (
       <div className="glow-orb w-[500px] h-[500px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
       <div className="container-narrow relative z-10">
         <div className="ornament-line-wide mb-8" />
-        <h2 className="font-heading text-4xl md:text-5xl mb-5 letter-tight">Ready to Begin Your Restoration?</h2>
+        <h2 className="font-heading text-4xl md:text-5xl mb-5 letter-tight">Ready to Begin Your Transformation?</h2>
         <p className="text-muted-foreground max-w-xl mx-auto mb-10 text-lg">
-          The framework is proven. The anointing is real. All that's missing is you.
+          The framework is proven. The path is clear. All that's missing is your first step.
         </p>
-        <Link to="/programs" className="gold-gradient text-primary-foreground px-12 py-5 rounded-full font-semibold text-lg hover-scale inline-flex items-center gap-3 shadow-lg">
-          Explore Programs <ArrowRight size={18} />
-        </Link>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link to="/evole-2-purpose" className="btn-neon-outline">
+            Explore Evole 2 Purpose
+          </Link>
+          <Link to="/programs" className="btn-neon-solid shadow-lg">
+            Work With Sarah Adams <ArrowRight size={16} />
+          </Link>
+        </div>
       </div>
     </section>
 
     <EmailCapture variant="fullwidth" />
   </div>
 );
+};
 
 export default Framework;
