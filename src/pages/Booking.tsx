@@ -1,68 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import useSEO from "@/hooks/useSEO";
 import { ArrowRight, Mic, Users, Heart, Lightbulb, Globe, CheckCircle } from "lucide-react";
+import { store, initStore, SpeakingTopic, EventFormat, FAQ } from "@/lib/adminStore";
 
-const topics = [
-  {
-    icon: Heart,
-    title: "Lead in Love",
-    desc: "How choosing love over reaction transforms relationships, leadership, and personal outcomes.",
-  },
-  {
-    icon: CheckCircle,
-    title: "The Accountability Advantage",
-    desc: "Why taking radical ownership is the fastest path to freedom, healing, and next-level growth.",
-  },
-  {
-    icon: Lightbulb,
-    title: "Mastering Your Triggers",
-    desc: "Understanding the emotional wounds beneath reactive behavior — and practical tools to break the cycle.",
-  },
-  {
-    icon: Users,
-    title: "From Hurt to Helper",
-    desc: "How your deepest wounds become your greatest gift when you learn to share what you've survived.",
-  },
-  {
-    icon: Globe,
-    title: "Evolve 2 Purpose",
-    desc: "The full 4-step transformation framework as a keynote or workshop experience for your audience.",
-  },
-  {
-    icon: Mic,
-    title: "Healing Generational Cycles",
-    desc: "Breaking the inherited patterns that silently shape behavior, relationships, and destiny.",
-  },
-];
-
-const formats = [
-  { label: "Keynote Address", detail: "45 – 90 minutes" },
-  { label: "Workshop / Breakout", detail: "2 – 4 hours" },
-  { label: "Full-Day Retreat", detail: "6 – 8 hours" },
-  { label: "Panel / Fireside Chat", detail: "30 – 60 minutes" },
-  { label: "Corporate Training", detail: "Half or full day" },
-  { label: "Virtual / Livestream", detail: "Any format" },
-];
-
-const faq = [
-  {
-    q: "What types of events does Sarah speak at?",
-    a: "Sarah speaks at women's conferences, corporate leadership retreats, church events, university programs, community summits, and private organizational gatherings. If it involves transformation, growth, and purpose — she's the right fit.",
-  },
-  {
-    q: "How far in advance should we book?",
-    a: "We recommend submitting an inquiry at least 6–8 weeks before your event date. For major conferences or signature events, 3–6 months ahead is ideal to ensure availability.",
-  },
-  {
-    q: "Does Sarah offer virtual presentations?",
-    a: "Yes. Sarah delivers powerful virtual keynotes and workshops via Zoom, Teams, or your platform of choice — with the same energy and impact as in-person.",
-  },
-  {
-    q: "Can we customize the topic for our audience?",
-    a: "Absolutely. Sarah works closely with event organizers to tailor her message to your audience's specific needs, industry context, and desired outcomes.",
-  },
-];
+const TOPIC_ICONS = [Heart, CheckCircle, Lightbulb, Users, Globe, Mic];
 
 type FormState = {
   firstName: string;
@@ -77,6 +19,17 @@ type FormState = {
 };
 
 const Booking = () => {
+  const [topics, setTopics] = useState<SpeakingTopic[]>([]);
+  const [formats, setFormats] = useState<EventFormat[]>([]);
+  const [faq, setFaq] = useState<FAQ[]>([]);
+
+  useEffect(() => {
+    initStore();
+    setTopics(store.getSpeakingTopics());
+    setFormats(store.getEventFormats());
+    setFaq(store.getFAQs().filter((f) => f.category === "booking"));
+  }, []);
+
   useSEO({
     title: "Book Sarah Adams to Speak",
     description: "Book Sarah Adams for your next women's conference, church event, corporate gathering, or retreat. Topics include purpose activation, healing, accountability, and breaking generational cycles.",
@@ -191,10 +144,10 @@ const Booking = () => {
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {topics.map((topic) => {
-              const Icon = topic.icon;
+            {topics.map((topic, i) => {
+              const Icon = TOPIC_ICONS[i % TOPIC_ICONS.length];
               return (
-                <div key={topic.title} className="luxury-card">
+                <div key={topic.id} className="luxury-card">
                   <div className="luxury-card-inner">
                     <div
                       className="w-11 h-11 rounded-xl flex items-center justify-center mb-5"
@@ -230,7 +183,7 @@ const Booking = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {formats.map((f) => (
                   <div
-                    key={f.label}
+                    key={f.id}
                     className="flex items-start gap-3 bg-white rounded-xl border border-border p-5"
                   >
                     <span
@@ -478,10 +431,10 @@ const Booking = () => {
             <h2 className="font-heading text-4xl md:text-5xl letter-tight">Common Questions</h2>
           </div>
           <div className="space-y-4">
-            {faq.map((item, i) => (
-              <div key={i} className="bg-white rounded-2xl border border-border p-7 md:p-8">
-                <h3 className="font-heading text-lg font-bold text-foreground mb-3">{item.q}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{item.a}</p>
+            {faq.map((item) => (
+              <div key={item.id} className="bg-white rounded-2xl border border-border p-7 md:p-8">
+                <h3 className="font-heading text-lg font-bold text-foreground mb-3">{item.question}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{item.answer}</p>
               </div>
             ))}
           </div>

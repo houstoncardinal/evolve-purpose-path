@@ -31,6 +31,10 @@ import AdminSubscribers from "./pages/admin/Subscribers";
 import AdminBookings from "./pages/admin/Bookings";
 import AdminCommunity from "./pages/admin/Community";
 import AdminPrograms from "./pages/admin/Programs";
+import AdminTestimonials from "./pages/admin/Testimonials";
+import AdminContentManager from "./pages/admin/ContentManager";
+import AdminCommunityContent from "./pages/admin/CommunityContent";
+import AdminSettings from "./pages/admin/Settings";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +56,10 @@ const App = () => (
             <Route path="bookings" element={<AdminBookings />} />
             <Route path="community" element={<AdminCommunity />} />
             <Route path="programs" element={<AdminPrograms />} />
+            <Route path="testimonials" element={<AdminTestimonials />} />
+            <Route path="content" element={<AdminContentManager />} />
+            <Route path="community-content" element={<AdminCommunityContent />} />
+            <Route path="settings" element={<AdminSettings />} />
           </Route>
 
           {/* Public routes — wrapped in the public Layout */}

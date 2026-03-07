@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Search, ExternalLink, Eye, X, Calendar } from "lucide-react";
+import { Search, ExternalLink, Eye, X, Calendar, Plus } from "lucide-react";
 import { store, BookingInquiry } from "@/lib/adminStore";
 import { useToast } from "@/hooks/use-toast";
 
@@ -10,12 +10,20 @@ const statusConfig: Record<BookingInquiry["status"], { bg: string; text: string;
   declined: { bg: "rgba(239,68,68,0.1)", text: "#EF4444", label: "Declined" },
 };
 
+const emptyBooking = {
+  name: "", email: "", organization: "", eventType: "", audienceSize: "", eventDate: "", details: "", status: "new" as BookingInquiry["status"],
+};
+
 const AdminBookings = () => {
   const { toast } = useToast();
   const [bookings, setBookings] = useState<BookingInquiry[]>(() => store.getBookings());
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState<BookingInquiry["status"] | "all">("all");
   const [selected, setSelected] = useState<BookingInquiry | null>(null);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newBooking, setNewBooking] = useState(emptyBooking);
+  const [noteEditing, setNoteEditing] = useState<string | null>(null);
+  const [noteText, setNoteText] = useState("");
 
   const refresh = () => setBookings(store.getBookings());
 
@@ -35,14 +43,43 @@ const AdminBookings = () => {
     toast({ title: `Booking marked as ${status}` });
   };
 
+  const saveNote = (id: string) => {
+    store.updateBookingNotes(id, noteText);
+    refresh();
+    if (selected?.id === id) setSelected((prev) => prev ? { ...prev, notes: noteText } : null);
+    setNoteEditing(null);
+    toast({ title: "Note saved" });
+  };
+
+  const handleAdd = () => {
+    if (!newBooking.name.trim() || !newBooking.email.trim()) return;
+    store.addBooking({
+      ...newBooking,
+      submittedAt: new Date().toISOString().split("T")[0],
+    });
+    refresh();
+    setShowAddModal(false);
+    setNewBooking(emptyBooking);
+    toast({ title: "Booking inquiry added" });
+  };
+
   return (
     <div className="p-6 lg:p-8 space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="font-heading text-2xl font-bold text-foreground">Speaking Bookings</h1>
-        <p className="text-muted-foreground text-sm mt-0.5">
-          {bookings.filter((b) => b.status === "new").length} new · {bookings.length} total inquiries
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="font-heading text-2xl font-bold text-foreground">Speaking Bookings</h1>
+          <p className="text-muted-foreground text-sm mt-0.5">
+            {bookings.filter((b) => b.status === "new").length} new · {bookings.length} total inquiries
+          </p>
+        </div>
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-white hover:opacity-90 transition-all"
+          style={{ background: "#FF2DAA" }}
+        >
+          <Plus size={15} /> Add Inquiry
+        </button>
       </div>
 
       {/* Stat chips */}
@@ -122,6 +159,11 @@ const AdminBookings = () => {
                 </div>
               </div>
               <p className="text-xs text-muted-foreground mt-3 line-clamp-2">{b.details}</p>
+              {b.notes && (
+                <div className="mt-2 px-3 py-2 rounded-lg bg-amber-50 border border-amber-100">
+                  <p className="text-xs text-amber-700 line-clamp-1">📝 {b.notes}</p>
+                </div>
+              )}
               <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/50">
                 <span className="text-[11px] text-muted-foreground">{b.submittedAt}</span>
                 <div className="flex gap-1.5">
@@ -186,10 +228,34 @@ const AdminBookings = () => {
                 </div>
               ))}
             </div>
-            <div className="bg-gray-50 rounded-2xl p-4 mb-6">
+            <div className="bg-gray-50 rounded-2xl p-4 mb-4">
               <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">Event Details</p>
               <p className="text-sm text-foreground/80 leading-relaxed">{selected.details}</p>
             </div>
+
+            {/* Notes */}
+            <div className="bg-amber-50 rounded-2xl p-4 mb-6 border border-amber-100">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-xs font-semibold text-amber-700 uppercase">Internal Notes</p>
+                {noteEditing !== selected.id && (
+                  <button onClick={() => { setNoteEditing(selected.id); setNoteText(selected.notes || ""); }} className="text-xs text-amber-600 hover:text-amber-800 font-semibold">
+                    {selected.notes ? "Edit" : "Add Note"}
+                  </button>
+                )}
+              </div>
+              {noteEditing === selected.id ? (
+                <div className="space-y-2">
+                  <textarea value={noteText} onChange={(e) => setNoteText(e.target.value)} rows={3} className="w-full px-3 py-2 rounded-xl border border-amber-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-300 resize-none" placeholder="Add internal notes about this booking..." autoFocus />
+                  <div className="flex gap-2">
+                    <button onClick={() => saveNote(selected.id)} className="px-4 py-1.5 rounded-xl text-xs font-bold text-white hover:opacity-90" style={{ background: "#F59E0B" }}>Save Note</button>
+                    <button onClick={() => setNoteEditing(null)} className="px-4 py-1.5 rounded-xl text-xs font-semibold border border-amber-200 hover:bg-amber-100">Cancel</button>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-sm text-amber-800">{selected.notes || "No notes yet."}</p>
+              )}
+            </div>
+
             <a
               href={`mailto:${selected.email}?subject=Re: Speaking Inquiry — ${selected.organization}`}
               className="flex items-center justify-center gap-2 w-full py-3 rounded-2xl text-sm font-bold text-white hover:opacity-90 transition-all"
@@ -197,6 +263,65 @@ const AdminBookings = () => {
             >
               <ExternalLink size={14} /> Reply via Email
             </a>
+          </div>
+        </div>
+      )}
+
+      {/* Add Inquiry Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowAddModal(false)} />
+          <div className="relative bg-white rounded-3xl p-8 w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto">
+            <button onClick={() => setShowAddModal(false)} className="absolute top-5 right-5 p-1.5 rounded-xl hover:bg-gray-100"><X size={16} /></button>
+            <h2 className="font-heading text-xl font-bold mb-6">Add Booking Inquiry</h2>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-semibold text-muted-foreground uppercase">Contact Name *</label>
+                  <input type="text" value={newBooking.name} onChange={(e) => setNewBooking({ ...newBooking, name: e.target.value })} className="mt-1 w-full px-4 py-3 rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm" placeholder="Full name" autoFocus />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-muted-foreground uppercase">Email *</label>
+                  <input type="email" value={newBooking.email} onChange={(e) => setNewBooking({ ...newBooking, email: e.target.value })} className="mt-1 w-full px-4 py-3 rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm" placeholder="email@org.com" />
+                </div>
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-muted-foreground uppercase">Organization</label>
+                <input type="text" value={newBooking.organization} onChange={(e) => setNewBooking({ ...newBooking, organization: e.target.value })} className="mt-1 w-full px-4 py-3 rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm" placeholder="Organization or event name" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-semibold text-muted-foreground uppercase">Event Type</label>
+                  <input type="text" value={newBooking.eventType} onChange={(e) => setNewBooking({ ...newBooking, eventType: e.target.value })} className="mt-1 w-full px-4 py-3 rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm" placeholder="e.g. Conference" />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-muted-foreground uppercase">Event Date</label>
+                  <input type="date" value={newBooking.eventDate} onChange={(e) => setNewBooking({ ...newBooking, eventDate: e.target.value })} className="mt-1 w-full px-4 py-3 rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-semibold text-muted-foreground uppercase">Audience Size</label>
+                  <input type="text" value={newBooking.audienceSize} onChange={(e) => setNewBooking({ ...newBooking, audienceSize: e.target.value })} className="mt-1 w-full px-4 py-3 rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm" placeholder="e.g. 100-250" />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-muted-foreground uppercase">Status</label>
+                  <select value={newBooking.status} onChange={(e) => setNewBooking({ ...newBooking, status: e.target.value as BookingInquiry["status"] })} className="mt-1 w-full px-4 py-3 rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm bg-white">
+                    {(["new", "reviewing", "confirmed", "declined"] as const).map((s) => (
+                      <option key={s} value={s}>{statusConfig[s].label}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-muted-foreground uppercase">Event Details</label>
+                <textarea value={newBooking.details} onChange={(e) => setNewBooking({ ...newBooking, details: e.target.value })} rows={3} className="mt-1 w-full px-4 py-3 rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm resize-none" placeholder="Event description and notes..." />
+              </div>
+            </div>
+            <div className="flex gap-3 mt-6">
+              <button onClick={() => setShowAddModal(false)} className="flex-1 px-4 py-3 rounded-xl border border-border text-sm font-semibold hover:bg-gray-50">Cancel</button>
+              <button onClick={handleAdd} disabled={!newBooking.name.trim() || !newBooking.email.trim()} className="flex-1 px-4 py-3 rounded-xl text-sm font-bold text-white hover:opacity-90 disabled:opacity-40" style={{ background: "#FF2DAA" }}>Add Inquiry</button>
+            </div>
           </div>
         </div>
       )}

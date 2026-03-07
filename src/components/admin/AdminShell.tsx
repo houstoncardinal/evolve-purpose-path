@@ -3,7 +3,7 @@ import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
   LayoutDashboard, Package, ShoppingCart, Mail, Calendar,
   Users, GraduationCap, LogOut, Menu, X, ChevronRight,
-  ExternalLink,
+  ExternalLink, Star, FileText, MessageSquare, Settings,
 } from "lucide-react";
 import { store, initStore } from "@/lib/adminStore";
 
@@ -15,6 +15,10 @@ const navItems = [
   { label: "Bookings", path: "/admin/bookings", icon: Calendar },
   { label: "Community", path: "/admin/community", icon: Users },
   { label: "Programs", path: "/admin/programs", icon: GraduationCap },
+  { label: "Testimonials", path: "/admin/testimonials", icon: Star },
+  { label: "Content", path: "/admin/content", icon: FileText },
+  { label: "Community Content", path: "/admin/community-content", icon: MessageSquare },
+  { label: "Settings", path: "/admin/settings", icon: Settings },
 ];
 
 const AdminShell = () => {

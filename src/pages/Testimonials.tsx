@@ -1,82 +1,9 @@
+import { useEffect, useState } from "react";
 import EmailCapture from "@/components/sections/EmailCapture";
 import { Link } from "react-router-dom";
 import useSEO from "@/hooks/useSEO";
 import { Star, ArrowRight, Quote } from "lucide-react";
-
-const featured = {
-  quote:
-    "I came to Sarah completely shattered. I had built what everyone thought was a successful life — but inside I was hollow. Three months into working with her, something cracked open that I didn't even know was locked. She didn't just help me heal. She helped me find out who I actually am. I don't know who I would be without this work.",
-  name: "Keisha L.",
-  detail: "1:1 Coaching — 6-Month Journey",
-  transformation: "From functioning but empty, to fully alive and leading",
-  program: "1:1 Deep-Dive Coaching",
-};
-
-const testimonials = [
-  {
-    quote: "Sarah's guidance helped me see what I'd been carrying for years. For the first time in my life, I feel truly free to walk in my purpose. My family can feel the difference.",
-    name: "Tamara J.",
-    detail: "Healed from 15 years of unforgiveness",
-    transformation: "From bitterness to radical freedom",
-    program: "Group Program",
-  },
-  {
-    quote: "I didn't know healing could feel this safe. Through the 4-Step Framework, I finally broke the cycle that had haunted three generations of my family. My daughters will not carry what I carried.",
-    name: "Michelle R.",
-    detail: "Mother of 3, generational cycle breaker",
-    transformation: "From generational trauma to generational blessing",
-    program: "Healing Intensive",
-  },
-  {
-    quote: "Working with Sarah changed everything. I went from barely surviving to thriving — emotionally, professionally, and in my relationships. I launched my business within 6 months of completing the program.",
-    name: "Denise W.",
-    detail: "Purpose-activated entrepreneur",
-    transformation: "From survival mode to purpose activation",
-    program: "1:1 Coaching",
-  },
-  {
-    quote: "The Purpose Clarity Session alone was worth more than two years of therapy I'd been through. Sarah spoke truth over my life that I had been avoiding for years. I finally have direction.",
-    name: "Angela M.",
-    detail: "Found clarity and a new sense of direction",
-    transformation: "From confusion to decisive clarity",
-    program: "Purpose Clarity Session",
-  },
-  {
-    quote: "I was skeptical. After going through the Healing Intensive, I released 20 years of pain in 2 days. I didn't even know I was carrying that much weight until it was gone.",
-    name: "Priscilla T.",
-    detail: "Healing Intensive graduate",
-    transformation: "From hidden pain to visible freedom",
-    program: "Healing Intensive",
-  },
-  {
-    quote: "Sarah never let me hide in my story. She pushed me — with love — to own my part and stop waiting for someone else to fix what only I could fix. That accountability changed my life.",
-    name: "Renee B.",
-    detail: "Accountability transformed her relationships",
-    transformation: "From victimhood to ownership",
-    program: "Group Program",
-  },
-  {
-    quote: "The community that surrounds Sarah's work is unlike anything I've ever experienced. I came for coaching and left with a sisterhood that still holds me accountable today.",
-    name: "Tanya M.",
-    detail: "Still an active community member after 2 years",
-    transformation: "From isolation to deep community",
-    program: "Group Program",
-  },
-  {
-    quote: "I never understood why I kept blowing up the good things in my life until Sarah helped me see my triggers. That single insight — understanding where my reactions were coming from — flipped everything.",
-    name: "Cynthia A.",
-    detail: "Broke a decade-long pattern of self-sabotage",
-    transformation: "From reactive to intentional",
-    program: "1:1 Coaching",
-  },
-  {
-    quote: "I applied everything Sarah taught me — and then I started teaching it to others. I now lead a small group in my community using the same 4 steps. My pain became my platform.",
-    name: "LaShonda K.",
-    detail: "Now a community group leader",
-    transformation: "From student to teacher",
-    program: "Group Program",
-  },
-];
+import { store, initStore, Testimonial } from "@/lib/adminStore";
 
 const stats = [
   { stat: "500+", label: "Lives Transformed" },
@@ -86,6 +13,17 @@ const stats = [
 ];
 
 const Testimonials = () => {
+  const [featured, setFeatured] = useState<Testimonial | null>(null);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+
+  useEffect(() => {
+    initStore();
+    const all = store.getTestimonials();
+    const feat = all.find((t) => t.featured) ?? all[0] ?? null;
+    setFeatured(feat);
+    setTestimonials(all.filter((t) => !t.featured));
+  }, []);
+
   useSEO({
     title: "Client Transformation Stories",
     description: "Real stories from 500+ women who broke generational cycles, healed past wounds, and stepped into purpose through Sarah Adams' 4-Step Transformation Framework.",
@@ -146,6 +84,7 @@ const Testimonials = () => {
             <div className="ornament-line !w-8" />
           </div>
         </div>
+        {featured && (
         <div className="rounded-3xl overflow-hidden grid grid-cols-1 lg:grid-cols-5">
           {/* Dark left block */}
           <div
@@ -184,6 +123,7 @@ const Testimonials = () => {
             </p>
           </div>
         </div>
+        )}
       </div>
     </section>
 

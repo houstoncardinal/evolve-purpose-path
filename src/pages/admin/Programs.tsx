@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Search, GraduationCap } from "lucide-react";
+import { Search, GraduationCap, Plus, X } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { store, ProgramEnrollment } from "@/lib/adminStore";
 import { useToast } from "@/hooks/use-toast";
@@ -27,11 +27,17 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   );
 };
 
+const emptyEnrollment = {
+  name: "", email: "", program: PROGRAMS[0], amount: "", status: "active" as ProgramEnrollment["status"],
+};
+
 const AdminPrograms = () => {
   const { toast } = useToast();
   const [enrollments, setEnrollments] = useState<ProgramEnrollment[]>(() => store.getEnrollments());
   const [search, setSearch] = useState("");
   const [activeProgram, setActiveProgram] = useState<string>("all");
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newEnrollment, setNewEnrollment] = useState(emptyEnrollment);
 
   const refresh = () => setEnrollments(store.getEnrollments());
 
@@ -57,14 +63,40 @@ const AdminPrograms = () => {
 
   const totalRevenue = enrollments.reduce((s, e) => s + e.amount, 0);
 
+  const handleAdd = () => {
+    if (!newEnrollment.name.trim() || !newEnrollment.email.trim()) return;
+    const amount = parseFloat(newEnrollment.amount) || 0;
+    store.addEnrollment({
+      name: newEnrollment.name,
+      email: newEnrollment.email,
+      program: newEnrollment.program,
+      amount,
+      enrolledAt: new Date().toISOString().split("T")[0],
+      status: newEnrollment.status,
+    });
+    refresh();
+    setShowAddModal(false);
+    setNewEnrollment(emptyEnrollment);
+    toast({ title: "Enrollment added" });
+  };
+
   return (
     <div className="p-6 lg:p-8 space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="font-heading text-2xl font-bold text-foreground">Program Enrollments</h1>
-        <p className="text-muted-foreground text-sm mt-0.5">
-          {enrollments.length} enrollments · ${totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} total revenue
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="font-heading text-2xl font-bold text-foreground">Program Enrollments</h1>
+          <p className="text-muted-foreground text-sm mt-0.5">
+            {enrollments.length} enrollments · ${totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} total revenue
+          </p>
+        </div>
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-white hover:opacity-90 transition-all shrink-0"
+          style={{ background: "#FF2DAA" }}
+        >
+          <Plus size={15} /> Add Enrollment
+        </button>
       </div>
 
       {/* Stats grid */}
@@ -195,6 +227,53 @@ const AdminPrograms = () => {
           <div className="text-center py-16 text-muted-foreground text-sm">No enrollments match your filter.</div>
         )}
       </div>
+
+      {/* Add Enrollment Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowAddModal(false)} />
+          <div className="relative bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl">
+            <button onClick={() => setShowAddModal(false)} className="absolute top-5 right-5 p-1.5 rounded-xl hover:bg-gray-100"><X size={16} /></button>
+            <h2 className="font-heading text-xl font-bold mb-6">Add Enrollment</h2>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-semibold text-muted-foreground uppercase">Name *</label>
+                  <input type="text" value={newEnrollment.name} onChange={(e) => setNewEnrollment({ ...newEnrollment, name: e.target.value })} className="mt-1 w-full px-4 py-3 rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm" placeholder="Full name" autoFocus />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-muted-foreground uppercase">Email *</label>
+                  <input type="email" value={newEnrollment.email} onChange={(e) => setNewEnrollment({ ...newEnrollment, email: e.target.value })} className="mt-1 w-full px-4 py-3 rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm" placeholder="email@example.com" />
+                </div>
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-muted-foreground uppercase">Program</label>
+                <select value={newEnrollment.program} onChange={(e) => setNewEnrollment({ ...newEnrollment, program: e.target.value })} className="mt-1 w-full px-4 py-3 rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm bg-white">
+                  {PROGRAMS.map((p) => <option key={p} value={p}>{p}</option>)}
+                </select>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-semibold text-muted-foreground uppercase">Amount ($)</label>
+                  <input type="number" value={newEnrollment.amount} onChange={(e) => setNewEnrollment({ ...newEnrollment, amount: e.target.value })} className="mt-1 w-full px-4 py-3 rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm" placeholder="0.00" min="0" step="0.01" />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-muted-foreground uppercase">Status</label>
+                  <select value={newEnrollment.status} onChange={(e) => setNewEnrollment({ ...newEnrollment, status: e.target.value as ProgramEnrollment["status"] })} className="mt-1 w-full px-4 py-3 rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm bg-white">
+                    {(["active", "completed", "paused"] as const).map((s) => (
+                      <option key={s} value={s}>{statusConfig[s].label}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-3 mt-6">
+              <button onClick={() => setShowAddModal(false)} className="flex-1 px-4 py-3 rounded-xl border border-border text-sm font-semibold hover:bg-gray-50">Cancel</button>
+              <button onClick={handleAdd} disabled={!newEnrollment.name.trim() || !newEnrollment.email.trim()} className="flex-1 px-4 py-3 rounded-xl text-sm font-bold text-white hover:opacity-90 disabled:opacity-40" style={{ background: "#FF2DAA" }}>Add Enrollment</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
