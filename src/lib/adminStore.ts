@@ -606,6 +606,11 @@ export const store = {
 
   // Community Applications
   getCommunityApps: (): CommunityApplication[] => load().communityApps,
+  addCommunityApp: (app: Omit<CommunityApplication, "id">) => {
+    const data = load();
+    data.communityApps.push({ ...app, id: `APP-${Date.now()}` });
+    save(data);
+  },
   updateAppStatus: (id: string, status: CommunityApplication["status"]) => {
     const data = load();
     data.communityApps = data.communityApps.map((a) => (a.id === id ? { ...a, status } : a));
