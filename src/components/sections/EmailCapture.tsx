@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Mail, ArrowRight, Check, AlertCircle } from "lucide-react";
+import { store, initStore } from "@/lib/adminStore";
 
 const isValidEmail = (val: string) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.trim());
@@ -20,6 +21,14 @@ const EmailCapture = ({ variant = "default" }: { variant?: "default" | "hero" | 
       return;
     }
     setError("");
+    // Save subscriber to admin store
+    initStore();
+    store.addSubscriber({
+      name: email.split("@")[0],
+      email: email.trim(),
+      joinedAt: new Date().toISOString().split("T")[0],
+      source: variant === "hero" ? "homepage" : variant === "fullwidth" ? "footer" : "free-guide",
+    });
     setSubmitted(true);
     setEmail("");
   };

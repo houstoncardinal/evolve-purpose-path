@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useSEO from "@/hooks/useSEO";
+import { store, initStore } from "@/lib/adminStore";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -128,6 +129,15 @@ const Community = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // Save to admin store so it appears in admin community applications
+    initStore();
+    store.addCommunityApp({
+      name: form.name,
+      email: form.email,
+      reason: form.reason,
+      appliedAt: new Date().toISOString().split("T")[0],
+      status: "pending",
+    });
     setJoined(true);
   };
 
