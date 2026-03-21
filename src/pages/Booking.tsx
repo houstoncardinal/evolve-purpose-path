@@ -77,6 +77,18 @@ const Booking = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // Save to admin store so it appears in admin bookings
+    store.addBooking({
+      name: `${form.firstName} ${form.lastName}`,
+      email: form.email,
+      organization: form.organization,
+      eventType: form.eventType,
+      audienceSize: form.audienceSize,
+      eventDate: form.eventDate,
+      details: form.message,
+      status: "new",
+      submittedAt: new Date().toISOString().split("T")[0],
+    });
     setSubmitted(true);
   };
 

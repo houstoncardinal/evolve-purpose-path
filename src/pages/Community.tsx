@@ -128,6 +128,15 @@ const Community = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // Save to admin store so it appears in admin community applications
+    initStore();
+    store.addCommunityApp({
+      name: form.name,
+      email: form.email,
+      reason: form.reason,
+      appliedAt: new Date().toISOString().split("T")[0],
+      status: "pending",
+    });
     setJoined(true);
   };
 
