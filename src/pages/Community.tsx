@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useSEO from "@/hooks/useSEO";
 import { Link } from "react-router-dom";
 import {
