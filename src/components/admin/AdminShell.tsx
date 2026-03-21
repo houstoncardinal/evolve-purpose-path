@@ -15,7 +15,7 @@ interface NavItem {
   exact?: boolean;
 }
 
-const navSections = [
+const navSections: { label: string; items: NavItem[] }[] = [
   {
     label: "Main",
     items: [
