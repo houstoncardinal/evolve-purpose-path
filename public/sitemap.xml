@@ -1,94 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
-  <!-- Homepage -->
+  <!-- Homepage — primary conversion entry point -->
   <url>
     <loc>https://evolve2purpose.com/</loc>
-    <lastmod>2025-01-01</lastmod>
+    <lastmod>2026-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://storage.googleapis.com/gpt-engineer-file-uploads/H8AneifdGjQ2j40rrjWnVOC9h2S2/social-images/social-1772758406705-Screenshot_2026-03-05_at_6.52.46_PM.webp</image:loc>
+      <image:title>Evolve 2 Purpose — Life Transformation Coaching with Sarah Adams</image:title>
+      <image:caption>Break generational cycles, heal your roots, and step into your God-given purpose with Sarah Adams' 4-Step Transformation Framework.</image:caption>
+    </image:image>
   </url>
 
-  <!-- Core pages -->
+  <!-- About — trust-building, E-E-A-T critical -->
   <url>
     <loc>https://evolve2purpose.com/about</loc>
-    <lastmod>2025-01-01</lastmod>
+    <lastmod>2026-03-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
+  <!-- Framework — evergreen educational content, high organic value -->
   <url>
     <loc>https://evolve2purpose.com/framework</loc>
-    <lastmod>2025-01-01</lastmod>
+    <lastmod>2026-03-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
+  <!-- Programs — primary revenue page, highest non-home priority -->
   <url>
     <loc>https://evolve2purpose.com/programs</loc>
-    <lastmod>2025-01-01</lastmod>
+    <lastmod>2026-03-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.95</priority>
   </url>
 
+  <!-- Testimonials — social proof, review schema rich page -->
   <url>
     <loc>https://evolve2purpose.com/testimonials</loc>
-    <lastmod>2025-01-01</lastmod>
+    <lastmod>2026-03-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
-  <!-- Lead gen + conversion pages -->
+  <!-- Free Guide — lead magnet, high-value organic landing page -->
   <url>
     <loc>https://evolve2purpose.com/free-guide</loc>
-    <lastmod>2025-01-01</lastmod>
+    <lastmod>2026-03-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
 
+  <!-- Booking — speaking inquiry, revenue-generating -->
   <url>
     <loc>https://evolve2purpose.com/booking</loc>
-    <lastmod>2025-01-01</lastmod>
+    <lastmod>2026-03-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
 
+  <!-- Community — recurring engagement, weekly updates -->
   <url>
     <loc>https://evolve2purpose.com/community</loc>
-    <lastmod>2025-01-01</lastmod>
+    <lastmod>2026-03-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
-  <!-- Brand + shop -->
+  <!-- Evolve 2 Purpose Movement — brand/philosophy page -->
   <url>
     <loc>https://evolve2purpose.com/evolve-2-purpose</loc>
-    <lastmod>2025-01-01</lastmod>
+    <lastmod>2026-03-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
 
+  <!-- Shop — e-commerce, products update frequently -->
   <url>
     <loc>https://evolve2purpose.com/shop</loc>
-    <lastmod>2025-01-01</lastmod>
+    <lastmod>2026-03-21</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
+    <priority>0.8</priority>
   </url>
 
-  <!-- Legal -->
+  <!-- Legal — low priority, rarely changes -->
   <url>
     <loc>https://evolve2purpose.com/privacy-policy</loc>
-    <lastmod>2025-01-01</lastmod>
+    <lastmod>2026-03-21</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
 
   <url>
     <loc>https://evolve2purpose.com/terms</loc>
-    <lastmod>2025-01-01</lastmod>
+    <lastmod>2026-03-21</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

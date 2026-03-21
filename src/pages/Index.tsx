@@ -98,26 +98,17 @@ const faqItems = [
 const INDEX_SCHEMA = [
   {
     "@context": "https://schema.org",
-    "@type": "Person",
-    "@id": "https://evolve2purpose.com/#sarah-adams",
-    name: "Sarah Adams",
-    jobTitle: "Certified Life & Transformation Coach",
-    description:
-      "Sarah Adams is a certified life and transformation coach, speaker, and founder of the Evolve 2 Purpose movement. She has helped 500+ women break generational cycles and walk in purpose.",
-    url: "https://evolve2purpose.com/about",
-    sameAs: [
-      "https://instagram.com/evolve2purpose",
-      "https://facebook.com/evolve2purpose",
-      "https://youtube.com/@evolve2purpose",
-    ],
-    knowsAbout: [
-      "Life Coaching",
-      "Purpose Activation",
-      "Generational Trauma Healing",
-      "Accountability Coaching",
-      "Women's Empowerment",
-    ],
-    founder: { "@type": "Organization", name: "Evolve 2 Purpose" },
+    "@type": "WebPage",
+    "@id": "https://evolve2purpose.com/#webpage",
+    url: "https://evolve2purpose.com/",
+    name: "Evolve 2 Purpose — Life Transformation Coaching with Sarah Adams",
+    isPartOf: { "@id": "https://evolve2purpose.com/#website" },
+    about: { "@id": "https://evolve2purpose.com/#organization" },
+    description: "Break generational cycles, heal your roots, and step into your God-given purpose. Sarah Adams' proven 4-Step Transformation Framework has helped 500+ women live with love, accountability, and lasting purpose.",
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://evolve2purpose.com" }],
+    },
   },
   {
     "@context": "https://schema.org",
@@ -125,26 +116,50 @@ const INDEX_SCHEMA = [
     mainEntity: [
       {
         "@type": "Question",
-        name: "What is the 4-Step System to Transform Your Life?",
+        name: "What is the Evolve 2 Purpose 4-Step Transformation Framework?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "The 4-Step System is a proven framework developed by Sarah Adams: Step 1 — Lead in Love (choose alignment over reaction), Step 2 — Take Accountability (own your growth), Step 3 — Manage Your Triggers (understand your emotional roots), Step 4 — Teach Others (turn your healing into a platform).",
+          text: "The 4-Step System is Sarah Adams' proven framework for lasting life transformation: Step 1 — Lead in Love (choose alignment and peace over pride and reaction), Step 2 — Take Accountability (own your growth and stop the blame cycle), Step 3 — Manage Your Triggers (understand emotional roots and break reactive patterns), Step 4 — Teach Others (turn your healing into purpose by serving someone else with your story).",
         },
       },
       {
         "@type": "Question",
-        name: "Who is Evolve 2 Purpose coaching for?",
+        name: "Who is Evolve 2 Purpose coaching designed for?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Evolve 2 Purpose primarily serves women who are ready to break generational cycles, heal past wounds, and live a life of intentional purpose. The programs range from 1:1 deep-dive coaching to group programs and healing intensives.",
+          text: "Evolve 2 Purpose serves women who are ready to break generational cycles, heal from abandonment, betrayal, and trauma, and step into their God-given purpose. Programs range from 1:1 deep-dive coaching to group programs, healing intensives, and the free 4-Step Guide.",
         },
       },
       {
         "@type": "Question",
-        name: "How long does the transformation process take?",
+        name: "How long does the transformation process take with Sarah Adams?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Results vary by person and program. Many clients experience significant shifts within the first session. The full 1:1 coaching journey is typically 6 months. Group programs and intensives offer concentrated transformation over shorter periods.",
+          text: "Many clients experience significant mindset shifts within the first session. The full 1:1 coaching journey is typically 3–6 months. The 8-week group program delivers concentrated transformation in two months. Healing Intensive Weekends offer accelerated breakthroughs in just a weekend.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Is coaching available online or does it require in-person attendance?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "All programs are available online via video call, making them fully accessible worldwide. Sarah works with clients across the US, UK, Canada, and internationally. In-person intensives may be available in select locations for special retreats.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "What is a generational cycle and how does coaching help break it?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "A generational cycle is a repeated pattern of behavior, trauma response, or belief system that is passed down through families — often unconsciously. Through Sarah's 4-Step Framework, clients learn to identify their inherited patterns, heal the root wound, and consciously choose new responses so the cycle stops with them.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How can I start my journey with Evolve 2 Purpose?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "You can start for free by downloading Sarah's 4-Step Guide at evolve2purpose.com/free-guide. From there, you can explore coaching programs at evolve2purpose.com/programs, or book a Purpose Clarity Session to get personalized guidance in 90 minutes.",
         },
       },
     ],
@@ -153,11 +168,11 @@ const INDEX_SCHEMA = [
 
 const Index = () => {
   useSEO({
-    title: "Transform Your Life in 4 Steps",
+    title: "Break Generational Cycles & Walk in Purpose",
     description:
-      "Discover Sarah Adams' proven 4-Step System: Lead in Love, Take Accountability, Manage Your Triggers, and Teach Others. 500+ women transformed. Start your journey today.",
+      "Sarah Adams' proven 4-Step Transformation Framework has helped 500+ women break generational cycles, heal at the root, and step into God-given purpose. Start your free journey today.",
     keywords:
-      "life transformation coaching, 4 step transformation system, purpose coaching women, Sarah Adams coach, break generational cycles, evolve 2 purpose, healing coaching, women empowerment",
+      "life transformation coaching, 4 step transformation framework, purpose coaching for women, Sarah Adams coach, break generational cycles, evolve 2 purpose, healing coaching for women, women empowerment coach, Christian life coach, generational trauma healing, accountability coaching, purpose activation women",
     schema: INDEX_SCHEMA,
   });
   useEffect(() => {

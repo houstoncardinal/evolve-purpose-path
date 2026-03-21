@@ -3,6 +3,7 @@ import useSEO from "@/hooks/useSEO";
 import { Link } from "react-router-dom";
 import EmailCapture from "@/components/sections/EmailCapture";
 import { BookOpen, Heart, Sparkles, Shield, ArrowRight, Check, Download, Star } from "lucide-react";
+import { store } from "@/lib/adminStore";
 
 const guideContents = [
   {
@@ -52,26 +53,61 @@ const miniTestimonials = [
 
 const FreeGuide = () => {
   useSEO({
-    title: "Free Guide — 4-Step System to Transform Your Life",
-    description: "Download the free 4-Step System to Transform Your Life guide by Sarah Adams. Includes self-assessment, the love test, accountability audit, trigger map, and your personalized roadmap.",
-    keywords: "free life transformation guide, free coaching guide, 4 step system PDF, Sarah Adams free guide, purpose coaching free download, healing guide women",
+    title: "Free Guide — 4-Step System to Transform Your Life (Download Now)",
+    description: "Get Sarah Adams' free 4-Step Transformation Guide: includes a self-assessment, the love test, accountability audit, trigger map, and your personalized next-step roadmap. No credit card required.",
+    keywords: "free life transformation guide download, free coaching guide women, 4 step system free PDF, Sarah Adams free guide, purpose coaching free resource, healing guide download women, free self assessment transformation, free guide break generational cycles",
+    breadcrumbs: [{ name: "Free Guide", url: "/free-guide" }],
     schema: [
       {
         "@context": "https://schema.org",
         "@type": "DigitalDocument",
-        name: "4-Step System to Transform Your Life",
-        description: "A free working guide filled with self-assessments, reflection exercises, and a personalized roadmap to help you understand exactly where you are and what to do next.",
+        name: "4-Step System to Transform Your Life — Free Guide by Sarah Adams",
+        description: "A free working guide filled with self-assessments, reflection exercises, and a personalized roadmap to help you understand exactly where you are in the transformation journey and what to do next.",
         url: "https://evolve2purpose.com/free-guide",
-        author: { "@type": "Person", name: "Sarah Adams" },
+        author: { "@id": "https://evolve2purpose.com/#sarah-adams" },
+        publisher: { "@id": "https://evolve2purpose.com/#organization" },
         isAccessibleForFree: true,
         fileFormat: "application/pdf",
+        inLanguage: "en-US",
+        about: [
+          "Life Transformation",
+          "Generational Cycle Breaking",
+          "Accountability",
+          "Emotional Trigger Management",
+          "Purpose Activation",
+        ],
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+          description: "Free download — no credit card required",
+        },
       },
       {
         "@context": "https://schema.org",
         "@type": "FAQPage",
         mainEntity: [
-          { "@type": "Question", name: "Is the guide really free?", acceptedAnswer: { "@type": "Answer", text: "Yes, completely. No credit card, no hidden trial, no bait-and-switch. The guide is Sarah's gift to anyone who is curious about the framework." } },
-          { "@type": "Question", name: "How long does it take to complete the guide?", acceptedAnswer: { "@type": "Answer", text: "You can read through it in 20 minutes. But to genuinely work through the self-assessment and exercises, plan for 1–2 hours. Many people revisit it multiple times as they grow." } },
+          {
+            "@type": "Question",
+            name: "Is the 4-Step Guide really free?",
+            acceptedAnswer: { "@type": "Answer", text: "Yes, completely free. No credit card, no hidden trial, no bait-and-switch. The guide is Sarah's gift to anyone ready to start their transformation journey — just enter your email and it will be delivered to your inbox." },
+          },
+          {
+            "@type": "Question",
+            name: "What is included in the free 4-Step Transformation Guide?",
+            acceptedAnswer: { "@type": "Answer", text: "The guide includes: (1) A self-assessment to identify where you are in your transformation journey, (2) The Love Test — revealing where you're leading with fear vs. love, (3) An Accountability Audit to identify areas of missing ownership, (4) A Trigger Map to trace emotional reactions to their roots, and (5) A personalized Next-Step Roadmap for your specific situation." },
+          },
+          {
+            "@type": "Question",
+            name: "How long does it take to complete the free guide?",
+            acceptedAnswer: { "@type": "Answer", text: "You can read through it in about 20 minutes. To genuinely work through all the self-assessments and exercises, plan for 1–2 hours. Many people revisit the guide multiple times as they grow through each step of the framework." },
+          },
+          {
+            "@type": "Question",
+            name: "What happens after I download the free guide?",
+            acceptedAnswer: { "@type": "Answer", text: "You'll receive the guide in your inbox. Sarah also shares occasional updates, encouragement, and early access to programs. You can unsubscribe at any time. If you want to go deeper after the guide, the Purpose Clarity Session ($197) is the natural next step." },
+          },
         ],
       },
     ],
@@ -79,8 +115,9 @@ const FreeGuide = () => {
   const [email, setEmail] = useState("");
   const [done, setDone] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    await store.addSubscriber({ email: email.trim(), source: "free-guide" });
     setDone(true);
   };
 

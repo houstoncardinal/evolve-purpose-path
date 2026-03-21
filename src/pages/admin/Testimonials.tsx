@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Star, Trash2, Edit2, X, Check } from "lucide-react";
 import { store, Testimonial } from "@/lib/adminStore";
 import { useToast } from "@/hooks/use-toast";
@@ -24,11 +24,13 @@ const emptyForm = {
 
 const AdminTestimonials = () => {
   const { toast } = useToast();
-  const [items, setItems] = useState<Testimonial[]>(() => store.getTestimonials());
+  const [items, setItems] = useState<Testimonial[]>([]);
   const [modal, setModal] = useState<{ open: boolean; editing: Testimonial | null }>({ open: false, editing: null });
   const [form, setForm] = useState(emptyForm);
 
-  const refresh = () => setItems(store.getTestimonials());
+  useEffect(() => { store.getTestimonials().then(setItems); }, []);
+
+  const refresh = () => store.getTestimonials().then(setItems);
 
   const openAdd = () => {
     setForm(emptyForm);
@@ -42,28 +44,28 @@ const AdminTestimonials = () => {
 
   const closeModal = () => setModal({ open: false, editing: null });
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!form.quote.trim() || !form.name.trim()) return;
     if (modal.editing) {
-      store.updateTestimonial(modal.editing.id, form);
+      await store.updateTestimonial(modal.editing.id, form);
       toast({ title: "Testimonial updated" });
     } else {
-      store.addTestimonial(form);
+      await store.addTestimonial(form);
       toast({ title: "Testimonial added" });
     }
     refresh();
     closeModal();
   };
 
-  const handleDelete = (id: string, name: string) => {
+  const handleDelete = async (id: string, name: string) => {
     if (!confirm(`Delete testimonial from ${name}?`)) return;
-    store.deleteTestimonial(id);
+    await store.deleteTestimonial(id);
     refresh();
     toast({ title: "Testimonial deleted" });
   };
 
-  const toggleFeatured = (t: Testimonial) => {
-    store.updateTestimonial(t.id, { featured: !t.featured });
+  const toggleFeatured = async (t: Testimonial) => {
+    await store.updateTestimonial(t.id, { featured: !t.featured });
     refresh();
     toast({ title: t.featured ? "Removed from featured" : "Set as featured story" });
   };

@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Search, ExternalLink, Eye, X, Calendar, Plus } from "lucide-react";
 import { store, BookingInquiry } from "@/lib/adminStore";
 import { useToast } from "@/hooks/use-toast";
@@ -16,7 +16,7 @@ const emptyBooking = {
 
 const AdminBookings = () => {
   const { toast } = useToast();
-  const [bookings, setBookings] = useState<BookingInquiry[]>(() => store.getBookings());
+  const [bookings, setBookings] = useState<BookingInquiry[]>([]);
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState<BookingInquiry["status"] | "all">("all");
   const [selected, setSelected] = useState<BookingInquiry | null>(null);
@@ -25,7 +25,9 @@ const AdminBookings = () => {
   const [noteEditing, setNoteEditing] = useState<string | null>(null);
   const [noteText, setNoteText] = useState("");
 
-  const refresh = () => setBookings(store.getBookings());
+  useEffect(() => { store.getBookings().then(setBookings); }, []);
+
+  const refresh = () => store.getBookings().then(setBookings);
 
   const filtered = useMemo(() => bookings.filter((b) => {
     const matchSearch =
@@ -36,27 +38,24 @@ const AdminBookings = () => {
     return matchSearch && matchStatus;
   }), [bookings, search, filterStatus]);
 
-  const updateStatus = (id: string, status: BookingInquiry["status"]) => {
-    store.updateBookingStatus(id, status);
+  const updateStatus = async (id: string, status: BookingInquiry["status"]) => {
+    await store.updateBookingStatus(id, status);
     refresh();
     if (selected?.id === id) setSelected((prev) => prev ? { ...prev, status } : null);
     toast({ title: `Booking marked as ${status}` });
   };
 
-  const saveNote = (id: string) => {
-    store.updateBookingNotes(id, noteText);
+  const saveNote = async (id: string) => {
+    await store.updateBookingNotes(id, noteText);
     refresh();
     if (selected?.id === id) setSelected((prev) => prev ? { ...prev, notes: noteText } : null);
     setNoteEditing(null);
     toast({ title: "Note saved" });
   };
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (!newBooking.name.trim() || !newBooking.email.trim()) return;
-    store.addBooking({
-      ...newBooking,
-      submittedAt: new Date().toISOString().split("T")[0],
-    });
+    await store.addBooking(newBooking);
     refresh();
     setShowAddModal(false);
     setNewBooking(emptyBooking);

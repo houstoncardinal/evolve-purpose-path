@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Search, Download, Plus, Trash2, X } from "lucide-react";
 import { store, Subscriber } from "@/lib/adminStore";
 import { useToast } from "@/hooks/use-toast";
@@ -14,13 +14,15 @@ const sourceColors: Record<Subscriber["source"], { bg: string; text: string }> =
 
 const AdminSubscribers = () => {
   const { toast } = useToast();
-  const [subscribers, setSubscribers] = useState<Subscriber[]>(() => store.getSubscribers());
+  const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   const [search, setSearch] = useState("");
   const [filterSource, setFilterSource] = useState<Subscriber["source"] | "all">("all");
   const [showAddModal, setShowAddModal] = useState(false);
   const [newSub, setNewSub] = useState({ name: "", email: "" });
 
-  const refresh = () => setSubscribers(store.getSubscribers());
+  useEffect(() => { store.getSubscribers().then(setSubscribers); }, []);
+
+  const refresh = () => store.getSubscribers().then(setSubscribers);
 
   const filtered = useMemo(() => subscribers.filter((s) => {
     const matchSearch =
@@ -30,19 +32,18 @@ const AdminSubscribers = () => {
     return matchSearch && matchSource;
   }), [subscribers, search, filterSource]);
 
-  const deleteSubscriber = (id: string, name: string) => {
+  const deleteSubscriber = async (id: string, name: string) => {
     if (!confirm(`Remove ${name} from your list?`)) return;
-    store.deleteSubscriber(id);
+    await store.deleteSubscriber(id);
     refresh();
     toast({ title: `${name} removed` });
   };
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (!newSub.email.includes("@")) return;
-    store.addSubscriber({
+    await store.addSubscriber({
       name: newSub.name || newSub.email.split("@")[0],
       email: newSub.email,
-      joinedAt: new Date().toISOString().split("T")[0],
       source: "manual",
     });
     refresh();

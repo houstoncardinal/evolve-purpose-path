@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import useSEO from "@/hooks/useSEO";
 import { ArrowRight, Mic, Users, Heart, Lightbulb, Globe, CheckCircle } from "lucide-react";
-import { store, initStore, SpeakingTopic, EventFormat, FAQ } from "@/lib/adminStore";
+import { store, SpeakingTopic, EventFormat, FAQ } from "@/lib/adminStore";
 
 const TOPIC_ICONS = [Heart, CheckCircle, Lightbulb, Users, Globe, Mic];
 
@@ -24,34 +24,81 @@ const Booking = () => {
   const [faq, setFaq] = useState<FAQ[]>([]);
 
   useEffect(() => {
-    initStore();
-    setTopics(store.getSpeakingTopics());
-    setFormats(store.getEventFormats());
-    setFaq(store.getFAQs().filter((f) => f.category === "booking"));
+    store.getSpeakingTopics().then(setTopics);
+    store.getEventFormats().then(setFormats);
+    store.getFAQs().then((all) => setFaq(all.filter((f) => f.category === "booking")));
   }, []);
 
   useSEO({
-    title: "Book Sarah Adams to Speak",
-    description: "Book Sarah Adams for your next women's conference, church event, corporate gathering, or retreat. Topics include purpose activation, healing, accountability, and breaking generational cycles.",
-    keywords: "book Sarah Adams speaker, women conference speaker, keynote speaker purpose coaching, faith-based speaker, healing speaker women events, transformation keynote",
+    title: "Book Sarah Adams to Speak — Women's Conferences, Churches & Retreats",
+    description: "Book Sarah Adams for your next women's conference, church event, corporate gathering, or healing retreat. Keynote topics: purpose activation, generational healing, accountability, and breaking cycles.",
+    keywords: "book Sarah Adams speaker, women conference keynote speaker, faith-based keynote speaker, healing speaker women events, transformation keynote speaker, Christian motivational speaker, church conference speaker, women retreat speaker, purpose activation speaker, generational healing speaker, corporate women speaker",
+    breadcrumbs: [{ name: "Book Sarah to Speak", url: "/booking" }],
     schema: [
       {
         "@context": "https://schema.org",
         "@type": "Service",
+        "@id": "https://evolve2purpose.com/booking#speaking-service",
         name: "Speaking Engagements — Sarah Adams",
-        description: "Sarah Adams delivers powerful keynotes and workshops for women's conferences, churches, corporate events, and retreats on topics of healing, purpose, and transformation.",
+        description: "Sarah Adams delivers powerful, life-changing keynotes and workshops for women's conferences, church services, corporate events, retreats, and virtual summits. Her message combines raw honesty, biblical wisdom, and practical tools that leave audiences forever changed.",
         url: "https://evolve2purpose.com/booking",
-        provider: { "@type": "Person", name: "Sarah Adams", jobTitle: "Speaker & Life Transformation Coach" },
+        provider: { "@id": "https://evolve2purpose.com/#sarah-adams" },
         serviceType: "Speaking Engagement",
-        areaServed: "Worldwide",
-        audience: { "@type": "Audience", audienceType: "Women leaders, event organizers, churches, corporations" },
+        areaServed: { "@type": "Place", name: "Worldwide" },
+        audience: {
+          "@type": "Audience",
+          audienceType: "Women leaders, church congregations, event organizers, corporate teams, retreat planners",
+        },
+        availableChannel: {
+          "@type": "ServiceChannel",
+          serviceUrl: "https://evolve2purpose.com/booking",
+          serviceType: "Online Inquiry Form",
+        },
+        offers: {
+          "@type": "Offer",
+          description: "Speaking fee available upon inquiry. Submit a speaking request to check availability.",
+          availability: "https://schema.org/InStock",
+        },
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "Speaking Topics",
+          itemListElement: [
+            { "@type": "Offer", itemOffered: { "@type": "Service", name: "From Survival Mode to Divine Stability", description: "Breaking the grip of trauma responses and stepping into grounded, purposeful living." } },
+            { "@type": "Offer", itemOffered: { "@type": "Service", name: "Healing the Abandonment Wounds", description: "Addressing rejection, abandonment, and betrayal — and how Christ restores what was broken." } },
+            { "@type": "Offer", itemOffered: { "@type": "Service", name: "Discernment & Destiny", description: "How spiritual clarity and emotional healing unlock your God-given purpose." } },
+            { "@type": "Offer", itemOffered: { "@type": "Service", name: "Becoming a Lotus", description: "Rising from the mud of your past into full bloom — identity, calling, and purpose in Christ." } },
+          ],
+        },
       },
       {
         "@context": "https://schema.org",
         "@type": "FAQPage",
         mainEntity: [
-          { "@type": "Question", name: "What topics does Sarah speak on?", acceptedAnswer: { "@type": "Answer", text: "Sarah speaks on: Lead in Love, Breaking Generational Cycles, The Power of Accountability, Managing Emotional Triggers, Turning Your Pain into a Platform, and Walking in Purpose." } },
-          { "@type": "Question", name: "How far in advance should we book Sarah?", acceptedAnswer: { "@type": "Answer", text: "We recommend reaching out at least 6–8 weeks before your event to ensure availability. For larger conferences, 3–6 months is preferred." } },
+          {
+            "@type": "Question",
+            name: "What topics does Sarah Adams speak on?",
+            acceptedAnswer: { "@type": "Answer", text: "Sarah's signature speaking topics include: From Survival Mode to Divine Stability, Healing the Abandonment Wounds, Discernment & Destiny, Becoming a Lotus (rising from your past into full purpose), The Power of Accountability, Breaking Generational Cycles, and Turning Your Pain into a Platform." },
+          },
+          {
+            "@type": "Question",
+            name: "What types of events does Sarah Adams speak at?",
+            acceptedAnswer: { "@type": "Answer", text: "Sarah speaks at women's conferences and summits, church services and revivals, corporate women's events, healing retreats and intensives, university and school events, panel discussions, and virtual webinars and online summits." },
+          },
+          {
+            "@type": "Question",
+            name: "How far in advance should we book Sarah Adams?",
+            acceptedAnswer: { "@type": "Answer", text: "We recommend submitting your inquiry at least 6–8 weeks before your event to ensure availability. For larger conferences, national events, or multi-day intensives, reaching out 3–6 months in advance is strongly preferred to secure your date." },
+          },
+          {
+            "@type": "Question",
+            name: "Does Sarah Adams speak virtually as well as in person?",
+            acceptedAnswer: { "@type": "Answer", text: "Yes. Sarah is available for both in-person and virtual events. She regularly delivers keynotes and workshops via livestream and online summit formats, making it accessible for events of any size worldwide." },
+          },
+          {
+            "@type": "Question",
+            name: "How do I request a speaking quote?",
+            acceptedAnswer: { "@type": "Answer", text: "Submit a speaking inquiry through the form on this page. Include your event type, date, audience size, and a brief description of your vision. Sarah's team typically responds within 2–3 business days." },
+          },
         ],
       },
     ],
@@ -75,19 +122,16 @@ const Booking = () => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Save to admin store so it appears in admin bookings
-    store.addBooking({
-      name: `${form.firstName} ${form.lastName}`,
+    await store.addBooking({
+      name: `${form.firstName} ${form.lastName}`.trim(),
       email: form.email,
       organization: form.organization,
       eventType: form.eventType,
       audienceSize: form.audienceSize,
       eventDate: form.eventDate,
       details: form.message,
-      status: "new",
-      submittedAt: new Date().toISOString().split("T")[0],
     });
     setSubmitted(true);
   };

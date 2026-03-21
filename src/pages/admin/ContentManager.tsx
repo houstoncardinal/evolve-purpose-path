@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Trash2, Edit2, X } from "lucide-react";
 import { store, SpeakingTopic, EventFormat, FAQ } from "@/lib/adminStore";
 import { useToast } from "@/hooks/use-toast";
@@ -9,31 +9,33 @@ type Tab = "topics" | "formats" | "faqs";
 
 const TopicsTab = () => {
   const { toast } = useToast();
-  const [items, setItems] = useState<SpeakingTopic[]>(() => store.getSpeakingTopics());
+  const [items, setItems] = useState<SpeakingTopic[]>([]);
   const [modal, setModal] = useState<{ open: boolean; editing: SpeakingTopic | null }>({ open: false, editing: null });
   const [form, setForm] = useState({ title: "", desc: "" });
 
-  const refresh = () => setItems(store.getSpeakingTopics());
+  useEffect(() => { store.getSpeakingTopics().then(setItems); }, []);
+
+  const refresh = () => store.getSpeakingTopics().then(setItems);
   const openAdd = () => { setForm({ title: "", desc: "" }); setModal({ open: true, editing: null }); };
   const openEdit = (t: SpeakingTopic) => { setForm({ title: t.title, desc: t.desc }); setModal({ open: true, editing: t }); };
   const closeModal = () => setModal({ open: false, editing: null });
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!form.title.trim()) return;
     if (modal.editing) {
-      store.updateSpeakingTopic(modal.editing.id, form);
+      await store.updateSpeakingTopic(modal.editing.id, form);
       toast({ title: "Topic updated" });
     } else {
-      store.addSpeakingTopic(form);
+      await store.addSpeakingTopic(form);
       toast({ title: "Topic added" });
     }
     refresh();
     closeModal();
   };
 
-  const handleDelete = (id: string, title: string) => {
+  const handleDelete = async (id: string, title: string) => {
     if (!confirm(`Delete topic "${title}"?`)) return;
-    store.deleteSpeakingTopic(id);
+    await store.deleteSpeakingTopic(id);
     refresh();
     toast({ title: "Topic deleted" });
   };
@@ -97,31 +99,33 @@ const TopicsTab = () => {
 
 const FormatsTab = () => {
   const { toast } = useToast();
-  const [items, setItems] = useState<EventFormat[]>(() => store.getEventFormats());
+  const [items, setItems] = useState<EventFormat[]>([]);
   const [modal, setModal] = useState<{ open: boolean; editing: EventFormat | null }>({ open: false, editing: null });
   const [form, setForm] = useState({ label: "", detail: "" });
 
-  const refresh = () => setItems(store.getEventFormats());
+  useEffect(() => { store.getEventFormats().then(setItems); }, []);
+
+  const refresh = () => store.getEventFormats().then(setItems);
   const openAdd = () => { setForm({ label: "", detail: "" }); setModal({ open: true, editing: null }); };
   const openEdit = (f: EventFormat) => { setForm({ label: f.label, detail: f.detail }); setModal({ open: true, editing: f }); };
   const closeModal = () => setModal({ open: false, editing: null });
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!form.label.trim()) return;
     if (modal.editing) {
-      store.updateEventFormat(modal.editing.id, form);
+      await store.updateEventFormat(modal.editing.id, form);
       toast({ title: "Format updated" });
     } else {
-      store.addEventFormat(form);
+      await store.addEventFormat(form);
       toast({ title: "Format added" });
     }
     refresh();
     closeModal();
   };
 
-  const handleDelete = (id: string, label: string) => {
+  const handleDelete = async (id: string, label: string) => {
     if (!confirm(`Delete format "${label}"?`)) return;
-    store.deleteEventFormat(id);
+    await store.deleteEventFormat(id);
     refresh();
     toast({ title: "Format deleted" });
   };
@@ -192,31 +196,33 @@ const categoryConfig: Record<FAQ["category"], { label: string; color: string }> 
 
 const FAQsTab = () => {
   const { toast } = useToast();
-  const [items, setItems] = useState<FAQ[]>(() => store.getFAQs());
+  const [items, setItems] = useState<FAQ[]>([]);
   const [modal, setModal] = useState<{ open: boolean; editing: FAQ | null }>({ open: false, editing: null });
   const [form, setForm] = useState<{ question: string; answer: string; category: FAQ["category"] }>({ question: "", answer: "", category: "booking" });
 
-  const refresh = () => setItems(store.getFAQs());
+  useEffect(() => { store.getFAQs().then(setItems); }, []);
+
+  const refresh = () => store.getFAQs().then(setItems);
   const openAdd = () => { setForm({ question: "", answer: "", category: "booking" }); setModal({ open: true, editing: null }); };
   const openEdit = (f: FAQ) => { setForm({ question: f.question, answer: f.answer, category: f.category }); setModal({ open: true, editing: f }); };
   const closeModal = () => setModal({ open: false, editing: null });
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!form.question.trim() || !form.answer.trim()) return;
     if (modal.editing) {
-      store.updateFAQ(modal.editing.id, form);
+      await store.updateFAQ(modal.editing.id, form);
       toast({ title: "FAQ updated" });
     } else {
-      store.addFAQ(form);
+      await store.addFAQ(form);
       toast({ title: "FAQ added" });
     }
     refresh();
     closeModal();
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (!confirm("Delete this FAQ?")) return;
-    store.deleteFAQ(id);
+    await store.deleteFAQ(id);
     refresh();
     toast({ title: "FAQ deleted" });
   };

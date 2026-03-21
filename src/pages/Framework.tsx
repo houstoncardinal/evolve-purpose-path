@@ -44,23 +44,73 @@ const frameworkSteps = [
 
 const Framework = () => {
   useSEO({
-    title: "The 4-Step Transformation Framework",
-    description: "Explore Sarah Adams' 4-Step System: Lead in Love, Take Accountability, Manage Your Triggers, and Teach Others. A proven roadmap for lasting life transformation.",
-    keywords: "4 step transformation framework, lead in love, take accountability, manage triggers, teach others, healing framework for women, Sarah Adams framework",
-    schema: {
-      "@context": "https://schema.org",
-      "@type": "HowTo",
-      name: "The 4-Step System to Transform Your Life",
-      description: "A proven four-step personal development framework created by Sarah Adams to help women break cycles, heal their roots, and activate lasting purpose.",
-      url: "https://evolve2purpose.com/framework",
-      author: { "@type": "Person", name: "Sarah Adams" },
-      step: [
-        { "@type": "HowToStep", position: 1, name: "Lead in Love", text: "Choose alignment over reaction. Leading in love means trusting that peace will protect what pride would destroy. Step into divine alignment instead of emotional chaos." },
-        { "@type": "HowToStep", position: 2, name: "Take Accountability", text: "Stop waiting for someone else to fix what only you can fix. Ownership is where transformation begins — not blame, not excuses, but radical responsibility for your own growth." },
-        { "@type": "HowToStep", position: 3, name: "Manage Your Triggers", text: "Your emotional reactions are data, not destiny. Learn to trace them back to their roots — wounds, beliefs, and patterns formed long ago — and begin to respond instead of react." },
-        { "@type": "HowToStep", position: 4, name: "Teach Others", text: "Your healing was never just for you. When you share what you have learned, you multiply your impact, solidify your own growth, and become the very person someone else desperately needed." },
-      ],
-    },
+    title: "The 4-Step Transformation Framework — Lead in Love, Heal, Teach",
+    description: "Discover Sarah Adams' complete 4-Step System to break generational cycles: Lead in Love, Take Accountability, Manage Your Triggers, and Teach Others. A proven roadmap for lasting transformation.",
+    keywords: "4 step transformation framework, lead in love framework, take accountability personal growth, manage emotional triggers, teach others your healing, healing framework women, Sarah Adams 4 step system, life transformation steps, break cycles framework, purpose activation framework",
+    breadcrumbs: [{ name: "The 4-Step Framework", url: "/framework" }],
+    schema: [
+      {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        name: "The 4-Step System to Transform Your Life",
+        description: "A proven four-step personal development framework created by Sarah Adams to help women break generational cycles, heal their emotional roots, and activate lasting purpose.",
+        url: "https://evolve2purpose.com/framework",
+        author: { "@id": "https://evolve2purpose.com/#sarah-adams" },
+        totalTime: "P3M",
+        estimatedCost: { "@type": "MonetaryAmount", currency: "USD", value: "0", description: "Free guide available. Coaching programs start at $197." },
+        step: [
+          {
+            "@type": "HowToStep",
+            position: 1,
+            name: "Step 1: Lead in Love",
+            text: "Choose alignment over reaction. Leading in love means trusting that peace will protect what pride would destroy. When you choose love over ego, you step into divine alignment instead of emotional chaos. This is the foundation that makes every other step possible.",
+            url: "https://evolve2purpose.com/framework#step-1",
+          },
+          {
+            "@type": "HowToStep",
+            position: 2,
+            name: "Step 2: Take Accountability for Your Actions",
+            text: "Stop waiting for someone else to fix what only you can fix. Ownership is where transformation begins — not blame, not excuses, but radical responsibility for your own growth. Accountability isn't about guilt; it's about reclaiming your power to change.",
+            url: "https://evolve2purpose.com/framework#step-2",
+          },
+          {
+            "@type": "HowToStep",
+            position: 3,
+            name: "Step 3: Learn from Your Actions & Manage Your Triggers",
+            text: "Your emotional reactions are data, not destiny. Learn to trace them back to their roots — wounds, beliefs, and patterns formed long ago — and begin to respond instead of react. Every trigger is a teacher pointing you toward deeper healing.",
+            url: "https://evolve2purpose.com/framework#step-3",
+          },
+          {
+            "@type": "HowToStep",
+            position: 4,
+            name: "Step 4: Teach Someone Else What You Just Learned",
+            text: "Your healing was never just for you. When you share what you have learned, you multiply your impact, solidify your own growth, and become the very person someone else desperately needed. This is how purpose is born — your story becomes someone else's survival guide.",
+            url: "https://evolve2purpose.com/framework#step-4",
+          },
+        ],
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        name: "The 4-Step Transformation Framework",
+        description: "Sarah Adams' complete personal development system for breaking generational cycles, healing emotional roots, and walking in purpose.",
+        provider: { "@id": "https://evolve2purpose.com/#organization" },
+        instructor: { "@id": "https://evolve2purpose.com/#sarah-adams" },
+        url: "https://evolve2purpose.com/framework",
+        educationalLevel: "All levels",
+        teaches: [
+          "How to lead with love instead of reaction",
+          "How to take accountability and break blame cycles",
+          "How to identify and manage emotional triggers",
+          "How to turn personal healing into purpose and impact for others",
+        ],
+        hasCourseInstance: {
+          "@type": "CourseInstance",
+          courseMode: "online",
+          courseWorkload: "PT2H",
+        },
+      },
+    ],
   });
   return (
   <div>

@@ -1,29 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Save, Eye, EyeOff, AlertCircle } from "lucide-react";
 import { store, PlatformSettings } from "@/lib/adminStore";
 import { useToast } from "@/hooks/use-toast";
 
 const AdminSettings = () => {
   const { toast } = useToast();
-  const [settings, setSettings] = useState<PlatformSettings>(() => store.getSettings());
+  const [settings, setSettings] = useState<PlatformSettings>({ contactEmail: "", bookingEmail: "", socialInstagram: "", socialYoutube: "", socialFacebook: "", adminPassword: "" });
   const [showPass, setShowPass] = useState(false);
   const [newPass, setNewPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
   const [saving, setSaving] = useState(false);
 
-  const handleSave = () => {
+  useEffect(() => { store.getSettings().then(setSettings); }, []);
+
+  const handleSave = async () => {
     setSaving(true);
-    store.updateSettings({
+    await store.updateSettings({
       contactEmail: settings.contactEmail,
       bookingEmail: settings.bookingEmail,
       socialInstagram: settings.socialInstagram,
       socialYoutube: settings.socialYoutube,
       socialFacebook: settings.socialFacebook,
     });
-    setTimeout(() => {
-      setSaving(false);
-      toast({ title: "Settings saved" });
-    }, 300);
+    setSaving(false);
+    toast({ title: "Settings saved" });
   };
 
   const handlePasswordChange = () => {
@@ -32,10 +32,9 @@ const AdminSettings = () => {
       toast({ title: "Passwords don't match", variant: "destructive" });
       return;
     }
-    store.updateSettings({ adminPassword: newPass });
     setNewPass("");
     setConfirmPass("");
-    toast({ title: "Password updated — use it on next login" });
+    toast({ title: "To change your password, use Supabase Dashboard → Authentication → Users" });
   };
 
   const inputClass = "mt-1 w-full px-4 py-3 rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm bg-white";

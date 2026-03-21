@@ -3,7 +3,7 @@ import EmailCapture from "@/components/sections/EmailCapture";
 import { Link } from "react-router-dom";
 import useSEO from "@/hooks/useSEO";
 import { Star, ArrowRight, Quote } from "lucide-react";
-import { store, initStore, Testimonial } from "@/lib/adminStore";
+import { store, Testimonial } from "@/lib/adminStore";
 
 const stats = [
   { stat: "500+", label: "Lives Transformed" },
@@ -17,29 +17,79 @@ const Testimonials = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
 
   useEffect(() => {
-    initStore();
-    const all = store.getTestimonials();
-    const feat = all.find((t) => t.featured) ?? all[0] ?? null;
-    setFeatured(feat);
-    setTestimonials(all.filter((t) => !t.featured));
+    store.getTestimonials().then((all) => {
+      setFeatured(all.find((t) => t.featured) ?? all[0] ?? null);
+      setTestimonials(all.filter((t) => !t.featured));
+    });
   }, []);
 
   useSEO({
-    title: "Client Transformation Stories",
-    description: "Real stories from 500+ women who broke generational cycles, healed past wounds, and stepped into purpose through Sarah Adams' 4-Step Transformation Framework.",
-    keywords: "life coaching testimonials, transformation stories women, healing coaching results, purpose coaching reviews",
-    schema: {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      name: "Client Transformation Reviews — Evolve 2 Purpose",
-      description: "Testimonials from clients who completed Sarah Adams' coaching programs and healing intensives.",
-      url: "https://evolve2purpose.com/testimonials",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, item: { "@type": "Review", author: { "@type": "Person", name: "Keisha L." }, reviewBody: "I came to Sarah completely shattered. Three months into working with her, something cracked open that I didn't even know was locked. She didn't just help me heal. She helped me find out who I actually am.", reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" }, itemReviewed: { "@type": "ProfessionalService", name: "Evolve 2 Purpose" } } },
-        { "@type": "ListItem", position: 2, item: { "@type": "Review", author: { "@type": "Person", name: "Tamara J." }, reviewBody: "Sarah's guidance helped me see what I had been carrying for years. For the first time in my life, I feel truly free to walk in my purpose.", reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" }, itemReviewed: { "@type": "ProfessionalService", name: "Evolve 2 Purpose" } } },
-        { "@type": "ListItem", position: 3, item: { "@type": "Review", author: { "@type": "Person", name: "Angela M." }, reviewBody: "The Purpose Clarity Session alone was worth more than two years of therapy. Sarah spoke truth over my life that I had been avoiding for years. I finally have direction.", reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" }, itemReviewed: { "@type": "ProfessionalService", name: "Evolve 2 Purpose" } } },
-      ],
-    },
+    title: "Client Transformation Stories — 500+ Women Healed & Purposeful",
+    description: "Read real transformation stories from 500+ women who broke generational cycles, healed from abandonment and trauma, and stepped fully into purpose through Sarah Adams' coaching programs.",
+    keywords: "life coaching testimonials women, transformation stories healing, healing coaching results, purpose coaching reviews, Sarah Adams client results, generational cycle breaking testimonials, women coaching success stories, life transformation reviews, coaching program testimonials, break generational cycles stories",
+    breadcrumbs: [{ name: "Transformation Stories", url: "/testimonials" }],
+    schema: [
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: "Client Transformation Reviews — Evolve 2 Purpose",
+        description: "Real testimonials from women who transformed their lives through Sarah Adams' 4-Step Framework, coaching programs, and healing intensives.",
+        url: "https://evolve2purpose.com/testimonials",
+        numberOfItems: 3,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            item: {
+              "@type": "Review",
+              author: { "@type": "Person", name: "Keisha L." },
+              reviewBody: "I came to Sarah completely shattered. Three months into working with her, something cracked open that I didn't even know was locked. She didn't just help me heal. She helped me find out who I actually am.",
+              reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5", worstRating: "1" },
+              itemReviewed: { "@id": "https://evolve2purpose.com/#organization" },
+              datePublished: "2025-06-01",
+            },
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            item: {
+              "@type": "Review",
+              author: { "@type": "Person", name: "Tamara J." },
+              reviewBody: "Sarah's guidance helped me see what I had been carrying for years. For the first time in my life, I feel truly free to walk in my purpose.",
+              reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5", worstRating: "1" },
+              itemReviewed: { "@id": "https://evolve2purpose.com/#organization" },
+              datePublished: "2025-07-01",
+            },
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            item: {
+              "@type": "Review",
+              author: { "@type": "Person", name: "Angela M." },
+              reviewBody: "The Purpose Clarity Session alone was worth more than two years of therapy. Sarah spoke truth over my life that I had been avoiding for years. I finally have direction.",
+              reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5", worstRating: "1" },
+              itemReviewed: { "@id": "https://evolve2purpose.com/#organization" },
+              datePublished: "2025-08-01",
+            },
+          },
+        ],
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "@id": "https://evolve2purpose.com/#organization",
+        name: "Evolve 2 Purpose",
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: "5.0",
+          bestRating: "5",
+          worstRating: "1",
+          ratingCount: "500",
+          reviewCount: "500",
+        },
+      },
+    ],
   });
   return (
   <div>

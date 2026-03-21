@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useSEO from "@/hooks/useSEO";
-import { store, initStore } from "@/lib/adminStore";
 import { Link } from "react-router-dom";
+import { store } from "@/lib/adminStore";
 import {
   ArrowRight,
   MessageCircle,
@@ -104,19 +104,46 @@ const upcomingEvents = [
 
 const Community = () => {
   useSEO({
-    title: "Join the Community",
-    description: "Join the Evolve 2 Purpose private community — 1,200+ members growing together in love, accountability, and purpose. Access posts, events, and direct connection with Sarah Adams.",
-    keywords: "women empowerment community, purpose community online, healing community women, accountability group women, evolve 2 purpose community, Sarah Adams community",
-    schema: {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      name: "Evolve 2 Purpose Community",
-      description: "A private membership community for women committed to living with love, accountability, and purpose — with 1,200+ active members.",
-      url: "https://evolve2purpose.com/community",
-      founder: { "@type": "Person", name: "Sarah Adams" },
-      memberOf: { "@type": "Organization", name: "Evolve 2 Purpose" },
-      numberOfMembers: 1200,
-    },
+    title: "Join the Community — Private Women's Transformation Network",
+    description: "Join 1,200+ women in the Evolve 2 Purpose private community — direct access to Sarah Adams, live monthly events, accountability circles, resource library, and a safe space to grow.",
+    keywords: "women empowerment community online, private purpose community women, healing community online women, accountability community women, women transformation group, online community for healing women, evolve 2 purpose community membership, Sarah Adams community, women's spiritual growth community, private coaching community women",
+    breadcrumbs: [{ name: "Join the Community", url: "/community" }],
+    schema: [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://evolve2purpose.com/community#community",
+        name: "Evolve 2 Purpose Community",
+        description: "A private membership community for 1,200+ women committed to breaking generational cycles, living in love and accountability, and walking in purpose — with direct access to Sarah Adams, live events, and an exclusive resource library.",
+        url: "https://evolve2purpose.com/community",
+        founder: { "@id": "https://evolve2purpose.com/#sarah-adams" },
+        parentOrganization: { "@id": "https://evolve2purpose.com/#organization" },
+        memberOf: { "@id": "https://evolve2purpose.com/#organization" },
+        numberOfEmployees: { "@type": "QuantitativeValue", value: 1200, description: "1,200+ active members" },
+        keywords: "women's community, healing community, purpose community, accountability group, women empowerment",
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "What is included in the Evolve 2 Purpose community membership?",
+            acceptedAnswer: { "@type": "Answer", text: "Membership includes: direct posts and voice notes from Sarah Adams, 4+ monthly live events and workshops, member chat and community feed, full resource and replay library, accountability circle placement, and access to exclusive guides and workbooks." },
+          },
+          {
+            "@type": "Question",
+            name: "Who is the Evolve 2 Purpose community for?",
+            acceptedAnswer: { "@type": "Answer", text: "The community is for women who are actively working on their personal and spiritual growth — those committed to breaking generational cycles, healing their roots, and living with love, accountability, and purpose. Membership is by application to keep the space intentional and safe." },
+          },
+          {
+            "@type": "Question",
+            name: "How is this different from a Facebook group?",
+            acceptedAnswer: { "@type": "Answer", text: "This is a dedicated, curated space — not a social media group. Sarah shows up personally, content is intentional, events are structured, and accountability is built in. It's designed for transformation, not scrolling." },
+          },
+        ],
+      },
+    ],
   });
   const [form, setForm] = useState({ name: "", email: "", reason: "" });
   const [joined, setJoined] = useState(false);
@@ -127,17 +154,9 @@ const Community = () => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Save to admin store so it appears in admin community applications
-    initStore();
-    store.addCommunityApp({
-      name: form.name,
-      email: form.email,
-      reason: form.reason,
-      appliedAt: new Date().toISOString().split("T")[0],
-      status: "pending",
-    });
+    await store.addCommunityApp({ name: form.name, email: form.email, reason: form.reason });
     setJoined(true);
   };
 

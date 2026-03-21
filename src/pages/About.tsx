@@ -52,35 +52,93 @@ const credentials = [
 
 const About = () => {
   useSEO({
-    title: "About Sarah Adams",
+    title: "About Sarah Adams — Christian Counselor & Transformation Coach",
     description:
-      "Sarah Adams is a Christian counselor, prophetess, seer, and founder of Evolve 2 Purpose — a healing movement dedicated to breaking generational cycles and restoring identity through Christ-centered emotional healing.",
+      "Meet Sarah Adams: Christian counselor, prophetess, seer, and founder of Evolve 2 Purpose. She has helped 500+ women heal from generational cycles, abandonment wounds, and trauma — and step into God-given purpose.",
     keywords:
-      "Sarah Adams Christian counselor, prophetess seer coach, generational cycle breaking, identity restoration Christ, abandonment wound healing, trauma healing coach, evolve 2 purpose founder, inspirational speaker",
-    schema: {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "@id": "https://evolve2purpose.com/#sarah-adams",
-      name: "Sarah Adams",
-      jobTitle: "Christian Counselor, Prophetess & Transformation Coach",
-      description:
-        "Sarah Adams is a Christian counselor, prophetess, seer, and the founder of EVOLVE 2 PURPOSE — a transformational healing movement dedicated to breaking generational cycles and restoring identity through Christ-centered emotional healing.",
-      url: "https://evolve2purpose.com/about",
-      knowsAbout: [
-        "Generational Cycle Breaking",
-        "Christian Counseling",
-        "Trauma Healing",
-        "Prophetic Ministry",
-        "Identity Restoration",
-        "Emotional Regulation",
-        "Abandonment Wound Healing",
-      ],
-      sameAs: [
-        "https://instagram.com/evolve2purpose",
-        "https://facebook.com/evolve2purpose",
-        "https://youtube.com/@evolve2purpose",
-      ],
-    },
+      "Sarah Adams Christian counselor, prophetess seer coach, generational cycle breaking, identity restoration Christ, abandonment wound healing, trauma healing coach, evolve 2 purpose founder, women's conference speaker, Christian life coach, transformation coach women, faith-based healing coach, purpose coach speaker",
+    breadcrumbs: [{ name: "About Sarah Adams", url: "/about" }],
+    schema: [
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": "https://evolve2purpose.com/#sarah-adams",
+        name: "Sarah Adams",
+        givenName: "Sarah",
+        familyName: "Adams",
+        jobTitle: "Christian Counselor, Prophetess & Transformation Coach",
+        description:
+          "Sarah Adams is a Christian counselor, prophetess, seer, transformation coach, and internationally recognized speaker. As the founder of Evolve 2 Purpose, she has helped 500+ women break generational cycles, heal from abandonment and betrayal wounds, and step into their God-given calling.",
+        url: "https://evolve2purpose.com/about",
+        image: "https://storage.googleapis.com/gpt-engineer-file-uploads/H8AneifdGjQ2j40rrjWnVOC9h2S2/social-images/social-1772758406705-Screenshot_2026-03-05_at_6.52.46_PM.webp",
+        knowsAbout: [
+          "Generational Cycle Breaking",
+          "Christian Counseling and Therapy",
+          "Trauma-Informed Healing",
+          "Prophetic Ministry",
+          "Identity Restoration in Christ",
+          "Emotional Regulation and Trigger Management",
+          "Abandonment and Betrayal Wound Healing",
+          "Purpose Activation for Women",
+          "Accountability Coaching",
+          "Women's Empowerment and Leadership",
+          "Faith-Based Personal Development",
+        ],
+        hasOccupation: [
+          {
+            "@type": "Occupation",
+            name: "Life Transformation Coach",
+            occupationLocation: { "@type": "AdministrativeArea", name: "Worldwide" },
+            skills: "Trauma healing, purpose coaching, accountability, generational cycle breaking",
+          },
+          {
+            "@type": "Occupation",
+            name: "Keynote Speaker",
+            occupationLocation: { "@type": "AdministrativeArea", name: "Worldwide" },
+            skills: "Women's conferences, church events, corporate retreats, healing intensives",
+          },
+          {
+            "@type": "Occupation",
+            name: "Christian Counselor",
+            occupationLocation: { "@type": "AdministrativeArea", name: "Worldwide" },
+            skills: "Christ-centered healing, spiritual identity, emotional healing",
+          },
+        ],
+        worksFor: {
+          "@type": "Organization",
+          "@id": "https://evolve2purpose.com/#organization",
+          name: "Evolve 2 Purpose",
+          url: "https://evolve2purpose.com",
+        },
+        sameAs: [
+          "https://instagram.com/evolve2purpose",
+          "https://facebook.com/evolve2purpose",
+          "https://youtube.com/@evolve2purpose",
+        ],
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "What is Sarah Adams' background and training?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Sarah Adams is a Christian counselor, prophetess, and seer with over 10 years of experience in faith-based healing and transformation. She founded Evolve 2 Purpose after her own journey of breaking generational cycles and discovering the 4-Step Framework that has since transformed 500+ women's lives.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "What is Sarah Adams known for as a speaker?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Sarah Adams is known for her raw honesty, deep biblical insight, and practical tools that leave audiences forever changed. Her signature topics include: From Survival Mode to Divine Stability, Healing the Abandonment Wound, Discernment & Destiny, and Becoming a Lotus (rising from your past into full purpose).",
+            },
+          },
+        ],
+      },
+    ],
   });
 
   return (

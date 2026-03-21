@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Search, GraduationCap, Plus, X } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { store, ProgramEnrollment } from "@/lib/adminStore";
@@ -33,16 +33,18 @@ const emptyEnrollment = {
 
 const AdminPrograms = () => {
   const { toast } = useToast();
-  const [enrollments, setEnrollments] = useState<ProgramEnrollment[]>(() => store.getEnrollments());
+  const [enrollments, setEnrollments] = useState<ProgramEnrollment[]>([]);
   const [search, setSearch] = useState("");
   const [activeProgram, setActiveProgram] = useState<string>("all");
   const [showAddModal, setShowAddModal] = useState(false);
   const [newEnrollment, setNewEnrollment] = useState(emptyEnrollment);
 
-  const refresh = () => setEnrollments(store.getEnrollments());
+  useEffect(() => { store.getEnrollments().then(setEnrollments); }, []);
 
-  const updateStatus = (id: string, status: ProgramEnrollment["status"]) => {
-    store.updateEnrollmentStatus(id, status);
+  const refresh = () => store.getEnrollments().then(setEnrollments);
+
+  const updateStatus = async (id: string, status: ProgramEnrollment["status"]) => {
+    await store.updateEnrollmentStatus(id, status);
     refresh();
     toast({ title: `Enrollment status updated to ${status}` });
   };
@@ -63,15 +65,14 @@ const AdminPrograms = () => {
 
   const totalRevenue = enrollments.reduce((s, e) => s + e.amount, 0);
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (!newEnrollment.name.trim() || !newEnrollment.email.trim()) return;
     const amount = parseFloat(newEnrollment.amount) || 0;
-    store.addEnrollment({
+    await store.addEnrollment({
       name: newEnrollment.name,
       email: newEnrollment.email,
       program: newEnrollment.program,
       amount,
-      enrolledAt: new Date().toISOString().split("T")[0],
       status: newEnrollment.status,
     });
     refresh();

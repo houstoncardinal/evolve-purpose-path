@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Search, Check, X, Eye } from "lucide-react";
 import { store, CommunityApplication } from "@/lib/adminStore";
 import { useToast } from "@/hooks/use-toast";
@@ -11,12 +11,14 @@ const statusConfig: Record<CommunityApplication["status"], { bg: string; text: s
 
 const AdminCommunity = () => {
   const { toast } = useToast();
-  const [apps, setApps] = useState<CommunityApplication[]>(() => store.getCommunityApps());
+  const [apps, setApps] = useState<CommunityApplication[]>([]);
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState<CommunityApplication["status"] | "all">("all");
   const [selected, setSelected] = useState<CommunityApplication | null>(null);
 
-  const refresh = () => setApps(store.getCommunityApps());
+  useEffect(() => { store.getCommunityApps().then(setApps); }, []);
+
+  const refresh = () => store.getCommunityApps().then(setApps);
 
   const filtered = useMemo(() => apps.filter((a) => {
     const matchSearch =
@@ -26,8 +28,8 @@ const AdminCommunity = () => {
     return matchSearch && matchStatus;
   }), [apps, search, filterStatus]);
 
-  const updateStatus = (id: string, status: CommunityApplication["status"]) => {
-    store.updateAppStatus(id, status);
+  const updateStatus = async (id: string, status: CommunityApplication["status"]) => {
+    await store.updateAppStatus(id, status);
     refresh();
     if (selected?.id === id) setSelected((prev) => prev ? { ...prev, status } : null);
     toast({ title: status === "approved" ? "Application approved!" : `Application ${status}` });

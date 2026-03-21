@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Search, Download, Eye, X } from "lucide-react";
 import { store, Order } from "@/lib/adminStore";
 import { useToast } from "@/hooks/use-toast";
@@ -12,12 +12,14 @@ const statusConfig: Record<Order["status"], { bg: string; text: string; label: s
 
 const AdminOrders = () => {
   const { toast } = useToast();
-  const [orders, setOrders] = useState<Order[]>(() => store.getOrders());
+  const [orders, setOrders] = useState<Order[]>([]);
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState<Order["status"] | "all">("all");
   const [selected, setSelected] = useState<Order | null>(null);
 
-  const refresh = () => setOrders(store.getOrders());
+  useEffect(() => { store.getOrders().then(setOrders); }, []);
+
+  const refresh = () => store.getOrders().then(setOrders);
 
   const filtered = useMemo(() => orders.filter((o) => {
     const matchSearch =
@@ -29,8 +31,8 @@ const AdminOrders = () => {
     return matchSearch && matchStatus;
   }), [orders, search, filterStatus]);
 
-  const updateStatus = (id: string, status: Order["status"]) => {
-    store.updateOrderStatus(id, status);
+  const updateStatus = async (id: string, status: Order["status"]) => {
+    await store.updateOrderStatus(id, status);
     refresh();
     if (selected?.id === id) setSelected({ ...selected, status });
     toast({ title: `Order ${id} marked as ${status}` });

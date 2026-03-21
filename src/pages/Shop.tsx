@@ -1,9 +1,123 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useSEO from "@/hooks/useSEO";
 import EmailCapture from "@/components/sections/EmailCapture";
 import { Link } from "react-router-dom";
 import { ArrowRight, ShoppingBag, Package, Star, Shield, RefreshCw, Truck } from "lucide-react";
-import { store, initStore, Product, Bundle } from "@/lib/adminStore";
+import { store } from "@/lib/adminStore";
+
+const products = [
+  {
+    id: "journal",
+    title: "Healing & Alignment Journal",
+    price: "$34.99",
+    priceNum: 34.99,
+    description:
+      "A beautifully designed guided journal that walks you through the 4-Step Framework at your own pace. Each section includes reflection prompts, declaration exercises, and healing activities designed to move you from awareness to action.",
+    category: "Journal",
+    badge: "Bestseller",
+    features: ["132 guided pages", "4-Step Framework structure", "Daily reflection prompts", "Prophetic declaration pages", "Lay-flat binding"],
+    color: "from-[#F6F6F8] to-white",
+    icon: "📖",
+    comingSoon: false,
+  },
+  {
+    id: "workbook",
+    title: "Breaking Cycles Workbook",
+    price: "$24.99",
+    priceNum: 24.99,
+    description:
+      "A deep-dive workbook designed to help you identify and dismantle the inherited patterns quietly running your life. Perfect as a standalone tool or a powerful companion to any of Sarah's programs.",
+    category: "Workbook",
+    badge: null,
+    features: ["96 structured pages", "Pattern identification exercises", "Trigger mapping worksheets", "Cycle-breaking action plans", "Progress tracking"],
+    color: "from-[#F6F6F8] to-white",
+    icon: "📝",
+    comingSoon: false,
+  },
+  {
+    id: "cards",
+    title: "Declaration & Affirmation Card Deck",
+    price: "$19.99",
+    priceNum: 19.99,
+    description:
+      "40 beautifully designed cards with daily declarations and affirmations rooted in the Evolve 2 Purpose framework. Carry your healing with you — into your car, your office, your mirror, your daily ritual.",
+    category: "Card Deck",
+    badge: "New",
+    features: ["40 premium card deck", "4 themed categories", "Matte finish, durable stock", "Keepsake box included", "Digital companion PDF"],
+    color: "from-[#F6F6F8] to-white",
+    icon: "🃏",
+    comingSoon: false,
+  },
+  {
+    id: "masterclass",
+    title: "Purpose Activation Masterclass",
+    price: "$97.00",
+    priceNum: 97.00,
+    description:
+      "A self-paced digital course built on Step 4 of the Framework — Teach Someone Else What You Learned. Discover how to identify your message, find your audience, and turn your personal growth into genuine purpose-driven impact.",
+    category: "Digital Course",
+    badge: null,
+    features: ["5 video modules", "Companion workbook PDF", "Lifetime access", "Community discussion access", "Certificate of completion"],
+    color: "from-[#F6F6F8] to-white",
+    icon: "🎓",
+    comingSoon: false,
+  },
+  {
+    id: "audio",
+    title: "Inner Restoration Audio Collection",
+    price: "$29.99",
+    priceNum: 29.99,
+    description:
+      "A curated collection of guided meditations, breathing exercises, and spoken affirmations specifically designed to support the healing journey. Listen during your morning routine, before sleep, or any time you need to reset.",
+    category: "Audio",
+    badge: null,
+    features: ["12 guided audio tracks", "60+ minutes of content", "MP3 + streaming access", "Accompanying reflection guide", "Instant digital delivery"],
+    color: "from-[#F6F6F8] to-white",
+    icon: "🎧",
+    comingSoon: false,
+  },
+  {
+    id: "oil",
+    title: "Anointing Oil — 'Restoration'",
+    price: "$22.00",
+    priceNum: 22.00,
+    description:
+      "A hand-blended anointing oil crafted with prayer and intention. Use during your healing practice, morning prayer, or as a daily sensory reminder that you are in a season of restoration and becoming.",
+    category: "Wellness",
+    badge: "Coming Soon",
+    features: ["Hand-blended formula", "Natural essential oils", "1 oz amber glass bottle", "Blessing card included", "Limited batch production"],
+    color: "from-[#F6F6F8] to-white",
+    icon: "✨",
+    comingSoon: true,
+  },
+];
+
+const bundles = [
+  {
+    title: "The Starter Kit",
+    desc: "The perfect entry point. Everything you need to begin working the framework on your own.",
+    includes: ["Healing & Alignment Journal", "Declaration Card Deck"],
+    price: "$49.99",
+    savings: "Save $5",
+    tag: "Most Popular",
+  },
+  {
+    title: "The Deep-Work Bundle",
+    desc: "For the woman who is ready to go all the way in. Combines the most powerful print tools with the audio collection.",
+    includes: ["Breaking Cycles Workbook", "Inner Restoration Audio Collection", "Declaration Card Deck"],
+    price: "$64.99",
+    savings: "Save $10",
+    tag: "Best Value",
+  },
+  {
+    title: "The Complete Toolkit",
+    desc: "Every physical and digital resource in one comprehensive package. The full Evolve 2 Purpose resource library.",
+    includes: ["Healing Journal", "Breaking Cycles Workbook", "Card Deck", "Masterclass", "Audio Collection"],
+    price: "$174.99",
+    savings: "Save $32",
+    tag: "All-In",
+  },
+];
 
 const guarantees = [
   { icon: Shield, label: "Satisfaction Guarantee", desc: "If a physical product arrives damaged, we'll replace it free." },
@@ -11,45 +125,65 @@ const guarantees = [
   { icon: Truck, label: "Fast Shipping", desc: "Orders ship within 2–3 business days. Digital products are instant." },
 ];
 
-const categoryIcons: Record<string, string> = {
-  physical: "📦",
-  digital: "💻",
-  bundle: "🎁",
-};
-
 const Shop = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [bundles, setBundles] = useState<Bundle[]>([]);
+  useSEO({
+    title: "Shop — Healing Journals, Workbooks & Transformation Tools",
+    description: "Shop Sarah Adams' purpose-driven healing journals, workbooks, card decks, digital programs, and coaching bundles. Transform your life with tools grounded in the 4-Step Framework.",
+    keywords: "healing journal for women, purpose coaching workbook, breaking cycles workbook, transformation journal, prophetic card deck, life coaching tools women, evolve 2 purpose shop, Sarah Adams books, spiritual development journal, accountability workbook",
+    breadcrumbs: [{ name: "Shop", url: "/shop" }],
+    schema: [
+      {
+        "@context": "https://schema.org",
+        "@type": "Store",
+        "@id": "https://evolve2purpose.com/shop#store",
+        name: "Evolve 2 Purpose Shop",
+        url: "https://evolve2purpose.com/shop",
+        description: "Purpose-driven books, healing journals, workbooks, card decks, and digital programs by Sarah Adams.",
+        seller: { "@id": "https://evolve2purpose.com/#sarah-adams" },
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "Evolve 2 Purpose Products",
+          itemListElement: [
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Product",
+                name: "Healing & Alignment Journal",
+                description: "A beautifully designed guided journal that walks you through the 4-Step Framework at your own pace — with reflection prompts, declarations, and healing activities.",
+                category: "Journal",
+                brand: { "@type": "Brand", name: "Evolve 2 Purpose" },
+                offers: { "@type": "Offer", price: "34.99", priceCurrency: "USD", availability: "https://schema.org/InStock" },
+              },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Product",
+                name: "Breaking Cycles Workbook",
+                description: "A deep-dive workbook to identify and dismantle the inherited patterns quietly running your life.",
+                category: "Workbook",
+                brand: { "@type": "Brand", name: "Evolve 2 Purpose" },
+                offers: { "@type": "Offer", price: "24.99", priceCurrency: "USD", availability: "https://schema.org/InStock" },
+              },
+            },
+          ],
+        },
+      },
+    ],
+  });
   const [cart, setCart] = useState<string[]>([]);
   const [notifyEmail, setNotifyEmail] = useState("");
   const [notifyDone, setNotifyDone] = useState(false);
-
-  useEffect(() => {
-    initStore();
-    setProducts(store.getProducts().filter((p) => p.status === "active" || p.status === "coming_soon"));
-    setBundles(store.getBundles().filter((b) => b.status === "active"));
-  }, []);
-
-  useSEO({
-    title: "Shop — Books, Journals & Digital Resources",
-    description: "Shop purpose-driven books, healing journals, digital programs, and coaching bundles from Evolve 2 Purpose. Tools to support your transformation journey.",
-    keywords: "life transformation books, healing journal, purpose coaching resources, women empowerment products, evolve 2 purpose shop, coaching digital products",
-    schema: {
-      "@context": "https://schema.org",
-      "@type": "Store",
-      name: "Evolve 2 Purpose Shop",
-      url: "https://evolve2purpose.com/shop",
-      description: "Purpose-driven books, journals, digital programs, and coaching bundles.",
-      seller: { "@type": "Person", name: "Sarah Adams" },
-    },
-  });
 
   const addToCart = (id: string) => {
     setCart((prev) => (prev.includes(id) ? prev : [...prev, id]));
   };
 
-  const activeProducts = products.filter((p) => p.status === "active");
-  const comingSoonProducts = products.filter((p) => p.status === "coming_soon");
+  const handleNotify = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await store.addSubscriber({ email: notifyEmail.trim(), source: "shop-notify" });
+    setNotifyDone(true);
+  };
 
   return (
     <div>
@@ -69,81 +203,87 @@ const Shop = () => {
             Every resource in this shop was created with one purpose: to meet you where you are and give you exactly what you need to move forward. Practical. Intentional. Powerful.
           </p>
           {cart.length > 0 && (
-            <div
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold"
-              style={{ background: "rgba(255,45,170,0.1)", color: "#FF2DAA" }}
-            >
-              <ShoppingBag size={14} />
-              {cart.length} item{cart.length > 1 ? "s" : ""} in cart
+            <div className="flex flex-col sm:flex-row items-center gap-3 justify-center mt-4">
+              <div
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold"
+                style={{ background: "rgba(255,45,170,0.1)", color: "#FF2DAA" }}
+              >
+                <ShoppingBag size={14} />
+                {cart.length} item{cart.length > 1 ? "s" : ""} in cart
+              </div>
+              <Link to="/booking" className="btn-neon-solid !text-sm !py-2.5 shadow-md">
+                Complete Order <ArrowRight size={14} />
+              </Link>
             </div>
           )}
         </div>
       </section>
 
       {/* Bundles */}
-      {bundles.length > 0 && (
-        <section className="section-padding bg-[#F6F6F8]">
-          <div className="container-wide">
-            <div className="text-center mb-14">
-              <div className="flex items-center gap-3 justify-center mb-4">
-                <div className="ornament-line !w-8" />
-                <p className="text-primary font-semibold letter-luxury text-[10px] uppercase">Save More Together</p>
-                <div className="ornament-line !w-8" />
-              </div>
-              <h2 className="font-heading text-4xl md:text-5xl mb-5 letter-tight">Curated Bundles</h2>
-              <p className="text-muted-foreground max-w-xl mx-auto text-lg">
-                Stack the tools that work best together and save. Each bundle is intentionally paired for maximum impact.
-              </p>
+      <section className="section-padding bg-[#F6F6F8]">
+        <div className="container-wide">
+          <div className="text-center mb-14">
+            <div className="flex items-center gap-3 justify-center mb-4">
+              <div className="ornament-line !w-8" />
+              <p className="text-primary font-semibold letter-luxury text-[10px] uppercase">Save More Together</p>
+              <div className="ornament-line !w-8" />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {bundles.map((bundle, i) => (
-                <div
-                  key={bundle.id}
-                  className={`rounded-3xl border overflow-hidden flex flex-col ${i === bundles.length - 1 ? "border-primary/30" : "border-border bg-white"}`}
-                  style={i === bundles.length - 1 ? { backgroundColor: "#0B0B0F" } : {}}
-                >
-                  <div className="p-8 flex-1">
-                    {bundle.badge && (
-                      <span
-                        className="inline-block text-[10px] font-bold letter-luxury uppercase px-3 py-1.5 rounded-full mb-5"
-                        style={i === bundles.length - 1
-                          ? { background: "rgba(255,45,170,0.2)", color: "#FF2DAA" }
-                          : { background: "rgba(255,45,170,0.08)", color: "#FF2DAA" }
-                        }
-                      >
-                        {bundle.badge}
-                      </span>
-                    )}
-                    <h3 className={`font-heading text-xl font-bold mb-2 ${i === bundles.length - 1 ? "text-white" : "text-foreground"}`}>
-                      {bundle.name}
-                    </h3>
-                    <p className={`text-sm leading-relaxed mb-6 ${i === bundles.length - 1 ? "text-white/60" : "text-muted-foreground"}`}>
-                      {bundle.description}
-                    </p>
-                    <ul className="space-y-2 mb-6">
-                      {bundle.items.map((item) => (
-                        <li key={item} className={`flex items-center gap-2 text-xs ${i === bundles.length - 1 ? "text-white/70" : "text-muted-foreground"}`}>
-                          <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#FF2DAA" }} />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className={`px-8 pb-8 border-t ${i === bundles.length - 1 ? "border-white/10" : "border-border"} pt-6`}>
-                    <div className="flex items-baseline justify-between mb-5">
-                      <span className={`font-heading text-2xl font-bold ${i === bundles.length - 1 ? "text-white" : "text-foreground"}`}>${bundle.price.toFixed(2)}</span>
-                      <span className="text-xs font-bold" style={{ color: "#FF2DAA" }}>Save ${(bundle.originalPrice - bundle.price).toFixed(0)}</span>
-                    </div>
-                    <button className="w-full btn-neon-solid !py-3 !text-xs shadow-md">
-                      Add Bundle to Cart <Package size={13} />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <h2 className="font-heading text-4xl md:text-5xl mb-5 letter-tight">Curated Bundles</h2>
+            <p className="text-muted-foreground max-w-xl mx-auto text-lg">
+              Stack the tools that work best together and save. Each bundle is intentionally paired for maximum impact.
+            </p>
           </div>
-        </section>
-      )}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {bundles.map((bundle, i) => (
+              <div
+                key={bundle.title}
+                className={`rounded-3xl border overflow-hidden flex flex-col ${i === 2 ? "border-primary/30" : "border-border bg-white"}`}
+                style={i === 2 ? { backgroundColor: "#0B0B0F" } : {}}
+              >
+                <div className="p-8 flex-1">
+                  <span
+                    className="inline-block text-[10px] font-bold letter-luxury uppercase px-3 py-1.5 rounded-full mb-5"
+                    style={
+                      i === 2
+                        ? { background: "rgba(255,45,170,0.2)", color: "#FF2DAA" }
+                        : { background: "rgba(255,45,170,0.08)", color: "#FF2DAA" }
+                    }
+                  >
+                    {bundle.tag}
+                  </span>
+                  <h3 className={`font-heading text-xl font-bold mb-2 ${i === 2 ? "text-white" : "text-foreground"}`}>
+                    {bundle.title}
+                  </h3>
+                  <p className={`text-sm leading-relaxed mb-6 ${i === 2 ? "text-white/60" : "text-muted-foreground"}`}>
+                    {bundle.desc}
+                  </p>
+                  <ul className="space-y-2 mb-6">
+                    {bundle.includes.map((item) => (
+                      <li key={item} className={`flex items-center gap-2 text-xs ${i === 2 ? "text-white/70" : "text-muted-foreground"}`}>
+                        <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#FF2DAA" }} />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className={`px-8 pb-8 border-t ${i === 2 ? "border-white/10" : "border-border"} pt-6`}>
+                  <div className="flex items-baseline justify-between mb-5">
+                    <span className={`font-heading text-2xl font-bold ${i === 2 ? "text-white" : "text-foreground"}`}>{bundle.price}</span>
+                    <span className="text-xs font-bold" style={{ color: "#FF2DAA" }}>{bundle.savings}</span>
+                  </div>
+                  <button
+                    onClick={() => addToCart(bundle.title)}
+                    className="w-full btn-neon-solid !py-3 !text-xs shadow-md"
+                    style={cart.includes(bundle.title) ? { background: "#0B0B0F" } : {}}
+                  >
+                    {cart.includes(bundle.title) ? "✓ Added" : "Add Bundle to Cart"} <Package size={13} />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Individual products */}
       <section className="section-padding relative overflow-hidden">
@@ -158,32 +298,57 @@ const Shop = () => {
             <h2 className="font-heading text-4xl md:text-5xl letter-tight">Shop by Product</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {activeProducts.map((p) => (
+            {products.map((p) => (
               <div key={p.id} className="luxury-card flex flex-col">
-                <div className="aspect-[4/3] bg-gradient-to-br from-[#F6F6F8] to-white flex items-center justify-center relative border-b border-border">
-                  <span className="text-6xl">{categoryIcons[p.category] || "📦"}</span>
+                {/* Product image area */}
+                <div className={`aspect-[4/3] bg-gradient-to-br ${p.color} flex items-center justify-center relative border-b border-border`}>
+                  <span className="text-6xl">{p.icon}</span>
                   {p.badge && (
                     <span
-                      className="absolute top-4 right-4 text-[10px] font-bold letter-luxury uppercase px-3 py-1.5 rounded-full text-white"
-                      style={{ background: "#FF2DAA" }}
+                      className={`absolute top-4 right-4 text-[10px] font-bold letter-luxury uppercase px-3 py-1.5 rounded-full ${
+                        p.badge === "Coming Soon"
+                          ? "bg-[#F6F6F8] text-muted-foreground border border-border"
+                          : "text-white"
+                      }`}
+                      style={p.badge !== "Coming Soon" ? { background: "#FF2DAA" } : {}}
                     >
                       {p.badge}
                     </span>
                   )}
                 </div>
+
                 <div className="luxury-card-inner flex flex-col flex-1 !pt-6">
                   <p className="text-primary text-[10px] font-bold letter-luxury uppercase mb-2">{p.category}</p>
-                  <h3 className="font-heading text-lg font-bold mb-2 letter-tight">{p.name}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-5 flex-1">{p.description}</p>
+                  <h3 className="font-heading text-lg font-bold mb-2 letter-tight">{p.title}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-5">{p.description}</p>
+
+                  <div className="mb-6">
+                    <p className="text-xs font-bold letter-luxury uppercase text-muted-foreground mb-3">What's Inside</p>
+                    <ul className="space-y-1.5">
+                      {p.features.map((f) => (
+                        <li key={f} className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#FF2DAA" }} />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
                   <div className="flex items-center justify-between mt-auto">
-                    <span className="font-heading text-xl font-bold">${p.price.toFixed(2)}</span>
-                    <button
-                      onClick={() => addToCart(p.id)}
-                      className="btn-neon-solid !text-xs !px-5 !py-2.5 shadow-md"
-                      style={cart.includes(p.id) ? { background: "#0B0B0F" } : {}}
-                    >
-                      {cart.includes(p.id) ? "✓ Added" : "Add to Cart"}
-                    </button>
+                    <span className="font-heading text-xl font-bold">{p.price}</span>
+                    {p.comingSoon ? (
+                      <span className="text-xs text-muted-foreground font-semibold border border-border px-4 py-2 rounded-full">
+                        Coming Soon
+                      </span>
+                    ) : (
+                      <button
+                        onClick={() => addToCart(p.id)}
+                        className="btn-neon-solid !text-xs !px-5 !py-2.5 shadow-md"
+                        style={cart.includes(p.id) ? { background: "#0B0B0F" } : {}}
+                      >
+                        {cart.includes(p.id) ? "✓ Added" : "Add to Cart"}
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -192,41 +357,37 @@ const Shop = () => {
         </div>
       </section>
 
-      {/* Coming Soon */}
-      {comingSoonProducts.length > 0 && (
-        <section className="py-14 bg-[#F6F6F8]">
-          <div className="container-narrow text-center">
-            <p className="text-xs font-bold letter-luxury uppercase text-muted-foreground mb-3">Coming Soon</p>
-            <h3 className="font-heading text-2xl md:text-3xl mb-4 letter-tight">Be First to Know When It Drops</h3>
-            <div className="flex flex-wrap gap-3 justify-center mb-6">
-              {comingSoonProducts.map((p) => (
-                <span key={p.id} className="text-sm text-muted-foreground bg-white border border-border rounded-full px-4 py-1.5">{p.name}</span>
-              ))}
-            </div>
-            {notifyDone ? (
-              <p className="font-heading font-semibold text-primary">You're on the list! We'll notify you at launch.</p>
-            ) : (
-              <form
-                onSubmit={(e) => { e.preventDefault(); setNotifyDone(true); }}
-                className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
-              >
-                <input
-                  type="email"
-                  required
-                  value={notifyEmail}
-                  onChange={(e) => setNotifyEmail(e.target.value)}
-                  placeholder="your@email.com"
-                  className="flex-1 bg-white border border-border rounded-full px-6 py-3 text-sm focus:outline-none focus:ring-2"
-                  style={{ "--tw-ring-color": "#FF2DAA" } as React.CSSProperties}
-                />
-                <button type="submit" className="btn-neon-solid !py-3 !text-xs flex-shrink-0">
-                  Notify Me
-                </button>
-              </form>
-            )}
-          </div>
-        </section>
-      )}
+      {/* Notify me for coming soon */}
+      <section className="py-14 bg-[#F6F6F8]">
+        <div className="container-narrow text-center">
+          <p className="text-xs font-bold letter-luxury uppercase text-muted-foreground mb-3">Anointing Oil — Coming Soon</p>
+          <h3 className="font-heading text-2xl md:text-3xl mb-4 letter-tight">Be First to Know When It Drops</h3>
+          <p className="text-muted-foreground text-sm mb-6 max-w-sm mx-auto">
+            The Restoration Anointing Oil is hand-blended in limited batches. Drop your email to get early access.
+          </p>
+          {notifyDone ? (
+            <p className="font-heading font-semibold text-primary">You're on the list! We'll notify you at launch.</p>
+          ) : (
+            <form
+              onSubmit={handleNotify}
+              className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+            >
+              <input
+                type="email"
+                required
+                value={notifyEmail}
+                onChange={(e) => setNotifyEmail(e.target.value)}
+                placeholder="your@email.com"
+                className="flex-1 bg-white border border-border rounded-full px-6 py-3 text-sm focus:outline-none focus:ring-2"
+                style={{ "--tw-ring-color": "#FF2DAA" } as React.CSSProperties}
+              />
+              <button type="submit" className="btn-neon-solid !py-3 !text-xs flex-shrink-0">
+                Notify Me
+              </button>
+            </form>
+          )}
+        </div>
+      </section>
 
       {/* Guarantees */}
       <section className="section-padding relative overflow-hidden">
@@ -262,11 +423,16 @@ const Shop = () => {
             Want Deeper Transformation?
           </h2>
           <p className="text-muted-foreground text-lg max-w-xl mx-auto mb-8">
-            Products are tools — but if you're ready for guided, personalized transformation, Sarah's coaching programs will take you further than any book ever could.
+            These resources are powerful — but nothing replaces working directly with Sarah. Explore her coaching programs to go deeper.
           </p>
-          <Link to="/programs" className="btn-neon-solid shadow-lg">
-            Explore Coaching Programs <ArrowRight size={16} />
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/programs" className="btn-neon-solid shadow-lg">
+              Explore Programs <ArrowRight size={16} />
+            </Link>
+            <Link to="/booking" className="btn-neon-outline">
+              Book Sarah to Speak
+            </Link>
+          </div>
         </div>
       </section>
 

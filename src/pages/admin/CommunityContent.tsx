@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Trash2, Edit2, X, Pin, Link as LinkIcon } from "lucide-react";
 import { store, CommunityPost, CommunityEvent, Resource } from "@/lib/adminStore";
 import { useToast } from "@/hooks/use-toast";
@@ -15,40 +15,41 @@ const postTypeConfig: Record<CommunityPost["type"], { label: string; bg: string;
 
 const PostsTab = () => {
   const { toast } = useToast();
-  const [items, setItems] = useState<CommunityPost[]>(() => store.getCommunityPosts());
+  const [items, setItems] = useState<CommunityPost[]>([]);
   const [modal, setModal] = useState<{ open: boolean; editing: CommunityPost | null }>({ open: false, editing: null });
   const [form, setForm] = useState<{ content: string; author: string; type: CommunityPost["type"]; pinned: boolean }>({
     content: "", author: "Sarah Adams", type: "inspiration", pinned: false,
   });
 
-  const refresh = () => setItems(store.getCommunityPosts());
+  useEffect(() => { store.getCommunityPosts().then(setItems); }, []);
+
+  const refresh = () => store.getCommunityPosts().then(setItems);
   const openAdd = () => { setForm({ content: "", author: "Sarah Adams", type: "inspiration", pinned: false }); setModal({ open: true, editing: null }); };
   const openEdit = (p: CommunityPost) => { setForm({ content: p.content, author: p.author, type: p.type, pinned: p.pinned }); setModal({ open: true, editing: p }); };
   const closeModal = () => setModal({ open: false, editing: null });
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!form.content.trim()) return;
-    const today = new Date().toISOString().split("T")[0];
     if (modal.editing) {
-      store.updateCommunityPost(modal.editing.id, form);
+      await store.updateCommunityPost(modal.editing.id, form);
       toast({ title: "Post updated" });
     } else {
-      store.addCommunityPost({ ...form, createdAt: today });
+      await store.addCommunityPost(form);
       toast({ title: "Post added" });
     }
     refresh();
     closeModal();
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (!confirm("Delete this post?")) return;
-    store.deleteCommunityPost(id);
+    await store.deleteCommunityPost(id);
     refresh();
     toast({ title: "Post deleted" });
   };
 
-  const togglePin = (p: CommunityPost) => {
-    store.updateCommunityPost(p.id, { pinned: !p.pinned });
+  const togglePin = async (p: CommunityPost) => {
+    await store.updateCommunityPost(p.id, { pinned: !p.pinned });
     refresh();
     toast({ title: p.pinned ? "Post unpinned" : "Post pinned" });
   };
@@ -129,34 +130,36 @@ const PostsTab = () => {
 
 const EventsTab = () => {
   const { toast } = useToast();
-  const [items, setItems] = useState<CommunityEvent[]>(() => store.getCommunityEvents());
+  const [items, setItems] = useState<CommunityEvent[]>([]);
   const [modal, setModal] = useState<{ open: boolean; editing: CommunityEvent | null }>({ open: false, editing: null });
   const [form, setForm] = useState<{ title: string; description: string; date: string; time: string; format: CommunityEvent["format"]; link: string }>({
     title: "", description: "", date: "", time: "", format: "zoom", link: "",
   });
 
-  const refresh = () => setItems(store.getCommunityEvents());
+  useEffect(() => { store.getCommunityEvents().then(setItems); }, []);
+
+  const refresh = () => store.getCommunityEvents().then(setItems);
   const openAdd = () => { setForm({ title: "", description: "", date: "", time: "", format: "zoom", link: "" }); setModal({ open: true, editing: null }); };
   const openEdit = (e: CommunityEvent) => { setForm({ title: e.title, description: e.description, date: e.date, time: e.time, format: e.format, link: e.link || "" }); setModal({ open: true, editing: e }); };
   const closeModal = () => setModal({ open: false, editing: null });
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!form.title.trim() || !form.date) return;
     const payload: Omit<CommunityEvent, "id"> = { title: form.title, description: form.description, date: form.date, time: form.time, format: form.format, ...(form.link ? { link: form.link } : {}) };
     if (modal.editing) {
-      store.updateCommunityEvent(modal.editing.id, payload);
+      await store.updateCommunityEvent(modal.editing.id, payload);
       toast({ title: "Event updated" });
     } else {
-      store.addCommunityEvent(payload);
+      await store.addCommunityEvent(payload);
       toast({ title: "Event added" });
     }
     refresh();
     closeModal();
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (!confirm("Delete this event?")) return;
-    store.deleteCommunityEvent(id);
+    await store.deleteCommunityEvent(id);
     refresh();
     toast({ title: "Event deleted" });
   };
@@ -254,35 +257,36 @@ const typeConfig: Record<Resource["type"], { label: string; bg: string; text: st
 
 const ResourcesTab = () => {
   const { toast } = useToast();
-  const [items, setItems] = useState<Resource[]>(() => store.getResources());
+  const [items, setItems] = useState<Resource[]>([]);
   const [modal, setModal] = useState<{ open: boolean; editing: Resource | null }>({ open: false, editing: null });
   const [form, setForm] = useState<{ title: string; description: string; category: string; type: Resource["type"]; externalLink: string }>({
     title: "", description: "", category: "", type: "pdf", externalLink: "",
   });
 
-  const refresh = () => setItems(store.getResources());
+  useEffect(() => { store.getResources().then(setItems); }, []);
+
+  const refresh = () => store.getResources().then(setItems);
   const openAdd = () => { setForm({ title: "", description: "", category: "", type: "pdf", externalLink: "" }); setModal({ open: true, editing: null }); };
   const openEdit = (r: Resource) => { setForm({ title: r.title, description: r.description, category: r.category, type: r.type, externalLink: r.externalLink || "" }); setModal({ open: true, editing: r }); };
   const closeModal = () => setModal({ open: false, editing: null });
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!form.title.trim()) return;
-    const today = new Date().toISOString().split("T")[0];
-    const payload: Omit<Resource, "id"> = { title: form.title, description: form.description, category: form.category, type: form.type, addedAt: today, ...(form.externalLink ? { externalLink: form.externalLink } : {}) };
+    const payload: Omit<Resource, "id" | "addedAt"> = { title: form.title, description: form.description, category: form.category, type: form.type, ...(form.externalLink ? { externalLink: form.externalLink } : {}) };
     if (modal.editing) {
-      store.updateResource(modal.editing.id, payload);
+      await store.updateResource(modal.editing.id, payload);
       toast({ title: "Resource updated" });
     } else {
-      store.addResource(payload);
+      await store.addResource(payload);
       toast({ title: "Resource added" });
     }
     refresh();
     closeModal();
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (!confirm("Delete this resource?")) return;
-    store.deleteResource(id);
+    await store.deleteResource(id);
     refresh();
     toast({ title: "Resource deleted" });
   };

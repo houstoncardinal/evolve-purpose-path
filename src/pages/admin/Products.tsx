@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Package, Plus, Edit2, Trash2, ToggleLeft, ToggleRight, Search, X } from "lucide-react";
 import { store, Product, Bundle } from "@/lib/adminStore";
 import { useToast } from "@/hooks/use-toast";
@@ -23,13 +23,14 @@ const emptyProduct = { name: "", price: "", category: "physical" as Product["cat
 
 const ProductsTab = () => {
   const { toast } = useToast();
-  const [products, setProducts] = useState<Product[]>(() => store.getProducts());
+  const [products, setProducts] = useState<Product[]>([]);
   const [search, setSearch] = useState("");
   const [filterCat, setFilterCat] = useState<Product["category"] | "all">("all");
   const [modal, setModal] = useState<{ open: boolean; editing: Product | null }>({ open: false, editing: null });
   const [form, setForm] = useState(emptyProduct);
 
-  const refresh = () => setProducts(store.getProducts());
+  useEffect(() => { store.getProducts().then(setProducts); }, []);
+  const refresh = () => store.getProducts().then(setProducts);
 
   const filtered = useMemo(() => products.filter((p) => {
     const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
@@ -44,30 +45,30 @@ const ProductsTab = () => {
   };
   const closeModal = () => setModal({ open: false, editing: null });
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const price = parseFloat(form.price);
     if (!form.name.trim() || isNaN(price)) return;
     if (modal.editing) {
-      store.updateProduct(modal.editing.id, { name: form.name, price, category: form.category, description: form.description, badge: form.badge || undefined, status: form.status, shortName: form.name.split(" ").slice(0, 3).join(" ") });
+      await store.updateProduct(modal.editing.id, { name: form.name, price, category: form.category, description: form.description, badge: form.badge || undefined, status: form.status, shortName: form.name.split(" ").slice(0, 3).join(" ") });
       toast({ title: "Product updated" });
     } else {
-      store.addProduct({ name: form.name, shortName: form.name.split(" ").slice(0, 3).join(" "), price, category: form.category, description: form.description, badge: form.badge || undefined, status: form.status });
+      await store.addProduct({ name: form.name, shortName: form.name.split(" ").slice(0, 3).join(" "), price, category: form.category, description: form.description, badge: form.badge || undefined, status: form.status });
       toast({ title: "Product added" });
     }
     refresh();
     closeModal();
   };
 
-  const handleDelete = (p: Product) => {
+  const handleDelete = async (p: Product) => {
     if (!confirm(`Delete "${p.name}"?`)) return;
-    store.deleteProduct(p.id);
+    await store.deleteProduct(p.id);
     refresh();
     toast({ title: "Product deleted" });
   };
 
-  const toggleStatus = (p: Product) => {
+  const toggleStatus = async (p: Product) => {
     const next = p.status === "active" ? "inactive" : "active";
-    store.updateProduct(p.id, { status: next });
+    await store.updateProduct(p.id, { status: next });
     refresh();
     toast({ title: `${p.shortName} is now ${next}` });
   };
@@ -216,11 +217,12 @@ const emptyBundle = { name: "", price: "", originalPrice: "", items: "", badge: 
 
 const BundlesTab = () => {
   const { toast } = useToast();
-  const [bundles, setBundles] = useState<Bundle[]>(() => store.getBundles());
+  const [bundles, setBundles] = useState<Bundle[]>([]);
   const [modal, setModal] = useState<{ open: boolean; editing: Bundle | null }>({ open: false, editing: null });
   const [form, setForm] = useState(emptyBundle);
 
-  const refresh = () => setBundles(store.getBundles());
+  useEffect(() => { store.getBundles().then(setBundles); }, []);
+  const refresh = () => store.getBundles().then(setBundles);
   const openAdd = () => { setForm(emptyBundle); setModal({ open: true, editing: null }); };
   const openEdit = (b: Bundle) => {
     setForm({ name: b.name, price: String(b.price), originalPrice: String(b.originalPrice), items: b.items.join(", "), badge: b.badge || "", description: b.description, status: b.status });
@@ -228,26 +230,26 @@ const BundlesTab = () => {
   };
   const closeModal = () => setModal({ open: false, editing: null });
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const price = parseFloat(form.price);
     const originalPrice = parseFloat(form.originalPrice);
     if (!form.name.trim() || isNaN(price)) return;
     const items = form.items.split(",").map((s) => s.trim()).filter(Boolean);
     const payload: Omit<Bundle, "id"> = { name: form.name, price, originalPrice: isNaN(originalPrice) ? price : originalPrice, items, description: form.description, status: form.status, ...(form.badge ? { badge: form.badge } : {}) };
     if (modal.editing) {
-      store.updateBundle(modal.editing.id, payload);
+      await store.updateBundle(modal.editing.id, payload);
       toast({ title: "Bundle updated" });
     } else {
-      store.addBundle(payload);
+      await store.addBundle(payload);
       toast({ title: "Bundle added" });
     }
     refresh();
     closeModal();
   };
 
-  const handleDelete = (b: Bundle) => {
+  const handleDelete = async (b: Bundle) => {
     if (!confirm(`Delete bundle "${b.name}"?`)) return;
-    store.deleteBundle(b.id);
+    await store.deleteBundle(b.id);
     refresh();
     toast({ title: "Bundle deleted" });
   };

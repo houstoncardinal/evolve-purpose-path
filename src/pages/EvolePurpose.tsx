@@ -28,9 +28,40 @@ const pillars = [
 
 const EvolePurpose = () => {
   useSEO({
-    title: "The Evolve 2 Purpose Movement",
-    description: "Evolve 2 Purpose is a personal development movement rooted in four powerful pillars: Lead in Love, Take Accountability, Manage Your Triggers, and Teach Others.",
-    keywords: "evolve 2 purpose movement, personal development framework, women transformation movement, purpose activation",
+    title: "The Evolve 2 Purpose Movement — Our Mission & Vision",
+    description: "Evolve 2 Purpose is a faith-based transformation movement founded by Sarah Adams, rooted in four pillars: Lead in Love, Take Accountability, Manage Your Triggers, and Teach Others. Built to break cycles for good.",
+    keywords: "evolve 2 purpose movement, personal development movement women, women transformation movement, purpose activation framework, faith based personal development, break generational cycles movement, Sarah Adams mission, healing movement women",
+    breadcrumbs: [{ name: "The Evolve 2 Purpose Movement", url: "/evolve-2-purpose" }],
+    schema: [
+      {
+        "@context": "https://schema.org",
+        "@type": "AboutPage",
+        "@id": "https://evolve2purpose.com/evolve-2-purpose",
+        name: "The Evolve 2 Purpose Movement",
+        url: "https://evolve2purpose.com/evolve-2-purpose",
+        description: "The story, mission, and four pillars behind the Evolve 2 Purpose movement founded by Sarah Adams.",
+        mainEntity: { "@id": "https://evolve2purpose.com/#organization" },
+        breadcrumb: {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://evolve2purpose.com" },
+            { "@type": "ListItem", position: 2, name: "The Movement", item: "https://evolve2purpose.com/evolve-2-purpose" },
+          ],
+        },
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://evolve2purpose.com/#organization",
+        name: "Evolve 2 Purpose",
+        url: "https://evolve2purpose.com",
+        description: "A faith-based personal development movement dedicated to helping women break generational cycles, heal their roots, and step fully into their God-given purpose.",
+        slogan: "Break cycles. Heal your roots. Step into purpose.",
+        foundingDate: "2020",
+        founder: { "@id": "https://evolve2purpose.com/#sarah-adams" },
+        mission: "To equip women with the tools, community, and coaching they need to break generational cycles, heal at the root, and walk fully in love, accountability, and purpose.",
+      },
+    ],
   });
   return (
   <div>
