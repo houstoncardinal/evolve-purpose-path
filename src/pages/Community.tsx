@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import useSEO from "@/hooks/useSEO";
+import { store, initStore } from "@/lib/adminStore";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
