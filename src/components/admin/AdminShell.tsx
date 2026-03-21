@@ -8,6 +8,13 @@ import {
 } from "lucide-react";
 import { store, initStore } from "@/lib/adminStore";
 
+interface NavItem {
+  label: string;
+  path: string;
+  icon: React.ElementType;
+  exact?: boolean;
+}
+
 const navSections = [
   {
     label: "Main",
