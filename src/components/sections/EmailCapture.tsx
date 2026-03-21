@@ -21,6 +21,14 @@ const EmailCapture = ({ variant = "default" }: { variant?: "default" | "hero" | 
       return;
     }
     setError("");
+    // Save subscriber to admin store
+    initStore();
+    store.addSubscriber({
+      name: email.split("@")[0],
+      email: email.trim(),
+      joinedAt: new Date().toISOString().split("T")[0],
+      source: variant === "hero" ? "homepage" : variant === "fullwidth" ? "footer" : "free-guide",
+    });
     setSubmitted(true);
     setEmail("");
   };
