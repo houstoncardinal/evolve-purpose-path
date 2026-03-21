@@ -1,0 +1,14 @@
+[build]
+  command = "bun run build"
+  publish = "dist"
+
+# Supabase anon keys are public-by-design and are safe to expose in browser bundles.
+# Tell Netlify's secret scanner to ignore them so the build doesn't fail.
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_ANON_KEY,VITE_SUPABASE_URL"
+
+# SPA fallback — send all routes to index.html so React Router handles them
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
