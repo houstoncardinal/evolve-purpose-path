@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import EmailCapture from "@/components/sections/EmailCapture";
 import useSEO from "@/hooks/useSEO";
 import { ArrowRight, Check, Star, Clock, Users, Zap, Shield } from "lucide-react";
+import retreatCircle from "@/assets/retreat-circle.jpg";
+import retreatSoundbath from "@/assets/retreat-soundbath.jpg";
+import retreatWoods from "@/assets/retreat-woods.jpg";
 
 const programs = [
   {
