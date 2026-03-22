@@ -153,7 +153,7 @@ const Navbar = () => {
           <div className="pt-6 flex flex-col gap-3">
             <a
               href="/4step.pdf"
-              download="4-Step-System-Transform-Your-Life.pdf"
+              download="4-Step-System-Evolve-2-Purpose.pdf"
               onClick={() => setOpen(false)}
               className="flex items-center justify-center gap-2 border border-primary/40 text-primary px-6 py-3.5 rounded-full text-[10px] font-bold letter-luxury uppercase hover:bg-primary/5 transition-colors"
             >
