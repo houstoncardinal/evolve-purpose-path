@@ -146,7 +146,7 @@ const About = () => {
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section
-        className="relative overflow-hidden"
+        className="relative overflow-hidden flex flex-col lg:block"
         style={{ backgroundColor: "#0B0B0F", minHeight: "100svh" }}
       >
         {/* Ambient glow */}
@@ -159,26 +159,10 @@ const About = () => {
           style={{ background: "radial-gradient(circle at 10% 90%, rgba(255,45,170,0.07), transparent 60%)" }}
         />
 
-        {/* Mobile: stacked portrait */}
-        <div className="lg:hidden relative overflow-hidden" style={{ height: "65vw", maxHeight: "320px" }}>
-          <img
-            src="/53DE7570-D7E8-4E05-A9FC-6B56FDC74685.JPG"
-            alt="Sarah Adams"
-            className="w-full h-full object-cover object-[center_15%]"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(to bottom, #0B0B0F 0%, rgba(11,11,15,0.2) 25%, rgba(11,11,15,0.2) 60%, #0B0B0F 100%)",
-            }}
-          />
-        </div>
-
-        <div className="container-wide grid grid-cols-1 lg:grid-cols-2 lg:min-h-[100svh] relative z-10">
+        <div className="container-wide grid grid-cols-1 lg:grid-cols-2 lg:min-h-[100svh] relative z-10 flex-1">
 
           {/* Left — text */}
-          <div className="flex flex-col justify-center px-6 py-10 lg:py-36 lg:pr-20">
+          <div className="flex flex-col justify-center px-6 pt-16 pb-8 lg:py-36 lg:pr-20">
 
             <div className="flex items-center gap-3 mb-7">
               <div className="w-8 h-px" style={{ background: "#FF2DAA" }} />
@@ -267,6 +251,20 @@ const About = () => {
               </p>
             </div>
           </div>
+        </div>
+
+        {/* Mobile: portrait below text, flush at bottom of hero */}
+        <div className="lg:hidden relative overflow-hidden z-10" style={{ height: "72vw", maxHeight: "420px" }}>
+          <img
+            src="/53DE7570-D7E8-4E05-A9FC-6B56FDC74685.JPG"
+            alt="Sarah Adams"
+            className="w-full h-full object-cover object-[center_15%]"
+          />
+          {/* Top fade — blends into the text section above */}
+          <div
+            className="absolute inset-0"
+            style={{ background: "linear-gradient(to bottom, #0B0B0F 0%, transparent 30%)" }}
+          />
         </div>
       </section>
 
