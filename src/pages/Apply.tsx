@@ -1,19 +1,23 @@
-import { useState, useEffect } from "react";
-import { useSearchParams, Link, useNavigate } from "react-router-dom";
+import { useState, useEffect, useMemo } from "react";
+import { useSearchParams, Link } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
+import { loadStripe } from "@stripe/stripe-js";
 import {
-  ArrowRight, ArrowLeft, Check, Lock, User, Eye, EyeOff, Sparkles, ChevronRight,
+  ArrowRight, ArrowLeft, Check, Lock, User, Eye, EyeOff,
+  ChevronLeft, ChevronRight, Clock, Calendar, CreditCard,
 } from "lucide-react";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import useSEO from "@/hooks/useSEO";
 
-// ── Program config ──────────────────────────────────────────────────────────
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ?? "");
+
+// ── Program config ───────────────────────────────────────────────────────────
 const PROGRAMS = {
   "one-on-one": {
     title: "1:1 Deep-Dive Coaching",
     price: "Starting at $111",
     tag: "Most Transformative",
-    applyLabel: "Submit Application",
+    applyLabel: "Proceed to Schedule",
     amount: 111,
     includes: [
       "Weekly 60-min private sessions",
@@ -22,37 +26,17 @@ const PROGRAMS = {
       "Post-program integration session",
     ],
     questions: [
-      {
-        key: "challenge",
-        label: "What is the primary challenge or pattern you're ready to transform?",
-        type: "textarea" as const,
-        placeholder: "Be honest and specific — this helps Sarah understand exactly where to begin.",
-      },
-      {
-        key: "tried",
-        label: "What have you already tried, and where did it fall short?",
-        type: "textarea" as const,
-        placeholder: "Therapy, books, courses, other coaches — what's helped, what hasn't?",
-      },
-      {
-        key: "vision",
-        label: "What would success look like in your life 90 days from now?",
-        type: "textarea" as const,
-        placeholder: "Paint the picture — relationships, identity, clarity, peace. What changes?",
-      },
-      {
-        key: "readiness",
-        label: "On a scale of 1–10, how ready are you to do deep inner work — and why that number?",
-        type: "textarea" as const,
-        placeholder: "Honest self-assessment is the first act of accountability.",
-      },
+      { key: "challenge", label: "What is the primary challenge or pattern you're ready to transform?", type: "textarea" as const, placeholder: "Be honest and specific — this helps Sarah understand exactly where to begin." },
+      { key: "tried", label: "What have you already tried, and where did it fall short?", type: "textarea" as const, placeholder: "Therapy, books, courses, other coaches — what's helped, what hasn't?" },
+      { key: "vision", label: "What would success look like in your life 90 days from now?", type: "textarea" as const, placeholder: "Paint the picture — relationships, identity, clarity, peace. What changes?" },
+      { key: "readiness", label: "On a scale of 1–10, how ready are you to do deep inner work — and why that number?", type: "textarea" as const, placeholder: "Honest self-assessment is the first act of accountability." },
     ],
   },
   "group": {
     title: "Evolve 2 Purpose Group Program",
     price: "$444",
     tag: "Best Value · 8 Weeks",
-    applyLabel: "Submit Application",
+    applyLabel: "Proceed to Schedule",
     amount: 444,
     includes: [
       "8 weeks of live group sessions with Sarah",
@@ -61,41 +45,17 @@ const PROGRAMS = {
       "Lifetime session recordings",
     ],
     questions: [
-      {
-        key: "goal",
-        label: "What is your primary goal for the 8-week program?",
-        type: "textarea" as const,
-        placeholder: "What do you want to heal, break, or build over these 8 weeks?",
-      },
-      {
-        key: "cycle",
-        label: "What generational cycle or pattern are you most ready to break?",
-        type: "textarea" as const,
-        placeholder: "Name it. The work begins the moment you can name it.",
-      },
-      {
-        key: "commitment",
-        label: "Are you able to commit to weekly live sessions for 8 weeks?",
-        type: "select" as const,
-        options: [
-          "Yes, I'm fully committed",
-          "Mostly yes — occasional conflicts, I'll use recordings",
-          "I would primarily rely on recordings",
-        ],
-      },
-      {
-        key: "community",
-        label: "Why do you want to do this work in community rather than alone?",
-        type: "textarea" as const,
-        placeholder: "What does being surrounded by other women doing the work mean to you?",
-      },
+      { key: "goal", label: "What is your primary goal for the 8-week program?", type: "textarea" as const, placeholder: "What do you want to heal, break, or build over these 8 weeks?" },
+      { key: "cycle", label: "What generational cycle or pattern are you most ready to break?", type: "textarea" as const, placeholder: "Name it. The work begins the moment you can name it." },
+      { key: "commitment", label: "Are you able to commit to weekly live sessions for 8 weeks?", type: "select" as const, options: ["Yes, I'm fully committed", "Mostly yes — occasional conflicts, I'll use recordings", "I would primarily rely on recordings"] },
+      { key: "community", label: "Why do you want to do this work in community rather than alone?", type: "textarea" as const, placeholder: "What does being surrounded by other women doing the work mean to you?" },
     ],
   },
   "healing-intensive": {
     title: "Healing Intensive Weekend",
     price: "$999",
     tag: "Accelerated Breakthrough",
-    applyLabel: "Reserve My Spot",
+    applyLabel: "Proceed to Schedule",
     amount: 999,
     includes: [
       "2 full days of immersive healing work",
@@ -104,42 +64,17 @@ const PROGRAMS = {
       "60-day post-intensive group support",
     ],
     questions: [
-      {
-        key: "breakthrough",
-        label: "What specific breakthrough are you hoping to experience this weekend?",
-        type: "textarea" as const,
-        placeholder: "Be as specific as possible — vague goals produce vague results.",
-      },
-      {
-        key: "readiness",
-        label: "Intensives move fast and go deep. What makes you ready for that pace right now?",
-        type: "textarea" as const,
-        placeholder: "What's happened recently that makes this the right time?",
-      },
-      {
-        key: "experience",
-        label: "Have you worked with a coach or therapist before?",
-        type: "select" as const,
-        options: [
-          "Yes, I'm actively in coaching or therapy",
-          "Previously, but not currently",
-          "No — this would be my first time",
-          "I've done courses and self-study but not 1:1 work",
-        ],
-      },
-      {
-        key: "expectation",
-        label: "What would make this the most transformative weekend of your life?",
-        type: "textarea" as const,
-        placeholder: "What shift, realization, or release would make it worth everything?",
-      },
+      { key: "breakthrough", label: "What specific breakthrough are you hoping to experience this weekend?", type: "textarea" as const, placeholder: "Be as specific as possible — vague goals produce vague results." },
+      { key: "readiness", label: "Intensives move fast and go deep. What makes you ready for that pace right now?", type: "textarea" as const, placeholder: "What's happened recently that makes this the right time?" },
+      { key: "experience", label: "Have you worked with a coach or therapist before?", type: "select" as const, options: ["Yes, I'm actively in coaching or therapy", "Previously, but not currently", "No — this would be my first time", "I've done courses and self-study but not 1:1 work"] },
+      { key: "expectation", label: "What would make this the most transformative weekend of your life?", type: "textarea" as const, placeholder: "What shift, realization, or release would make it worth everything?" },
     ],
   },
   "purpose-clarity": {
     title: "Purpose Clarity Session",
     price: "1:1 Session · $197",
     tag: "90-Minute Intensive",
-    applyLabel: "Book My Session",
+    applyLabel: "Proceed to Schedule",
     amount: 197,
     includes: [
       "90-min 1:1 private session with Sarah",
@@ -148,81 +83,197 @@ const PROGRAMS = {
       "Written action plan delivered",
     ],
     questions: [
-      {
-        key: "stuck",
-        label: "Where are you feeling most stuck right now?",
-        type: "textarea" as const,
-        placeholder: "Career, relationships, identity, purpose — what area needs the most clarity?",
-      },
-      {
-        key: "crossroads",
-        label: "Is there a specific decision, transition, or crossroads you're navigating?",
-        type: "textarea" as const,
-        placeholder: "The more specific you are, the more targeted Sarah can be in the session.",
-      },
-      {
-        key: "outcome",
-        label: "What do you want to walk away knowing after this session?",
-        type: "textarea" as const,
-        placeholder: "If you had total clarity on one thing by the end — what would that be?",
-      },
+      { key: "stuck", label: "Where are you feeling most stuck right now?", type: "textarea" as const, placeholder: "Career, relationships, identity, purpose — what area needs the most clarity?" },
+      { key: "crossroads", label: "Is there a specific decision, transition, or crossroads you're navigating?", type: "textarea" as const, placeholder: "The more specific you are, the more targeted Sarah can be in the session." },
+      { key: "outcome", label: "What do you want to walk away knowing after this session?", type: "textarea" as const, placeholder: "If you had total clarity on one thing by the end — what would that be?" },
     ],
   },
 };
 
 type ProgramKey = keyof typeof PROGRAMS;
-type Step = "account" | "application" | "confirmed";
+type Step = "account" | "application" | "schedule" | "payment" | "confirmed";
 type AuthTab = "signin" | "signup";
 
-const inputBase =
-  "w-full px-4 py-3 rounded-xl text-sm bg-white border border-[#E8E8EE] text-[#1A1A2E] placeholder:text-[#AAAABC] focus:outline-none transition-all";
-
-// ── Step indicator ──────────────────────────────────────────────────────────
-const STEPS: { id: Step; label: string }[] = [
-  { id: "account", label: "Your Account" },
-  { id: "application", label: "Application" },
-  { id: "confirmed", label: "Confirmed" },
+const TIME_SLOTS = [
+  "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM",
+  "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM",
 ];
 
-const stepIndex = (s: Step) => STEPS.findIndex((x) => x.id === s);
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const WEEK_DAYS = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 
-// ── Main component ──────────────────────────────────────────────────────────
+const inputBase = "w-full px-4 py-3 rounded-xl text-sm bg-white border border-[#E8E8EE] text-[#1A1A2E] placeholder:text-[#AAAABC] focus:outline-none transition-all";
+
+// ── Step config ───────────────────────────────────────────────────────────────
+const STEP_LIST: { id: Step; label: string }[] = [
+  { id: "account", label: "Account" },
+  { id: "application", label: "Application" },
+  { id: "schedule", label: "Schedule" },
+  { id: "payment", label: "Payment" },
+];
+const stepIdx = (s: Step) => STEP_LIST.findIndex((x) => x.id === s);
+
+// ── Calendar component ────────────────────────────────────────────────────────
+const BookingCalendar = ({
+  value,
+  onChange,
+}: {
+  value: Date | null;
+  onChange: (d: Date) => void;
+}) => {
+  const [viewYear, setViewYear] = useState(new Date().getFullYear());
+  const [viewMonth, setViewMonth] = useState(new Date().getMonth());
+
+  const today = useMemo(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }, []);
+
+  const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+  // Week starts Monday: getDay() → Sun=0,Mon=1..Sat=6 → offset = (day + 6) % 7
+  const firstDayOffset = (new Date(viewYear, viewMonth, 1).getDay() + 6) % 7;
+
+  const isSelectable = (d: Date) => {
+    const day = d.getDay(); // 0=Sun, 6=Sat
+    return d >= today && day !== 0 && day !== 6;
+  };
+
+  const isSelected = (d: Date) =>
+    value !== null && d.toDateString() === value.toDateString();
+
+  const prevMonth = () => {
+    if (viewMonth === 0) { setViewYear(y => y - 1); setViewMonth(11); }
+    else setViewMonth(m => m - 1);
+  };
+  const nextMonth = () => {
+    if (viewMonth === 11) { setViewYear(y => y + 1); setViewMonth(0); }
+    else setViewMonth(m => m + 1);
+  };
+
+  const cells: (Date | null)[] = [
+    ...Array(firstDayOffset).fill(null),
+    ...Array.from({ length: daysInMonth }, (_, i) => new Date(viewYear, viewMonth, i + 1)),
+  ];
+
+  return (
+    <div className="rounded-2xl border border-white/10 p-5" style={{ background: "rgba(255,255,255,0.04)" }}>
+      {/* Month nav */}
+      <div className="flex items-center justify-between mb-5">
+        <button
+          type="button"
+          onClick={prevMonth}
+          className="w-8 h-8 rounded-lg flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all"
+        >
+          <ChevronLeft size={16} />
+        </button>
+        <span className="font-heading font-bold text-sm text-white">
+          {MONTHS[viewMonth]} {viewYear}
+        </span>
+        <button
+          type="button"
+          onClick={nextMonth}
+          className="w-8 h-8 rounded-lg flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all"
+        >
+          <ChevronRight size={16} />
+        </button>
+      </div>
+
+      {/* Day-of-week headers */}
+      <div className="grid grid-cols-7 mb-2">
+        {WEEK_DAYS.map((d) => (
+          <div
+            key={d}
+            className="text-center text-[10px] font-bold letter-luxury uppercase py-1"
+            style={{ color: d === "Sat" || d === "Sun" ? "rgba(255,255,255,0.15)" : "rgba(255,45,170,0.7)" }}
+          >
+            {d}
+          </div>
+        ))}
+      </div>
+
+      {/* Day cells */}
+      <div className="grid grid-cols-7 gap-1">
+        {cells.map((day, i) =>
+          day === null ? (
+            <div key={i} />
+          ) : (
+            <button
+              key={i}
+              type="button"
+              onClick={() => isSelectable(day) && onChange(day)}
+              disabled={!isSelectable(day)}
+              className="w-full aspect-square rounded-xl text-xs font-semibold flex items-center justify-center transition-all duration-150"
+              style={
+                isSelected(day)
+                  ? { background: "linear-gradient(135deg, #FF2DAA, #d91f90)", color: "white", boxShadow: "0 2px 12px rgba(255,45,170,0.4)" }
+                  : !isSelectable(day)
+                  ? { color: "rgba(255,255,255,0.15)", cursor: "not-allowed" }
+                  : { color: "rgba(255,255,255,0.7)", cursor: "pointer" }
+              }
+              onMouseEnter={(e) => { if (isSelectable(day) && !isSelected(day)) e.currentTarget.style.background = "rgba(255,45,170,0.15)"; }}
+              onMouseLeave={(e) => { if (!isSelected(day)) e.currentTarget.style.background = ""; }}
+            >
+              {day.getDate()}
+            </button>
+          )
+        )}
+      </div>
+    </div>
+  );
+};
+
+// ── Main component ────────────────────────────────────────────────────────────
 const Apply = () => {
   const [searchParams] = useSearchParams();
   const programKey = (searchParams.get("program") ?? "one-on-one") as ProgramKey;
   const program = PROGRAMS[programKey] ?? PROGRAMS["one-on-one"];
+  const paidParam = searchParams.get("paid");
 
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [step, setStep] = useState<Step>("account");
   const [authLoading, setAuthLoading] = useState(true);
 
-  // Auth state
+  // Auth
   const [authTab, setAuthTab] = useState<AuthTab>("signup");
-  const [siEmail, setSiEmail] = useState("");
-  const [siPassword, setSiPassword] = useState("");
-  const [siShow, setSiShow] = useState(false);
-  const [siError, setSiError] = useState("");
-  const [siLoading, setSiLoading] = useState(false);
+  const [siEmail, setSiEmail] = useState(""); const [siPassword, setSiPassword] = useState(""); const [siShow, setSiShow] = useState(false); const [siError, setSiError] = useState(""); const [siLoading, setSiLoading] = useState(false);
+  const [suName, setSuName] = useState(""); const [suEmail, setSuEmail] = useState(""); const [suPassword, setSuPassword] = useState(""); const [suConfirm, setSuConfirm] = useState(""); const [suShow, setSuShow] = useState(false); const [suError, setSuError] = useState(""); const [suLoading, setSuLoading] = useState(false);
 
-  const [suName, setSuName] = useState("");
-  const [suEmail, setSuEmail] = useState("");
-  const [suPassword, setSuPassword] = useState("");
-  const [suConfirm, setSuConfirm] = useState("");
-  const [suShow, setSuShow] = useState(false);
-  const [suError, setSuError] = useState("");
-  const [suLoading, setSuLoading] = useState(false);
-
-  // Application state
+  // Application
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [appLoading, setAppLoading] = useState(false);
-  const [appError, setAppError] = useState("");
 
-  useSEO({
-    title: `Apply — ${program.title} | Evolve 2 Purpose`,
-    description: `Apply for ${program.title} with Sarah Adams. ${program.price}.`,
-  });
+  // Schedule
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedTime, setSelectedTime] = useState("");
+
+  // Payment
+  const [payLoading, setPayLoading] = useState(false);
+  const [payError, setPayError] = useState("");
+
+  useSEO({ title: `Apply — ${program.title} | Evolve 2 Purpose`, description: `Apply for ${program.title} with Sarah Adams. ${program.price}.` });
 
   useEffect(() => {
+    // If returning from Stripe with ?paid=true, save enrollment and show confirmed
+    if (paidParam === "true") {
+      supabase.auth.getSession().then(async ({ data }) => {
+        const u = data.session?.user ?? null;
+        setUser(u);
+        if (u) {
+          const name = u.user_metadata?.full_name || u.email?.split("@")[0] || "Applicant";
+          await supabase.from("program_enrollments").insert({
+            name,
+            email: u.email,
+            program: program.title,
+            amount: program.amount,
+            status: "enrolled",
+          });
+        }
+        setStep("confirmed");
+        setAuthLoading(false);
+      });
+      return;
+    }
+
     supabase.auth.getSession().then(({ data }) => {
       const u = data.session?.user ?? null;
       setUser(u);
@@ -237,62 +288,62 @@ const Apply = () => {
     return () => listener.subscription.unsubscribe();
   }, []);
 
-  // ── Auth handlers ──────────────────────────────────────────────────────────
+  // Auth handlers
   const handleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSiLoading(true);
-    setSiError("");
+    e.preventDefault(); setSiLoading(true); setSiError("");
     const { error } = await supabase.auth.signInWithPassword({ email: siEmail, password: siPassword });
-    if (error) {
-      setSiError(error.message === "Invalid login credentials" ? "Incorrect email or password." : error.message);
-      setSiLoading(false);
-    }
+    if (error) { setSiError(error.message === "Invalid login credentials" ? "Incorrect email or password." : error.message); setSiLoading(false); }
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSuError("");
+    e.preventDefault(); setSuError("");
     if (suPassword !== suConfirm) { setSuError("Passwords don't match."); return; }
     if (suPassword.length < 6) { setSuError("Password must be at least 6 characters."); return; }
     setSuLoading(true);
-    const { error } = await supabase.auth.signUp({
-      email: suEmail,
-      password: suPassword,
-      options: { data: { full_name: suName } },
-    });
+    const { error } = await supabase.auth.signUp({ email: suEmail, password: suPassword, options: { data: { full_name: suName } } });
     setSuLoading(false);
-    if (error) { setSuError(error.message); return; }
-    // sign up succeeds → auth listener fires → step advances
+    if (error) setSuError(error.message);
   };
 
-  // ── Application submit ─────────────────────────────────────────────────────
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!user) return;
-    setAppLoading(true);
-    setAppError("");
+  // Payment via Stripe Checkout
+  const handlePayment = async () => {
+    if (!user || !selectedDate || !selectedTime) return;
+    setPayLoading(true); setPayError("");
 
-    const name = user.user_metadata?.full_name || user.email?.split("@")[0] || "Applicant";
-    const notes = program.questions
-      .map((q) => `${q.label}\n${answers[q.key] || "—"}`)
-      .join("\n\n");
+    const origin = window.location.origin;
+    const successUrl = `${origin}/apply?program=${programKey}&paid=true`;
+    const cancelUrl = `${origin}/apply?program=${programKey}`;
 
-    const { error } = await supabase.from("program_enrollments").insert({
-      name,
-      email: user.email,
-      program: program.title,
-      amount: program.amount,
-      status: "pending",
-      notes,
-    });
-
-    setAppLoading(false);
-    if (error) { setAppError("Something went wrong. Please try again."); return; }
-    setStep("confirmed");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    try {
+      const res = await fetch("/.netlify/functions/create-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          programTitle: program.title,
+          amount: program.amount,
+          email: user.email,
+          successUrl,
+          cancelUrl,
+        }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        setPayError(data.error ?? "Something went wrong. Please try again.");
+        setPayLoading(false);
+      }
+    } catch {
+      setPayError("Network error. Please check your connection and try again.");
+      setPayLoading(false);
+    }
   };
 
   const allAnswered = program.questions.every((q) => (answers[q.key] ?? "").trim().length > 0);
+  const scheduleComplete = selectedDate !== null && selectedTime !== "";
+
+  const formatDate = (d: Date) =>
+    d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
 
   if (authLoading) {
     return (
@@ -304,18 +355,16 @@ const Apply = () => {
 
   return (
     <div className="min-h-screen relative" style={{ background: "#08080C" }}>
-      {/* Background glows */}
+      {/* Background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-100px] right-[-100px] w-[700px] h-[700px] rounded-full blur-[120px]"
-          style={{ background: "radial-gradient(circle, rgba(255,45,170,0.07), transparent 65%)" }} />
-        <div className="absolute bottom-[-100px] left-[-100px] w-[500px] h-[500px] rounded-full blur-[100px]"
-          style={{ background: "radial-gradient(circle, rgba(99,102,241,0.04), transparent 70%)" }} />
-        <div className="absolute inset-0 opacity-40"
-          style={{ backgroundImage: "radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
+        <div className="absolute top-[-100px] right-[-100px] w-[700px] h-[700px] rounded-full blur-[120px]" style={{ background: "radial-gradient(circle, rgba(255,45,170,0.07), transparent 65%)" }} />
+        <div className="absolute bottom-[-100px] left-[-100px] w-[500px] h-[500px] rounded-full blur-[100px]" style={{ background: "radial-gradient(circle, rgba(99,102,241,0.04), transparent 70%)" }} />
+        <div className="absolute inset-0 opacity-40" style={{ backgroundImage: "radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
       </div>
 
       <div className="relative z-10 min-h-screen flex flex-col">
-        {/* Top nav */}
+
+        {/* Top bar */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-white/[0.06]">
           <Link to={`/programs/${programKey}`} className="inline-flex items-center gap-2 text-white/40 hover:text-white/70 text-xs font-semibold transition-colors">
             <ArrowLeft size={13} /> Back
@@ -326,73 +375,77 @@ const Apply = () => {
 
         <div className="flex-1 flex flex-col lg:flex-row">
 
-          {/* ── Left panel — program summary ──────────────────────────────── */}
-          <div className="lg:w-[380px] xl:w-[420px] lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto flex-shrink-0 border-r border-white/[0.06] p-8 lg:p-10 flex flex-col">
-            {/* Tag */}
-            <span className="inline-block self-start text-[10px] font-bold letter-luxury uppercase px-3 py-1.5 rounded-full mb-6"
-              style={{ background: "rgba(255,45,170,0.15)", color: "#FF2DAA" }}>
+          {/* ── Left panel ─────────────────────────────────────────────────── */}
+          <div className="lg:w-[360px] xl:w-[400px] lg:sticky lg:top-0 lg:h-screen flex-shrink-0 border-r border-white/[0.06] p-8 lg:p-10 flex flex-col">
+            <span className="inline-block self-start text-[10px] font-bold letter-luxury uppercase px-3 py-1.5 rounded-full mb-5" style={{ background: "rgba(255,45,170,0.15)", color: "#FF2DAA" }}>
               {program.tag}
             </span>
+            <h2 className="font-heading text-2xl text-white font-bold letter-tight leading-tight mb-2">{program.title}</h2>
+            <p className="font-heading text-xl font-bold mb-7" style={{ color: "#FF2DAA" }}>{program.price}</p>
 
-            {/* Program name */}
-            <h2 className="font-heading text-2xl xl:text-3xl text-white font-bold letter-tight leading-tight mb-2">
-              {program.title}
-            </h2>
-            <p className="font-heading text-xl font-bold mb-6" style={{ color: "#FF2DAA" }}>{program.price}</p>
+            <p className="text-[10px] font-bold letter-luxury uppercase text-white/25 mb-3">What's Included</p>
+            <ul className="space-y-2.5 mb-8">
+              {program.includes.map((item) => (
+                <li key={item} className="flex items-start gap-2.5 text-sm text-white/50">
+                  <Check size={12} className="flex-shrink-0 mt-0.5" style={{ color: "#FF2DAA" }} />
+                  {item}
+                </li>
+              ))}
+            </ul>
 
-            {/* What's included */}
-            <div className="mb-8">
-              <p className="text-[10px] font-bold letter-luxury uppercase text-white/30 mb-4">What's Included</p>
-              <ul className="space-y-3">
-                {program.includes.map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-sm text-white/55">
-                    <Check size={13} className="flex-shrink-0 mt-0.5" style={{ color: "#FF2DAA" }} />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {/* Progress recap when scheduling */}
+            {(step === "schedule" || step === "payment") && selectedDate && (
+              <div className="rounded-2xl p-4 mb-6 border border-white/[0.07]" style={{ background: "rgba(255,45,170,0.06)" }}>
+                <p className="text-[10px] font-bold letter-luxury uppercase text-white/25 mb-3">Your Session</p>
+                <div className="flex items-center gap-2 text-sm text-white/70 mb-1.5">
+                  <Calendar size={12} style={{ color: "#FF2DAA" }} />
+                  {formatDate(selectedDate)}
+                </div>
+                {selectedTime && (
+                  <div className="flex items-center gap-2 text-sm text-white/70">
+                    <Clock size={12} style={{ color: "#FF2DAA" }} />
+                    {selectedTime} EST
+                  </div>
+                )}
+              </div>
+            )}
 
-            {/* Divider */}
-            <div className="w-full h-px mb-8" style={{ background: "rgba(255,255,255,0.06)" }} />
-
-            {/* Secure badge */}
-            <div className="flex items-center gap-2.5 mt-auto">
-              <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{ background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.2)" }}>
+            <div className="mt-auto flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.2)" }}>
                 <Lock size={12} style={{ color: "#10B981" }} />
               </div>
               <div>
                 <p className="text-[11px] font-semibold text-white/40">Secure Application</p>
-                <p className="text-[10px] text-white/25 mt-0.5">Your information is protected and never shared.</p>
+                <p className="text-[10px] text-white/25">256-bit SSL encryption</p>
               </div>
             </div>
           </div>
 
-          {/* ── Right panel — form steps ──────────────────────────────────── */}
-          <div className="flex-1 flex flex-col px-6 py-10 lg:px-14 xl:px-20 max-w-2xl lg:max-w-none lg:mx-0 mx-auto w-full">
+          {/* ── Right panel ────────────────────────────────────────────────── */}
+          <div className="flex-1 px-6 py-10 lg:px-14 xl:px-20 max-w-2xl mx-auto lg:max-w-none lg:mx-0 w-full">
 
             {/* Step indicator */}
             {step !== "confirmed" && (
               <div className="flex items-center gap-0 mb-12">
-                {STEPS.filter(s => s.id !== "confirmed").map((s, i) => {
+                {STEP_LIST.map((s, i) => {
                   const current = step === s.id;
-                  const done = stepIndex(step) > i;
+                  const done = stepIdx(step) > i;
                   return (
                     <div key={s.id} className="flex items-center">
-                      <div className="flex items-center gap-2.5">
-                        <div
-                          className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all"
-                          style={done ? { background: "#FF2DAA", color: "white" } : current ? { background: "rgba(255,45,170,0.2)", color: "#FF2DAA", border: "1.5px solid rgba(255,45,170,0.5)" } : { background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.25)", border: "1.5px solid rgba(255,255,255,0.08)" }}
-                        >
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all" style={
+                          done ? { background: "#FF2DAA", color: "white" }
+                          : current ? { background: "rgba(255,45,170,0.2)", color: "#FF2DAA", border: "1.5px solid rgba(255,45,170,0.5)" }
+                          : { background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.2)", border: "1.5px solid rgba(255,255,255,0.08)" }
+                        }>
                           {done ? <Check size={12} /> : i + 1}
                         </div>
-                        <span className="text-xs font-semibold hidden sm:block" style={{ color: current ? "rgba(255,255,255,0.8)" : done ? "#FF2DAA" : "rgba(255,255,255,0.25)" }}>
+                        <span className="text-xs font-semibold hidden sm:block" style={{ color: current ? "rgba(255,255,255,0.85)" : done ? "#FF2DAA" : "rgba(255,255,255,0.22)" }}>
                           {s.label}
                         </span>
                       </div>
-                      {i < STEPS.filter(s => s.id !== "confirmed").length - 1 && (
-                        <div className="w-8 sm:w-16 h-px mx-3" style={{ background: done ? "rgba(255,45,170,0.4)" : "rgba(255,255,255,0.07)" }} />
+                      {i < STEP_LIST.length - 1 && (
+                        <div className="w-6 sm:w-12 h-px mx-2.5" style={{ background: done ? "rgba(255,45,170,0.5)" : "rgba(255,255,255,0.07)" }} />
                       )}
                     </div>
                   );
@@ -400,20 +453,15 @@ const Apply = () => {
               </div>
             )}
 
-            {/* ── STEP 1: Account ─────────────────────────────────────────── */}
+            {/* ── STEP 1: Account ───────────────────────────────────────────── */}
             {step === "account" && (
               <div className="max-w-md">
-                <h1 className="font-heading text-3xl md:text-4xl text-white font-bold letter-tight mb-2">
-                  Create your account
-                </h1>
-                <p className="text-white/45 text-base mb-8 leading-relaxed">
-                  Your account keeps your application secure and lets Sarah reach you directly.
-                </p>
+                <h1 className="font-heading text-3xl md:text-4xl text-white font-bold letter-tight mb-2">Create your account</h1>
+                <p className="text-white/45 text-base mb-8 leading-relaxed">Your account secures your application and lets Sarah reach you directly.</p>
 
-                {/* Tab switcher */}
                 <div className="flex bg-white/[0.05] border border-white/[0.07] rounded-xl p-1 mb-7">
                   {(["signup", "signin"] as AuthTab[]).map((t) => (
-                    <button key={t} onClick={() => { setAuthTab(t); setSiError(""); setSuError(""); }}
+                    <button key={t} type="button" onClick={() => { setAuthTab(t); setSiError(""); setSuError(""); }}
                       className="flex-1 py-2.5 rounded-lg text-xs font-bold tracking-wider uppercase transition-all duration-200"
                       style={authTab === t ? { background: "rgba(255,45,170,0.18)", color: "#FF2DAA", border: "1px solid rgba(255,45,170,0.3)" } : { color: "rgba(255,255,255,0.35)" }}>
                       {t === "signup" ? "Create Account" : "Sign In"}
@@ -421,209 +469,257 @@ const Apply = () => {
                   ))}
                 </div>
 
-                {/* Sign up form */}
                 {authTab === "signup" && (
                   <form onSubmit={handleSignUp} className="space-y-4">
-                    <div>
-                      <label className="block text-[11px] font-semibold text-white/30 uppercase tracking-wider mb-1.5 ml-1">Full Name</label>
-                      <input type="text" value={suName} onChange={(e) => { setSuName(e.target.value); setSuError(""); }} placeholder="Your name" required autoFocus className={inputBase}
-                        onFocus={(e) => (e.currentTarget.style.borderColor = "#FF2DAA")}
-                        onBlur={(e) => (e.currentTarget.style.borderColor = "#E8E8EE")} />
-                    </div>
-                    <div>
-                      <label className="block text-[11px] font-semibold text-white/30 uppercase tracking-wider mb-1.5 ml-1">Email Address</label>
-                      <input type="email" value={suEmail} onChange={(e) => { setSuEmail(e.target.value); setSuError(""); }} placeholder="you@example.com" required className={inputBase}
-                        onFocus={(e) => (e.currentTarget.style.borderColor = "#FF2DAA")}
-                        onBlur={(e) => (e.currentTarget.style.borderColor = "#E8E8EE")} />
-                    </div>
+                    {[
+                      { label: "Full Name", value: suName, set: setSuName, type: "text", placeholder: "Your name" },
+                      { label: "Email Address", value: suEmail, set: setSuEmail, type: "email", placeholder: "you@example.com" },
+                    ].map(({ label, value, set, type, placeholder }) => (
+                      <div key={label}>
+                        <label className="block text-[11px] font-semibold text-white/30 uppercase tracking-wider mb-1.5 ml-1">{label}</label>
+                        <input type={type} value={value} onChange={(e) => { set(e.target.value); setSuError(""); }} placeholder={placeholder} required className={inputBase}
+                          onFocus={(e) => (e.currentTarget.style.borderColor = "#FF2DAA")}
+                          onBlur={(e) => (e.currentTarget.style.borderColor = "#E8E8EE")} />
+                      </div>
+                    ))}
                     <div>
                       <label className="block text-[11px] font-semibold text-white/30 uppercase tracking-wider mb-1.5 ml-1">Password</label>
                       <div className="relative">
                         <input type={suShow ? "text" : "password"} value={suPassword} onChange={(e) => { setSuPassword(e.target.value); setSuError(""); }} placeholder="Min. 6 characters" required className={`${inputBase} pr-11`}
-                          onFocus={(e) => (e.currentTarget.style.borderColor = "#FF2DAA")}
-                          onBlur={(e) => (e.currentTarget.style.borderColor = "#E8E8EE")} />
-                        <button type="button" onClick={() => setSuShow(!suShow)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#AAAABC]">
-                          {suShow ? <EyeOff size={15} /> : <Eye size={15} />}
-                        </button>
+                          onFocus={(e) => (e.currentTarget.style.borderColor = "#FF2DAA")} onBlur={(e) => (e.currentTarget.style.borderColor = "#E8E8EE")} />
+                        <button type="button" onClick={() => setSuShow(!suShow)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#AAAABC]">{suShow ? <EyeOff size={15} /> : <Eye size={15} />}</button>
                       </div>
                     </div>
                     <div>
                       <label className="block text-[11px] font-semibold text-white/30 uppercase tracking-wider mb-1.5 ml-1">Confirm Password</label>
                       <input type={suShow ? "text" : "password"} value={suConfirm} onChange={(e) => { setSuConfirm(e.target.value); setSuError(""); }} placeholder="Repeat password" required className={inputBase}
-                        onFocus={(e) => (e.currentTarget.style.borderColor = "#FF2DAA")}
-                        onBlur={(e) => (e.currentTarget.style.borderColor = "#E8E8EE")} />
+                        onFocus={(e) => (e.currentTarget.style.borderColor = "#FF2DAA")} onBlur={(e) => (e.currentTarget.style.borderColor = "#E8E8EE")} />
                     </div>
-                    {suError && (
-                      <div className="flex items-center gap-2 px-4 py-3 rounded-xl text-xs font-medium" style={{ background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.2)", color: "#f87171" }}>
-                        <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />{suError}
-                      </div>
-                    )}
+                    {suError && <div className="flex items-center gap-2 px-4 py-3 rounded-xl text-xs font-medium" style={{ background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.2)", color: "#f87171" }}><span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />{suError}</div>}
                     <button type="submit" disabled={suLoading || !suName || !suEmail || !suPassword || !suConfirm}
                       className="w-full py-4 rounded-xl font-bold text-sm text-white flex items-center justify-center gap-2 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed mt-2"
                       style={{ background: "linear-gradient(135deg, #FF2DAA, #d91f90)", boxShadow: "0 4px 24px rgba(255,45,170,0.35)" }}>
                       {suLoading ? <><span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" /> Creating account...</> : <>Continue to Application <ArrowRight size={15} /></>}
                     </button>
-                    <p className="text-center text-xs text-white/25 pt-1">
-                      Already have an account?{" "}
-                      <button type="button" onClick={() => setAuthTab("signin")} className="font-semibold" style={{ color: "#FF2DAA" }}>Sign in</button>
-                    </p>
+                    <p className="text-center text-xs text-white/25 pt-1">Already have an account? <button type="button" onClick={() => setAuthTab("signin")} className="font-semibold" style={{ color: "#FF2DAA" }}>Sign in</button></p>
                   </form>
                 )}
 
-                {/* Sign in form */}
                 {authTab === "signin" && (
                   <form onSubmit={handleSignIn} className="space-y-4">
                     <div>
                       <label className="block text-[11px] font-semibold text-white/30 uppercase tracking-wider mb-1.5 ml-1">Email Address</label>
                       <input type="email" value={siEmail} onChange={(e) => { setSiEmail(e.target.value); setSiError(""); }} placeholder="you@example.com" required autoFocus className={inputBase}
-                        onFocus={(e) => (e.currentTarget.style.borderColor = "#FF2DAA")}
-                        onBlur={(e) => (e.currentTarget.style.borderColor = "#E8E8EE")} />
+                        onFocus={(e) => (e.currentTarget.style.borderColor = "#FF2DAA")} onBlur={(e) => (e.currentTarget.style.borderColor = "#E8E8EE")} />
                     </div>
                     <div>
                       <label className="block text-[11px] font-semibold text-white/30 uppercase tracking-wider mb-1.5 ml-1">Password</label>
                       <div className="relative">
                         <input type={siShow ? "text" : "password"} value={siPassword} onChange={(e) => { setSiPassword(e.target.value); setSiError(""); }} placeholder="••••••••" required className={`${inputBase} pr-11`}
-                          onFocus={(e) => (e.currentTarget.style.borderColor = "#FF2DAA")}
-                          onBlur={(e) => (e.currentTarget.style.borderColor = "#E8E8EE")} />
-                        <button type="button" onClick={() => setSiShow(!siShow)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#AAAABC]">
-                          {siShow ? <EyeOff size={15} /> : <Eye size={15} />}
-                        </button>
+                          onFocus={(e) => (e.currentTarget.style.borderColor = "#FF2DAA")} onBlur={(e) => (e.currentTarget.style.borderColor = "#E8E8EE")} />
+                        <button type="button" onClick={() => setSiShow(!siShow)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#AAAABC]">{siShow ? <EyeOff size={15} /> : <Eye size={15} />}</button>
                       </div>
                     </div>
-                    {siError && (
-                      <div className="flex items-center gap-2 px-4 py-3 rounded-xl text-xs font-medium" style={{ background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.2)", color: "#f87171" }}>
-                        <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />{siError}
-                      </div>
-                    )}
+                    {siError && <div className="flex items-center gap-2 px-4 py-3 rounded-xl text-xs font-medium" style={{ background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.2)", color: "#f87171" }}><span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />{siError}</div>}
                     <button type="submit" disabled={siLoading || !siEmail || !siPassword}
                       className="w-full py-4 rounded-xl font-bold text-sm text-white flex items-center justify-center gap-2 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed mt-2"
                       style={{ background: "linear-gradient(135deg, #FF2DAA, #d91f90)", boxShadow: "0 4px 24px rgba(255,45,170,0.35)" }}>
                       {siLoading ? <><span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" /> Signing in...</> : <>Sign In & Continue <ArrowRight size={15} /></>}
                     </button>
-                    <p className="text-center text-xs text-white/25 pt-1">
-                      New here?{" "}
-                      <button type="button" onClick={() => setAuthTab("signup")} className="font-semibold" style={{ color: "#FF2DAA" }}>Create a free account</button>
-                    </p>
+                    <p className="text-center text-xs text-white/25 pt-1">New here? <button type="button" onClick={() => setAuthTab("signup")} className="font-semibold" style={{ color: "#FF2DAA" }}>Create a free account</button></p>
                   </form>
                 )}
               </div>
             )}
 
-            {/* ── STEP 2: Application ──────────────────────────────────────── */}
+            {/* ── STEP 2: Application ───────────────────────────────────────── */}
             {step === "application" && user && (
               <div className="max-w-xl">
-                {/* Greeting */}
                 <div className="flex items-center gap-3 mb-8">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0"
-                    style={{ background: "linear-gradient(135deg, #FF2DAA, #d91f90)" }}>
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0" style={{ background: "linear-gradient(135deg, #FF2DAA, #d91f90)" }}>
                     {(user.user_metadata?.full_name || user.email || "U").charAt(0).toUpperCase()}
                   </div>
                   <div>
-                    <p className="text-white text-sm font-semibold">
-                      Signed in as {user.user_metadata?.full_name || user.email?.split("@")[0]}
-                    </p>
-                    <p className="text-white/35 text-xs mt-0.5">{user.email}</p>
+                    <p className="text-white text-sm font-semibold">{user.user_metadata?.full_name || user.email?.split("@")[0]}</p>
+                    <p className="text-white/35 text-xs">{user.email}</p>
                   </div>
                 </div>
+                <h1 className="font-heading text-3xl md:text-4xl text-white font-bold letter-tight mb-2">Your application</h1>
+                <p className="text-white/45 text-base mb-10 leading-relaxed">Sarah personally reviews every application. Answer honestly — the more specific you are, the better she can serve you.</p>
 
-                <h1 className="font-heading text-3xl md:text-4xl text-white font-bold letter-tight mb-2">
-                  Your application
-                </h1>
-                <p className="text-white/45 text-base mb-10 leading-relaxed">
-                  Answer honestly. Sarah personally reviews every application — the more specific you are, the better she can serve you.
-                </p>
-
-                <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="space-y-8">
                   {program.questions.map((q, i) => (
                     <div key={q.key}>
-                      <label className="block text-sm font-semibold text-white/80 mb-1.5 leading-snug">
+                      <label className="block text-sm font-semibold text-white/80 mb-2 leading-snug">
                         <span className="text-[10px] font-bold letter-luxury uppercase mr-2" style={{ color: "#FF2DAA" }}>
                           {String(i + 1).padStart(2, "0")}
                         </span>
                         {q.label}
                       </label>
-
-                      {q.type === "textarea" && (
-                        <textarea
-                          value={answers[q.key] ?? ""}
-                          onChange={(e) => setAnswers((a) => ({ ...a, [q.key]: e.target.value }))}
-                          placeholder={q.placeholder}
-                          required
-                          rows={4}
-                          className={`${inputBase} resize-none`}
-                          onFocus={(e) => (e.currentTarget.style.borderColor = "#FF2DAA")}
-                          onBlur={(e) => (e.currentTarget.style.borderColor = "#E8E8EE")}
-                        />
-                      )}
-
-                      {q.type === "select" && q.options && (
-                        <div className="space-y-2.5 mt-3">
+                      {q.type === "textarea" ? (
+                        <textarea value={answers[q.key] ?? ""} onChange={(e) => setAnswers(a => ({ ...a, [q.key]: e.target.value }))} placeholder={q.placeholder} required rows={4}
+                          className={`${inputBase} resize-none`} onFocus={(e) => (e.currentTarget.style.borderColor = "#FF2DAA")} onBlur={(e) => (e.currentTarget.style.borderColor = "#E8E8EE")} />
+                      ) : q.type === "select" && q.options ? (
+                        <div className="space-y-2.5 mt-2">
                           {q.options.map((opt) => (
-                            <label key={opt} className="flex items-center gap-3 cursor-pointer group">
-                              <div
-                                className="w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all"
+                            <label key={opt} className="flex items-center gap-3 cursor-pointer">
+                              <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all"
                                 style={answers[q.key] === opt ? { borderColor: "#FF2DAA", background: "#FF2DAA" } : { borderColor: "#D0D0DC", background: "white" }}
-                                onClick={() => setAnswers((a) => ({ ...a, [q.key]: opt }))}
-                              >
+                                onClick={() => setAnswers(a => ({ ...a, [q.key]: opt }))}>
                                 {answers[q.key] === opt && <div className="w-2 h-2 rounded-full bg-white" />}
                               </div>
-                              <input type="radio" name={q.key} value={opt} checked={answers[q.key] === opt} onChange={() => setAnswers((a) => ({ ...a, [q.key]: opt }))} className="sr-only" />
-                              <span className="text-sm leading-snug transition-colors" style={{ color: answers[q.key] === opt ? "#1A1A2E" : "#666680" }}>{opt}</span>
+                              <input type="radio" name={q.key} value={opt} checked={answers[q.key] === opt} onChange={() => setAnswers(a => ({ ...a, [q.key]: opt }))} className="sr-only" />
+                              <span className="text-sm leading-snug" style={{ color: answers[q.key] === opt ? "#1A1A2E" : "#666680" }}>{opt}</span>
                             </label>
                           ))}
                         </div>
-                      )}
+                      ) : null}
                     </div>
                   ))}
 
-                  {appError && (
-                    <div className="flex items-center gap-2 px-4 py-3 rounded-xl text-xs font-medium" style={{ background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.2)", color: "#f87171" }}>
-                      <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />{appError}
-                    </div>
-                  )}
-
-                  <div className="pt-2">
-                    <button type="submit" disabled={appLoading || !allAnswered}
-                      className="w-full py-4 rounded-xl font-bold text-sm text-white flex items-center justify-center gap-2 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
-                      style={{ background: "linear-gradient(135deg, #FF2DAA, #d91f90)", boxShadow: appLoading || !allAnswered ? "none" : "0 4px 24px rgba(255,45,170,0.35)" }}>
-                      {appLoading ? <><span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" /> Submitting...</> : <>{program.applyLabel} <ArrowRight size={15} /></>}
-                    </button>
-                    <p className="text-center text-xs text-white/25 mt-4">
-                      By submitting you agree to our{" "}
-                      <Link to="/terms" className="underline hover:text-white/50 transition-colors">Terms</Link>{" "}and{" "}
-                      <Link to="/privacy-policy" className="underline hover:text-white/50 transition-colors">Privacy Policy</Link>.
-                    </p>
-                  </div>
-                </form>
+                  <button type="button" disabled={!allAnswered} onClick={() => setStep("schedule")}
+                    className="w-full py-4 rounded-xl font-bold text-sm text-white flex items-center justify-center gap-2 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed mt-4"
+                    style={{ background: "linear-gradient(135deg, #FF2DAA, #d91f90)", boxShadow: allAnswered ? "0 4px 24px rgba(255,45,170,0.35)" : "none" }}>
+                    {program.applyLabel} <ArrowRight size={15} />
+                  </button>
+                </div>
               </div>
             )}
 
-            {/* ── STEP 3: Confirmed ────────────────────────────────────────── */}
+            {/* ── STEP 3: Schedule ──────────────────────────────────────────── */}
+            {step === "schedule" && (
+              <div className="max-w-xl">
+                <button type="button" onClick={() => setStep("application")} className="inline-flex items-center gap-2 text-white/35 hover:text-white/70 text-xs font-semibold mb-8 transition-colors">
+                  <ArrowLeft size={13} /> Back to application
+                </button>
+                <h1 className="font-heading text-3xl md:text-4xl text-white font-bold letter-tight mb-2">Choose your session time</h1>
+                <p className="text-white/45 text-base mb-8 leading-relaxed">Select a date and time for your first session. Monday–Friday, 8:00 AM–5:00 PM EST. All sessions via video call.</p>
+
+                <BookingCalendar value={selectedDate} onChange={(d) => { setSelectedDate(d); setSelectedTime(""); }} />
+
+                {selectedDate && (
+                  <div className="mt-6">
+                    <p className="text-[11px] font-bold letter-luxury uppercase text-white/35 mb-3">
+                      Available times — {selectedDate.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
+                    </p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {TIME_SLOTS.map((slot) => (
+                        <button key={slot} type="button" onClick={() => setSelectedTime(slot)}
+                          className="py-2.5 rounded-xl text-xs font-bold transition-all duration-150"
+                          style={selectedTime === slot
+                            ? { background: "linear-gradient(135deg, #FF2DAA, #d91f90)", color: "white", boxShadow: "0 2px 12px rgba(255,45,170,0.4)" }
+                            : { background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.65)", border: "1px solid rgba(255,255,255,0.08)" }
+                          }
+                          onMouseEnter={(e) => { if (selectedTime !== slot) e.currentTarget.style.background = "rgba(255,45,170,0.12)"; }}
+                          onMouseLeave={(e) => { if (selectedTime !== slot) e.currentTarget.style.background = "rgba(255,255,255,0.06)"; }}
+                        >
+                          {slot}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <button type="button" disabled={!scheduleComplete} onClick={() => setStep("payment")}
+                  className="w-full py-4 rounded-xl font-bold text-sm text-white flex items-center justify-center gap-2 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed mt-8"
+                  style={{ background: "linear-gradient(135deg, #FF2DAA, #d91f90)", boxShadow: scheduleComplete ? "0 4px 24px rgba(255,45,170,0.35)" : "none" }}>
+                  Continue to Payment <ArrowRight size={15} />
+                </button>
+              </div>
+            )}
+
+            {/* ── STEP 4: Payment ───────────────────────────────────────────── */}
+            {step === "payment" && user && selectedDate && selectedTime && (
+              <div className="max-w-xl">
+                <button type="button" onClick={() => setStep("schedule")} className="inline-flex items-center gap-2 text-white/35 hover:text-white/70 text-xs font-semibold mb-8 transition-colors">
+                  <ArrowLeft size={13} /> Back to schedule
+                </button>
+                <h1 className="font-heading text-3xl md:text-4xl text-white font-bold letter-tight mb-2">Review & pay</h1>
+                <p className="text-white/45 text-base mb-8 leading-relaxed">Review your booking and complete payment to secure your spot.</p>
+
+                {/* Order summary */}
+                <div className="rounded-2xl border border-white/[0.09] p-6 mb-6 space-y-4" style={{ background: "rgba(255,255,255,0.04)" }}>
+                  <p className="text-[10px] font-bold letter-luxury uppercase text-white/25 mb-4">Order Summary</p>
+
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-sm font-bold text-white">{program.title}</p>
+                      <p className="text-xs text-white/40 mt-0.5">{program.tag}</p>
+                    </div>
+                    <p className="font-heading text-lg font-bold flex-shrink-0" style={{ color: "#FF2DAA" }}>{program.price}</p>
+                  </div>
+
+                  <div className="border-t border-white/[0.07] pt-4 space-y-2">
+                    <div className="flex items-center gap-2.5 text-sm text-white/60">
+                      <Calendar size={13} style={{ color: "#FF2DAA" }} />
+                      {formatDate(selectedDate)}
+                    </div>
+                    <div className="flex items-center gap-2.5 text-sm text-white/60">
+                      <Clock size={13} style={{ color: "#FF2DAA" }} />
+                      {selectedTime} EST — via video call
+                    </div>
+                    <div className="flex items-center gap-2.5 text-sm text-white/60">
+                      <User size={13} style={{ color: "#FF2DAA" }} />
+                      {user.email}
+                    </div>
+                  </div>
+                </div>
+
+                {payError && (
+                  <div className="flex items-center gap-2 px-4 py-3 rounded-xl text-xs font-medium mb-4" style={{ background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.2)", color: "#f87171" }}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />{payError}
+                  </div>
+                )}
+
+                <button type="button" onClick={handlePayment} disabled={payLoading}
+                  className="w-full py-4 rounded-xl font-bold text-sm text-white flex items-center justify-center gap-2.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{ background: "linear-gradient(135deg, #FF2DAA, #d91f90)", boxShadow: payLoading ? "none" : "0 4px 32px rgba(255,45,170,0.4)" }}>
+                  {payLoading
+                    ? <><span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" /> Redirecting to payment...</>
+                    : <><CreditCard size={16} /> Pay {program.price} Securely</>}
+                </button>
+
+                <div className="flex items-center justify-center gap-2 mt-4">
+                  <Lock size={11} className="text-white/25" />
+                  <p className="text-[11px] text-white/25">Powered by Stripe · 256-bit SSL · PCI compliant</p>
+                </div>
+              </div>
+            )}
+
+            {/* ── STEP 5: Confirmed ─────────────────────────────────────────── */}
             {step === "confirmed" && (
-              <div className="max-w-lg mx-auto lg:mx-0 text-center lg:text-left py-8">
-                {/* Success icon */}
-                <div className="flex justify-center lg:justify-start mb-8">
-                  <div className="w-20 h-20 rounded-full flex items-center justify-center"
-                    style={{ background: "linear-gradient(135deg, #FF2DAA, #d91f90)", boxShadow: "0 8px 40px rgba(255,45,170,0.4)" }}>
+              <div className="max-w-lg mx-auto lg:mx-0 py-8">
+                <div className="flex justify-start mb-8">
+                  <div className="w-20 h-20 rounded-full flex items-center justify-center" style={{ background: "linear-gradient(135deg, #FF2DAA, #d91f90)", boxShadow: "0 8px 40px rgba(255,45,170,0.4)" }}>
                     <Check size={36} className="text-white" strokeWidth={2.5} />
                   </div>
                 </div>
 
                 <h1 className="font-heading text-4xl md:text-5xl text-white font-bold letter-tight mb-4 leading-tight">
-                  Application<br />received.
+                  You're booked.<br />It's official.
                 </h1>
-                <p className="text-white/55 text-lg leading-relaxed mb-10 max-w-md">
-                  Thank you for applying to the <span className="text-white font-semibold">{program.title}</span>. Sarah personally reviews every application. You'll hear back within <span className="text-white font-semibold">2–3 business days</span>.
+                <p className="text-white/55 text-lg leading-relaxed mb-3 max-w-md">
+                  Your spot in <span className="text-white font-semibold">{program.title}</span> is confirmed. Payment received. Sarah will be in touch within 24 hours to confirm your session details.
                 </p>
+                {selectedDate && selectedTime && (
+                  <div className="flex flex-col gap-1.5 mb-10">
+                    <div className="flex items-center gap-2 text-white/60 text-sm">
+                      <Calendar size={13} style={{ color: "#FF2DAA" }} />
+                      {formatDate(selectedDate)}
+                    </div>
+                    <div className="flex items-center gap-2 text-white/60 text-sm">
+                      <Clock size={13} style={{ color: "#FF2DAA" }} />
+                      {selectedTime} EST
+                    </div>
+                  </div>
+                )}
 
-                {/* What's next */}
-                <div className="rounded-2xl p-7 mb-10 text-left" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}>
-                  <p className="text-[10px] font-bold letter-luxury uppercase text-white/30 mb-5">What Happens Next</p>
+                <div className="rounded-2xl p-6 mb-10" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}>
+                  <p className="text-[10px] font-bold letter-luxury uppercase text-white/25 mb-5">What Happens Next</p>
                   {[
-                    { num: "01", text: "Sarah reviews your application within 2–3 business days." },
-                    { num: "02", text: "You'll receive a personal email from Sarah's team with next steps." },
-                    { num: "03", text: "For 1:1 and Intensive programs, a brief discovery call will be scheduled." },
-                    { num: "04", text: "Once accepted, your transformation begins." },
+                    { num: "01", text: "You'll receive a confirmation email with your session details and a calendar invite." },
+                    { num: "02", text: "Sarah's team will send a pre-session intake form within 24 hours." },
+                    { num: "03", text: "Show up fully. Do the work. Your transformation begins here." },
                   ].map((item) => (
                     <div key={item.num} className="flex items-start gap-4 mb-4 last:mb-0">
                       <span className="font-heading text-sm font-bold flex-shrink-0 mt-0.5" style={{ color: "#FF2DAA" }}>{item.num}</span>
@@ -633,10 +729,8 @@ const Apply = () => {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Link to="/programs" className="btn-neon-outline !py-3.5">
-                    View All Programs
-                  </Link>
-                  <Link to="/account" className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-sm font-bold text-white/60 border border-white/10 hover:border-white/20 hover:text-white/80 transition-all">
+                  <Link to="/" className="btn-neon-solid !py-3.5 text-center">Back to Home <ArrowRight size={14} /></Link>
+                  <Link to="/account" className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-sm font-bold border border-white/10 hover:border-white/20 transition-all" style={{ color: "rgba(255,255,255,0.5)" }}>
                     <User size={14} /> My Account
                   </Link>
                 </div>

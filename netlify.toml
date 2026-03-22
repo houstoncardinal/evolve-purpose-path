@@ -1,13 +1,15 @@
 [build]
-  command = "bun run build"
+  command = "npm run build"
   publish = "dist"
+  functions = "netlify/functions"
 
-# Supabase anon keys are public-by-design and are safe to expose in browser bundles.
+# Supabase anon key and Stripe publishable key are public-by-design (browser-safe).
 # Tell Netlify's secret scanner to ignore them so the build doesn't fail.
 [build.environment]
-  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_ANON_KEY,VITE_SUPABASE_URL"
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_ANON_KEY,VITE_SUPABASE_URL,VITE_STRIPE_PUBLISHABLE_KEY"
 
 # SPA fallback — send all routes to index.html so React Router handles them
+# Must come AFTER the functions routing (Netlify processes redirects top-to-bottom)
 [[redirects]]
   from = "/*"
   to = "/index.html"
