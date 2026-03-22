@@ -254,17 +254,19 @@ const About = () => {
         </div>
 
         {/* Mobile: portrait below text, flush at bottom of hero */}
-        <div className="lg:hidden relative overflow-hidden z-10" style={{ height: "72vw", maxHeight: "420px" }}>
-          <img
-            src="/53DE7570-D7E8-4E05-A9FC-6B56FDC74685.JPG"
-            alt="Sarah Adams"
-            className="w-full h-full object-cover object-[center_15%]"
-          />
-          {/* Top fade — blends into the text section above */}
-          <div
-            className="absolute inset-0"
-            style={{ background: "linear-gradient(to bottom, #0B0B0F 0%, transparent 30%)" }}
-          />
+        <div className="lg:hidden relative z-10 pt-6">
+          <div className="relative overflow-hidden" style={{ height: "80vw", maxHeight: "460px" }}>
+            <img
+              src="/53DE7570-D7E8-4E05-A9FC-6B56FDC74685.JPG"
+              alt="Sarah Adams"
+              className="w-full h-full object-cover object-[center_15%]"
+            />
+            {/* Subtle top fade — only the bottom 12% so the image top is fully visible */}
+            <div
+              className="absolute inset-0"
+              style={{ background: "linear-gradient(to bottom, transparent 88%, #0B0B0F 100%)" }}
+            />
+          </div>
         </div>
       </section>
 
