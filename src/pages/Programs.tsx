@@ -335,6 +335,50 @@ const Programs = () => {
           </div>
         ))}
 
+        {/* Healing Weekend with retreat images */}
+        {programs.filter((p) => (p as any).images).map((p) => (
+          <div key={p.id} id={p.id} className="rounded-3xl overflow-hidden border border-border bg-white">
+            {/* Retreat image gallery */}
+            <div className="grid grid-cols-3 gap-1">
+              <img src={retreatCircle} alt="Healing circle in nature" className="w-full h-48 object-cover" />
+              <img src={retreatSoundbath} alt="Sound bath healing session" className="w-full h-48 object-cover" />
+              <img src={retreatWoods} alt="Woodland retreat setting" className="w-full h-48 object-cover" />
+            </div>
+            <div className="p-10 md:p-14">
+              <div className="flex flex-wrap items-center gap-3 mb-4">
+                <span
+                  className="inline-block text-[10px] font-bold letter-luxury uppercase px-3 py-1.5 rounded-full"
+                  style={{ background: "rgba(255,45,170,0.08)", color: "#FF2DAA" }}
+                >
+                  {p.tag}
+                </span>
+                <span className="text-[10px] font-bold letter-luxury uppercase text-muted-foreground">Max 12–16 Women</span>
+              </div>
+              <h3 className="font-heading text-3xl font-bold mb-2 letter-tight">{p.title}</h3>
+              <p className="text-muted-foreground text-sm mb-2">{p.subtitle}</p>
+              <p className="font-heading text-2xl font-bold mb-1" style={{ color: "#FF2DAA" }}>{p.price}</p>
+              <p className="text-muted-foreground text-xs mb-6">{p.priceNote}</p>
+              <p className="text-muted-foreground text-base leading-relaxed mb-8 max-w-2xl">{p.description}</p>
+              <div className="ornament-line !w-8 !mx-0 mb-5" />
+              <h4 className="font-heading text-xs font-bold letter-luxury uppercase text-foreground mb-4">What's Included</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-10">
+                {p.includes.map((item) => (
+                  <div key={item} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                    <Check size={14} className="flex-shrink-0 mt-0.5" style={{ color: "#FF2DAA" }} />
+                    {item}
+                  </div>
+                ))}
+              </div>
+              <Link
+                to={p.ctaLink}
+                className="btn-neon-solid !py-4 text-center shadow-lg inline-flex"
+              >
+                {p.cta} <ArrowRight size={16} />
+              </Link>
+            </div>
+          </div>
+        ))}
+
         {/* Other programs grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {programs.filter((p) => !p.featured).map((p) => (
