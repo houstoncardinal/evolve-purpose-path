@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import EmailCapture from "@/components/sections/EmailCapture";
 import useSEO from "@/hooks/useSEO";
 import { ArrowRight, Check, Star, Clock, Users, Zap, Shield } from "lucide-react";
+import retreatCircle from "@/assets/retreat-circle.jpg";
+import retreatSoundbath from "@/assets/retreat-soundbath.jpg";
+import retreatWoods from "@/assets/retreat-woods.jpg";
 
 const programs = [
   {
@@ -17,7 +20,7 @@ const programs = [
       "Comprehensive intake & healing assessment",
       "Fully customized transformation roadmap",
       "Weekly 60-minute private sessions",
-      "Unlimited WhatsApp support between sessions",
+      "Unlimited group support between sessions",
       "Personalized resources, exercises & tools",
       "Real-time accountability and course correction",
       "Priority access to new programs and content",
@@ -46,8 +49,8 @@ const programs = [
       "8 weeks of live group sessions with Sarah",
       "Full 4-Step Framework curriculum",
       "Private community access (members portal)",
-      "Weekly accountability partner matching",
-      "Healing journal & workbook included",
+      "Teach-back sessions — share what you've learned to deepen your growth",
+      "Healing workbook included",
       "Session recordings for lifetime replay",
       "Live Q&A sessions each week",
       "Graduation & next-steps planning session",
@@ -81,15 +84,16 @@ const programs = [
     id: "intensive",
     tag: "Accelerated Breakthrough",
     title: "Healing Intensive Weekend",
-    subtitle: "2-Day Immersive Experience",
+    subtitle: "2-Day Immersive Retreat Experience",
     price: "Starting at $997",
-    priceNote: "Maximum 12 women per cohort",
+    priceNote: "Maximum of 16 women per retreat",
     description:
-      "For women who want to compress months of healing into a single transformative weekend. This is an intimate, high-touch experience that moves through all 4 steps of the framework in a sacred, focused environment.",
+      "For women who want to compress months of healing into a single transformative weekend. This is an intimate, high-touch retreat experience that moves through all 4 steps of the framework in a sacred, nature-immersed environment. All retreats are nonrefundable, but may be rescheduled if you're unable to attend.",
     includes: [
       "2 full days of immersive healing work",
-      "Small group (max 12 women) for depth and safety",
+      "Small group (max 12–16 women) for depth and safety",
       "Direct access to Sarah throughout the weekend",
+      "Sound bath & circle healing experiences",
       "All materials, resources & tools included",
       "Personalized breakthrough action plan",
       "60-day post-intensive group support",
@@ -98,9 +102,32 @@ const programs = [
     cta: "Reserve Your Spot",
     ctaLink: "/booking",
     featured: false,
+    images: true,
+  },
+  {
+    id: "mentorship",
+    tag: "Elite Experience",
+    title: "Mentorship Program",
+    subtitle: "16-Week Intensive Mentorship with Sarah",
+    price: "$2,222",
+    priceNote: "Maximum 10 women per cohort — nonrefundable, reschedulable",
+    description:
+      "The most comprehensive and exclusive offering Sarah provides. This elite mentorship combines a 3-day private retreat, 16 weeks of transformational classes, and 5 private 1:1 sessions with Sarah. This is for the woman who is ready to go all in on her healing, her purpose, and her legacy.",
+    includes: [
+      "3-day private retreat experience",
+      "16 weeks of live transformational classes",
+      "5 private 1:1 sessions with Sarah",
+      "Full 4-Step Framework deep immersion",
+      "Personalized transformation roadmap",
+      "Exclusive mentorship community access",
+      "All retreat materials & resources included",
+      "Certificate of completion",
+    ],
+    cta: "Apply for Mentorship",
+    ctaLink: "/booking",
+    featured: false,
   },
 ];
-
 const process = [
   {
     num: "01",
@@ -308,9 +335,53 @@ const Programs = () => {
           </div>
         ))}
 
+        {/* Healing Weekend with retreat images */}
+        {programs.filter((p) => (p as any).images).map((p) => (
+          <div key={p.id} id={p.id} className="rounded-3xl overflow-hidden border border-border bg-white">
+            {/* Retreat image gallery */}
+            <div className="grid grid-cols-3 gap-1">
+              <img src={retreatCircle} alt="Healing circle in nature" className="w-full h-48 object-cover" />
+              <img src={retreatSoundbath} alt="Sound bath healing session" className="w-full h-48 object-cover" />
+              <img src={retreatWoods} alt="Woodland retreat setting" className="w-full h-48 object-cover" />
+            </div>
+            <div className="p-10 md:p-14">
+              <div className="flex flex-wrap items-center gap-3 mb-4">
+                <span
+                  className="inline-block text-[10px] font-bold letter-luxury uppercase px-3 py-1.5 rounded-full"
+                  style={{ background: "rgba(255,45,170,0.08)", color: "#FF2DAA" }}
+                >
+                  {p.tag}
+                </span>
+                <span className="text-[10px] font-bold letter-luxury uppercase text-muted-foreground">Max 12–16 Women</span>
+              </div>
+              <h3 className="font-heading text-3xl font-bold mb-2 letter-tight">{p.title}</h3>
+              <p className="text-muted-foreground text-sm mb-2">{p.subtitle}</p>
+              <p className="font-heading text-2xl font-bold mb-1" style={{ color: "#FF2DAA" }}>{p.price}</p>
+              <p className="text-muted-foreground text-xs mb-6">{p.priceNote}</p>
+              <p className="text-muted-foreground text-base leading-relaxed mb-8 max-w-2xl">{p.description}</p>
+              <div className="ornament-line !w-8 !mx-0 mb-5" />
+              <h4 className="font-heading text-xs font-bold letter-luxury uppercase text-foreground mb-4">What's Included</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-10">
+                {p.includes.map((item) => (
+                  <div key={item} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                    <Check size={14} className="flex-shrink-0 mt-0.5" style={{ color: "#FF2DAA" }} />
+                    {item}
+                  </div>
+                ))}
+              </div>
+              <Link
+                to={p.ctaLink}
+                className="btn-neon-solid !py-4 text-center shadow-lg inline-flex"
+              >
+                {p.cta} <ArrowRight size={16} />
+              </Link>
+            </div>
+          </div>
+        ))}
+
         {/* Other programs grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {programs.filter((p) => !p.featured).map((p) => (
+          {programs.filter((p) => !p.featured && !(p as any).images).map((p) => (
             <div key={p.id} id={p.id} className="luxury-card flex flex-col">
               <div className="luxury-card-inner flex flex-col flex-1">
                 <span
