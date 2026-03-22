@@ -21,7 +21,7 @@ const PROGRAMS = {
     amount: 111,
     includes: [
       "Weekly 60-min private sessions",
-      "Unlimited WhatsApp support",
+      "Unlimited group support",
       "Fully customized transformation roadmap",
       "Post-program integration session",
     ],
@@ -40,8 +40,8 @@ const PROGRAMS = {
     amount: 444,
     includes: [
       "8 weeks of live group sessions with Sarah",
-      "Full L.A.T.T. framework curriculum",
-      "Weekly accountability partner matching",
+      "Guided workbook included",
+      "Weekly teach-backs with the group",
       "Lifetime session recordings",
     ],
     questions: [
@@ -59,7 +59,7 @@ const PROGRAMS = {
     amount: 999,
     includes: [
       "2 full days of immersive healing work",
-      "Small group — maximum 12 women",
+      "Small group — maximum 16 women",
       "Direct access to Sarah throughout",
       "60-day post-intensive group support",
     ],
@@ -86,6 +86,26 @@ const PROGRAMS = {
       { key: "stuck", label: "Where are you feeling most stuck right now?", type: "textarea" as const, placeholder: "Career, relationships, identity, purpose — what area needs the most clarity?" },
       { key: "crossroads", label: "Is there a specific decision, transition, or crossroads you're navigating?", type: "textarea" as const, placeholder: "The more specific you are, the more targeted Sarah can be in the session." },
       { key: "outcome", label: "What do you want to walk away knowing after this session?", type: "textarea" as const, placeholder: "If you had total clarity on one thing by the end — what would that be?" },
+    ],
+  },
+  "mentorship": {
+    title: "The Mentorship Program",
+    price: "$2,222",
+    tag: "Crown-Jewel Experience",
+    applyLabel: "Proceed to Schedule",
+    amount: 2222,
+    includes: [
+      "3-day immersive retreat with Sarah Adams",
+      "16 weeks of live group classes",
+      "5 private 1:1 coaching sessions",
+      "Max 10 women — deep intimacy guaranteed",
+    ],
+    questions: [
+      { key: "why", label: "Why is the Mentorship Program the right container for you — and why now?", type: "textarea" as const, placeholder: "Tell Sarah where you are, what has brought you to this decision, and why this level of investment feels right." },
+      { key: "cycle", label: "What generational cycle or deep pattern are you most committed to breaking through this program?", type: "textarea" as const, placeholder: "Be specific — the work begins the moment you name it clearly." },
+      { key: "vision", label: "Where do you see yourself — personally, professionally, spiritually — when this program ends?", type: "textarea" as const, placeholder: "Paint the full picture of what transformation looks like 4 months from now." },
+      { key: "calling", label: "Do you sense a calling or purpose that your healing is connected to? Tell us about it.", type: "textarea" as const, placeholder: "This program is designed for women whose healing is tied to something they are meant to do in the world." },
+      { key: "commitment", label: "This program requires full 16-week commitment including a 3-day retreat. Are you fully able to commit?", type: "select" as const, options: ["Yes — I am fully committed and have cleared my schedule", "Yes — with minor scheduling flexibility needed", "I need to discuss scheduling before committing"] },
     ],
   },
 };

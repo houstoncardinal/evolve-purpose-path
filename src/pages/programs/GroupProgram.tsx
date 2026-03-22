@@ -26,10 +26,10 @@ const weeks = [
 
 const included = [
   "8 weeks of live group sessions led personally by Sarah",
-  "Full L.A.T.T. framework curriculum — all 4 steps in depth",
+  "Guided workbook included — mailed or delivered digitally",
   "Private community access for the cohort and beyond",
-  "Weekly accountability partner matching within the group",
-  "Healing journal & workbook mailed or delivered digitally",
+  "Weekly teach-backs — share your breakthroughs live with the group",
+  "Weekly accountability check-ins with your cohort partner",
   "Full session recordings for lifetime replay",
   "Live Q&A with Sarah each week — real answers, real time",
   "Graduation & next-steps planning session in Week 8",

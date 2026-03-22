@@ -19,7 +19,7 @@ const includes = [
   { icon: BookOpen, title: "Comprehensive Intake & Healing Assessment", desc: "Before your first session, Sarah studies who you are — your wounds, your patterns, your history — so nothing is wasted." },
   { icon: Zap, title: "Fully Customized Transformation Roadmap", desc: "No cookie-cutter plans. Your roadmap is built around your specific roots, triggers, and purpose calling." },
   { icon: Clock, title: "Weekly 60-Minute Private Sessions", desc: "Deep, uninterrupted time with Sarah every single week — not rushed, not templated. Real work." },
-  { icon: MessageCircle, title: "Unlimited WhatsApp Support Between Sessions", desc: "Life doesn't pause for your next session. Sarah is in your corner between calls for real-time support." },
+  { icon: MessageCircle, title: "Unlimited Group Support Between Sessions", desc: "Life doesn't pause for your next session. Sarah is in your corner between calls — and connected to the full community for ongoing support." },
   { icon: Heart, title: "Personalized Resources, Exercises & Tools", desc: "Journaling prompts, healing exercises, and handpicked resources tailored to where you are in the framework." },
   { icon: Shield, title: "Real-Time Accountability & Course Correction", desc: "When you slip back into old patterns, Sarah catches it. She holds the mirror even when it's uncomfortable." },
   { icon: Star, title: "Priority Access to New Programs & Content", desc: "As a 1:1 client, you're first in line for everything new — retreats, intensives, resources, cohorts." },

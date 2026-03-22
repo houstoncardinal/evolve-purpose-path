@@ -26,6 +26,7 @@ import ProgramOneOnOne from "./pages/programs/OneOnOne";
 import ProgramGroup from "./pages/programs/GroupProgram";
 import ProgramPurposeClarity from "./pages/programs/PurposeClarity";
 import ProgramHealingIntensive from "./pages/programs/HealingIntensive";
+import ProgramMentorship from "./pages/programs/Mentorship";
 
 // Admin pages
 import AdminLogin from "./pages/AdminLogin";
@@ -81,6 +82,7 @@ const App = () => (
             <Route path="/programs/group" element={<ProgramGroup />} />
             <Route path="/programs/purpose-clarity" element={<ProgramPurposeClarity />} />
             <Route path="/programs/healing-intensive" element={<ProgramHealingIntensive />} />
+            <Route path="/programs/mentorship" element={<ProgramMentorship />} />
             <Route path="/testimonials" element={<Testimonials />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/free-guide" element={<FreeGuide />} />

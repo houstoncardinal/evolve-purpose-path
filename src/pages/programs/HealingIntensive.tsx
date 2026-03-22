@@ -24,7 +24,7 @@ const schedule = [
 
 const included = [
   "2 full days of immersive healing work with Sarah Adams",
-  "Small group setting (maximum 12 women) for depth and safety",
+  "Small group setting (maximum 16 women) for depth and safety",
   "Full L.A.T.T. framework delivered across both days",
   "All workbooks, materials, and tools included",
   "Personalized breakthrough action plan for each participant",
@@ -34,15 +34,25 @@ const included = [
 
 const faqs = [
   { q: "Is the Healing Intensive in person or virtual?", a: "The Healing Intensive Weekend is an intimate, in-person experience designed for maximum depth and connection. Location details are shared upon registration. Virtual attendance is not available — the in-room energy is an irreplaceable part of what makes this weekend transformative." },
-  { q: "How many spots are left?", a: "Spots are capped at 12 women per cohort. This is intentional — Sarah refuses to water down the depth by filling a room. Once 12 spots are filled, the cohort closes. Join the interest list through the booking page to stay informed on upcoming dates." },
-  { q: "What should I bring and what should I expect?", a: "Come ready to be honest, to cry, to laugh, and to be changed. Bring a journal, an open heart, and the version of yourself that's tired of where you've been. All materials are provided. You'll want to clear your schedule for the full weekend — this is not a drop-in experience." },
-  { q: "Is the $999 all-inclusive?", a: "The $997 investment covers both days of the intensive, all materials and workbooks, and 60 days of post-intensive group support access. Travel and accommodation are the responsibility of the participant. Payment plans are available — details provided during the booking process." },
+  { q: "How many spots are left?", a: "Spots are capped at 16 women per cohort. This is intentional — Sarah refuses to water down the depth by filling a room. Once 16 spots are filled, the cohort closes. Reserve your spot early to avoid missing the next cohort." },
+  { q: "What should I bring and what should I expect?", a: "Come ready to be honest, to cry, to laugh, and to be changed. Bring a journal, an open heart, and the version of yourself that's tired of where you've been. All workbooks and materials are provided. Clear your full schedule for the weekend — this is not a drop-in experience." },
+  { q: "Is the $999 all-inclusive?", a: "The $999 investment covers both days of the intensive, all workbooks and materials, and 60 days of post-intensive group support. Travel and accommodation are the responsibility of the participant." },
+  { q: "What is the refund policy?", a: "Retreat registrations are non-refundable. However, if something comes up and you cannot attend, your registration can be transferred to a future cohort date at no additional cost. We honor your investment and your commitment — we simply ask that you reschedule rather than cancel." },
+];
+
+const retreatPhotos = [
+  { src: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80", label: "Circle of Healing", large: true },
+  { src: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=600&q=80", label: "Guided Meditation", large: false },
+  { src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=600&q=80", label: "Retreat in Nature", large: false },
+  { src: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80", label: "Breathwork & Release", large: false },
+  { src: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=600&q=80", label: "Sound Bath Healing", large: false },
+  { src: "https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=800&q=80", label: "Forest Reflection Walk", large: false },
 ];
 
 const HealingIntensive = () => {
   useSEO({
     title: "Healing Intensive Weekend — 2-Day Immersive Breakthrough with Sarah Adams",
-    description: "Compress months of healing into one transformative weekend. Small group (max 12), full L.A.T.T. framework, in-person. $999. Led by Sarah Adams.",
+    description: "Compress months of healing into one transformative weekend. Small group (max 16), full L.A.T.T. framework, in-person. $999. Led by Sarah Adams.",
     keywords: "healing intensive weekend women, 2 day healing retreat, women's healing intensive, generational healing retreat, transformation weekend women, Sarah Adams healing intensive",
     breadcrumbs: [
       { name: "Coaching Programs", url: "/programs" },
@@ -80,7 +90,7 @@ const HealingIntensive = () => {
             Compress months of healing into one transformative weekend.
           </p>
           <p className="text-white/40 text-sm mb-10 font-semibold letter-luxury uppercase">
-            $999 · Max 12 Women
+            $999 · Max 16 Women
           </p>
           <div className="flex flex-wrap gap-4 mb-12">
             <Link to="/apply?program=healing-intensive" className="btn-neon-solid shadow-lg">
@@ -93,7 +103,7 @@ const HealingIntensive = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-8 border-t border-white/10">
             {[
               { icon: Calendar, label: "2 Full Days" },
-              { icon: Users, label: "Max 12 Women" },
+              { icon: Users, label: "Max 16 Women" },
               { icon: Heart, label: "Full Framework" },
               { icon: Shield, label: "60-Day Support" },
             ].map(({ icon: Icon, label }) => (
@@ -199,12 +209,61 @@ const HealingIntensive = () => {
             <div className="pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
               <div>
                 <p className="font-heading text-3xl font-bold" style={{ color: "#FF2DAA" }}>$999</p>
-                <p className="text-muted-foreground text-xs mt-1">Maximum 12 women per cohort · Payment plans available</p>
+                <p className="text-muted-foreground text-xs mt-1">Maximum 16 women per cohort · Payment plans available</p>
               </div>
               <Link to="/apply?program=healing-intensive" className="btn-neon-solid shadow-lg">
                 Reserve Your Spot <ArrowRight size={16} />
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Photo Gallery */}
+      <section className="section-padding relative overflow-hidden" style={{ backgroundColor: "#0B0B0F" }}>
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full blur-3xl pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(255,45,170,0.07), transparent 70%)" }}
+        />
+        <div className="container-wide relative z-10">
+          <div className="text-center mb-12">
+            <div className="flex items-center gap-3 justify-center mb-4">
+              <div className="ornament-line !w-8" />
+              <p className="font-semibold letter-luxury text-[10px] uppercase" style={{ color: "#FF2DAA" }}>Inside the Retreat</p>
+              <div className="ornament-line !w-8" />
+            </div>
+            <h2 className="font-heading text-4xl md:text-5xl text-white letter-tight">
+              What Transformation Looks Like
+            </h2>
+            <p className="text-white/50 mt-4 max-w-lg mx-auto text-base leading-relaxed">
+              Healing happens in circle, in nature, and in community. A glimpse into the sacred space we create.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+            {/* Large featured image */}
+            <div className="col-span-2 md:col-span-2 row-span-1 md:row-span-2 relative overflow-hidden rounded-2xl group" style={{ minHeight: "280px" }}>
+              <img
+                src={retreatPhotos[0].src}
+                alt={retreatPhotos[0].label}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                style={{ minHeight: "280px" }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <span className="absolute bottom-4 left-4 text-white text-xs font-bold letter-luxury uppercase">{retreatPhotos[0].label}</span>
+            </div>
+            {/* Smaller images */}
+            {retreatPhotos.slice(1).map((photo) => (
+              <div key={photo.src} className="relative overflow-hidden rounded-2xl group" style={{ minHeight: "180px" }}>
+                <img
+                  src={photo.src}
+                  alt={photo.label}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  style={{ minHeight: "180px" }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <span className="absolute bottom-3 left-3 text-white text-[10px] font-bold letter-luxury uppercase">{photo.label}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -258,10 +317,10 @@ const HealingIntensive = () => {
             <div className="ornament-line !w-8" />
           </div>
           <h2 className="font-heading text-4xl md:text-5xl text-white letter-tight mb-5">
-            The next Healing Intensive<br />is forming now. Only 12 spots.
+            The next Healing Intensive<br />is forming now. Only 16 spots.
           </h2>
           <p className="text-white/50 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-            This is not a conference. This is not a workshop. This is two days of sacred, intimate, life-altering work — and only 12 women will be in that room.
+            This is not a conference. This is not a workshop. This is two days of sacred, intimate, life-altering work — and only 16 women will be in that room.
           </p>
           <Link to="/apply?program=healing-intensive" className="btn-neon-solid shadow-lg">
             Reserve Your Spot <ArrowRight size={16} />
