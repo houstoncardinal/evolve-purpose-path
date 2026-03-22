@@ -381,7 +381,7 @@ const Programs = () => {
 
         {/* Other programs grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {programs.filter((p) => !p.featured).map((p) => (
+          {programs.filter((p) => !p.featured && !(p as any).images).map((p) => (
             <div key={p.id} id={p.id} className="luxury-card flex flex-col">
               <div className="luxury-card-inner flex flex-col flex-1">
                 <span
