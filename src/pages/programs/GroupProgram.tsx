@@ -38,14 +38,14 @@ const included = [
 const faqs = [
   { q: "When does the next cohort start?", a: "Cohorts form seasonally — join the waitlist to be first notified of the exact start date, early access pricing, and any bonuses available to founding members. Spots fill fast, especially for women who've been waiting." },
   { q: "What if I miss a live session?", a: "Life happens. Every single session is recorded and delivered to your portal within 24 hours. You won't fall behind — and you'll still do the work even if you catch the replay. What matters is that you show up to the material." },
-  { q: "Is it really worth $497?", a: "The question is what staying exactly where you are is costing you. $497 is Sarah's most accessible offering — and it includes 8 weeks of live coaching, a full curriculum, community, accountability, and lifetime recordings. Women have paid thousands for less. Payment plans are available." },
+  { q: "Is it really worth $444?", a: "The question is what staying exactly where you are is costing you. $444 is Sarah's most accessible offering — and it includes 8 weeks of live coaching, a full curriculum, community, accountability, and lifetime recordings. Women have paid thousands for less. Payment plans are available." },
   { q: "How is this different from other group programs?", a: "Most group programs are pre-recorded courses with a Facebook group bolted on. This is live, intimate, led personally by Sarah every week, and rooted in a proven framework specifically designed for women breaking generational cycles. It is not a content library — it is a guided transformation experience." },
 ];
 
 const GroupProgram = () => {
   useSEO({
     title: "Evolve 2 Purpose Group Program — 8-Week Coaching Journey",
-    description: "Walk the full L.A.T.T. framework in an 8-week live group coaching program led by Sarah Adams. Community, accountability, and transformation starting at $497.",
+    description: "Walk the full L.A.T.T. framework in an 8-week live group coaching program led by Sarah Adams. Community, accountability, and transformation $444.",
     keywords: "group coaching program women, 8 week transformation program, Sarah Adams group coaching, healing group program, generational cycles group coaching, affordable life coaching women",
     breadcrumbs: [
       { name: "Coaching Programs", url: "/programs" },
@@ -83,7 +83,7 @@ const GroupProgram = () => {
             Walk the full framework surrounded by women who get it.
           </p>
           <p className="text-white/40 text-sm mb-10 font-semibold letter-luxury uppercase">
-            Starting at $497 · Payment Plans Available
+            $444 · Payment Plans Available
           </p>
           <div className="flex flex-wrap gap-4 mb-12">
             <Link to="/community" className="btn-neon-solid shadow-lg">
@@ -97,7 +97,7 @@ const GroupProgram = () => {
             {[
               { icon: Clock, label: "8 Weeks" },
               { icon: PlayCircle, label: "Live Sessions" },
-              { icon: Star, label: "From $497" },
+              { icon: Star, label: "$444" },
               { icon: Users, label: "Community Access" },
             ].map(({ icon: Icon, label }) => (
               <div key={label} className="flex items-center gap-2">
@@ -200,7 +200,7 @@ const GroupProgram = () => {
             </div>
             <div className="mt-10 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
               <div>
-                <p className="font-heading text-3xl font-bold" style={{ color: "#FF2DAA" }}>Starting at $497</p>
+                <p className="font-heading text-3xl font-bold" style={{ color: "#FF2DAA" }}>$444</p>
                 <p className="text-muted-foreground text-xs mt-1">Payment plans available · Cohort-based enrollment</p>
               </div>
               <Link to="/community" className="btn-neon-solid shadow-lg">

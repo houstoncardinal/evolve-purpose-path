@@ -36,13 +36,13 @@ const faqs = [
   { q: "Is the Healing Intensive in person or virtual?", a: "The Healing Intensive Weekend is an intimate, in-person experience designed for maximum depth and connection. Location details are shared upon registration. Virtual attendance is not available — the in-room energy is an irreplaceable part of what makes this weekend transformative." },
   { q: "How many spots are left?", a: "Spots are capped at 12 women per cohort. This is intentional — Sarah refuses to water down the depth by filling a room. Once 12 spots are filled, the cohort closes. Join the interest list through the booking page to stay informed on upcoming dates." },
   { q: "What should I bring and what should I expect?", a: "Come ready to be honest, to cry, to laugh, and to be changed. Bring a journal, an open heart, and the version of yourself that's tired of where you've been. All materials are provided. You'll want to clear your schedule for the full weekend — this is not a drop-in experience." },
-  { q: "Is the $997 all-inclusive?", a: "The $997 investment covers both days of the intensive, all materials and workbooks, and 60 days of post-intensive group support access. Travel and accommodation are the responsibility of the participant. Payment plans are available — details provided during the booking process." },
+  { q: "Is the $999 all-inclusive?", a: "The $997 investment covers both days of the intensive, all materials and workbooks, and 60 days of post-intensive group support access. Travel and accommodation are the responsibility of the participant. Payment plans are available — details provided during the booking process." },
 ];
 
 const HealingIntensive = () => {
   useSEO({
     title: "Healing Intensive Weekend — 2-Day Immersive Breakthrough with Sarah Adams",
-    description: "Compress months of healing into one transformative weekend. Small group (max 12), full L.A.T.T. framework, in-person. Starting at $997. Led by Sarah Adams.",
+    description: "Compress months of healing into one transformative weekend. Small group (max 12), full L.A.T.T. framework, in-person. $999. Led by Sarah Adams.",
     keywords: "healing intensive weekend women, 2 day healing retreat, women's healing intensive, generational healing retreat, transformation weekend women, Sarah Adams healing intensive",
     breadcrumbs: [
       { name: "Coaching Programs", url: "/programs" },
@@ -80,7 +80,7 @@ const HealingIntensive = () => {
             Compress months of healing into one transformative weekend.
           </p>
           <p className="text-white/40 text-sm mb-10 font-semibold letter-luxury uppercase">
-            Starting at $997 · Max 12 Women
+            $999 · Max 12 Women
           </p>
           <div className="flex flex-wrap gap-4 mb-12">
             <Link to="/booking" className="btn-neon-solid shadow-lg">
@@ -198,7 +198,7 @@ const HealingIntensive = () => {
             </div>
             <div className="pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
               <div>
-                <p className="font-heading text-3xl font-bold" style={{ color: "#FF2DAA" }}>Starting at $997</p>
+                <p className="font-heading text-3xl font-bold" style={{ color: "#FF2DAA" }}>$999</p>
                 <p className="text-muted-foreground text-xs mt-1">Maximum 12 women per cohort · Payment plans available</p>
               </div>
               <Link to="/booking" className="btn-neon-solid shadow-lg">

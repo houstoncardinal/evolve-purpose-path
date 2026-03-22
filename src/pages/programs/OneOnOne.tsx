@@ -34,7 +34,7 @@ const steps = [
 ];
 
 const faqs = [
-  { q: "What's the investment?", a: "1:1 coaching is a custom investment based on the length and scope of your program. 90-day and 6-month engagements are available. Investment details are shared after your discovery call — Sarah's commitment is that the structure always matches what your transformation actually requires." },
+  { q: "What's the investment?", a: "1:1 coaching starts at $111 and scales based on the length and scope of your program. 90-day and 6-month engagements are available. Full investment details are shared after your discovery call — Sarah's commitment is that the structure always matches what your transformation actually requires." },
   { q: "How long does the program last?", a: "Most clients engage for 90 days to 6 months. The timeline is determined by the depth of your goals, the roots being healed, and the pace that serves your real life. There's no rush — and no shortcuts." },
   { q: "Is it conducted online?", a: "Yes. All 1:1 sessions are conducted via video call, making Sarah fully accessible wherever you are in the world. Many clients have worked with Sarah from the US, UK, Canada, and beyond." },
   { q: "What makes this different from therapy?", a: "Therapy is invaluable — and this isn't therapy. Sarah doesn't diagnose; she dismantles. Where therapy often explores the past, Sarah's coaching moves you from insight into identity and action. Many of her clients come from therapy because they want someone who will challenge them, hold them accountable, and call them higher — not just hold space." },
@@ -43,7 +43,7 @@ const faqs = [
 const OneOnOne = () => {
   useSEO({
     title: "1:1 Deep-Dive Coaching — Private Transformation with Sarah Adams",
-    description: "The most intimate, powerful coaching Sarah Adams offers. Weekly private sessions, unlimited support, and a fully custom transformation roadmap. Application required.",
+    description: "The most intimate, powerful coaching Sarah Adams offers. Weekly private sessions, unlimited support, and a fully custom transformation roadmap. Starting at $111. Application required.",
     keywords: "1:1 life coaching women, private coaching Sarah Adams, personal transformation coaching, deep healing coaching, generational cycle coaching, purpose coaching one on one",
     breadcrumbs: [
       { name: "Coaching Programs", url: "/programs" },
@@ -81,7 +81,7 @@ const OneOnOne = () => {
             This is the most powerful work Sarah does.
           </p>
           <p className="text-white/40 text-sm mb-10 font-semibold letter-luxury uppercase">
-            Custom Investment · Application Required
+            Starting at $111 · Application Required
           </p>
           <div className="flex flex-wrap gap-4 mb-12">
             <Link to="/booking" className="btn-neon-solid shadow-lg">

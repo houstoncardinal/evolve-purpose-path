@@ -9,7 +9,7 @@ const programs = [
     tag: "Most Transformative",
     title: "1:1 Deep-Dive Coaching",
     subtitle: "Private, Personalized Transformation",
-    price: "Custom Investment",
+    price: "Starting at $111",
     priceNote: "Application required — limited availability",
     learnMore: "/programs/one-on-one",
     description:
@@ -39,7 +39,7 @@ const programs = [
     tag: "Best Value",
     title: "The Evolve 2 Purpose Group Program",
     subtitle: "8-Week Guided Transformation Journey",
-    price: "Starting at $497",
+    price: "$444",
     priceNote: "Payment plans available",
     description:
       "Walk the full 4-step framework in a powerful, supportive group environment led personally by Sarah. You'll experience deep healing, build real relationships, and grow alongside women who get it.",
@@ -59,33 +59,11 @@ const programs = [
     learnMore: "/programs/group",
   },
   {
-    id: "guidance",
-    tag: "Quickest Entry Point",
-    title: "Purpose Clarity Session",
-    subtitle: "90-Minute Breakthrough Intensive",
-    price: "Starting at $197",
-    priceNote: "Book directly online",
-    description:
-      "If you're at a crossroads, feeling stuck, or need rapid clarity on your next move — this session delivers. In 90 minutes, Sarah helps you cut through the noise and identify exactly what's holding you back and what your next step is.",
-    includes: [
-      "90-minute private video session with Sarah",
-      "Pre-session intake questionnaire",
-      "Full session recording delivered within 24hrs",
-      "Written summary & personalized action plan",
-      "Targeted resource recommendations",
-      "14-day follow-up support via email",
-    ],
-    cta: "Book a Session",
-    ctaLink: "/booking",
-    featured: false,
-    learnMore: "/programs/purpose-clarity",
-  },
-  {
     id: "intensive",
     tag: "Accelerated Breakthrough",
     title: "Healing Intensive Weekend",
     subtitle: "2-Day Immersive Experience",
-    price: "Starting at $997",
+    price: "$999",
     priceNote: "Maximum 12 women per cohort",
     description:
       "For women who want to compress months of healing into a single transformative weekend. This is an intimate, high-touch experience that moves through all 4 steps of the framework in a sacred, focused environment.",
@@ -302,7 +280,7 @@ const Programs = () => {
           {[
             { need: "I need deep, root-level healing", result: "1:1 Coaching", link: "#one-on-one" },
             { need: "I want community and structure", result: "Group Program", link: "#group" },
-            { need: "I need clarity on my next step", result: "Clarity Session", link: "#guidance" },
+            { need: "I want a focused breakthrough weekend", result: "Healing Intensive", link: "#intensive" },
           ].map((item) => (
             <a
               key={item.need}
@@ -398,7 +376,7 @@ const Programs = () => {
         ))}
 
         {/* Other programs grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {programs.filter((p) => !p.featured).map((p) => (
             <div key={p.id} id={p.id} className="luxury-card flex flex-col">
               <div className="luxury-card-inner flex flex-col flex-1">
@@ -443,6 +421,19 @@ const Programs = () => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Purpose Clarity Session — entry point note */}
+        <div className="text-center pt-4">
+          <p className="text-muted-foreground text-sm mb-3">Not sure which program is right for you?</p>
+          <Link
+            to="/programs/purpose-clarity"
+            className="inline-flex items-center gap-2 text-sm font-bold transition-colors"
+            style={{ color: "#FF2DAA" }}
+          >
+            Book a 1:1 Purpose Clarity Session <ArrowRight size={14} />
+          </Link>
+          <p className="text-muted-foreground text-xs mt-1">90 minutes with Sarah — walk away knowing exactly what's next.</p>
         </div>
       </div>
     </section>
