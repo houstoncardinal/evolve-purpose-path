@@ -74,7 +74,7 @@ const Navbar = () => {
         <div className="hidden lg:flex items-center gap-2.5">
           <a
             href="/4step.pdf"
-            download="4-Step-System-Transform-Your-Life.pdf"
+            download="4-Step-System-Evolve-2-Purpose.pdf"
             className="inline-flex items-center gap-1.5 text-[10px] letter-luxury uppercase font-semibold text-primary hover:text-primary/75 transition-all duration-200 border border-primary/25 hover:border-primary/50 rounded-full px-4 py-2 hover:bg-primary/4"
           >
             <Download size={10} />
