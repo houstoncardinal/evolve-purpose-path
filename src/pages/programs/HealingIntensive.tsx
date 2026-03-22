@@ -83,7 +83,7 @@ const HealingIntensive = () => {
             $999 · Max 12 Women
           </p>
           <div className="flex flex-wrap gap-4 mb-12">
-            <Link to="/booking" className="btn-neon-solid shadow-lg">
+            <Link to="/apply?program=healing-intensive" className="btn-neon-solid shadow-lg">
               Reserve Your Spot <ArrowRight size={16} />
             </Link>
             <Link to="/programs" className="btn-neon-outline">
@@ -201,7 +201,7 @@ const HealingIntensive = () => {
                 <p className="font-heading text-3xl font-bold" style={{ color: "#FF2DAA" }}>$999</p>
                 <p className="text-muted-foreground text-xs mt-1">Maximum 12 women per cohort · Payment plans available</p>
               </div>
-              <Link to="/booking" className="btn-neon-solid shadow-lg">
+              <Link to="/apply?program=healing-intensive" className="btn-neon-solid shadow-lg">
                 Reserve Your Spot <ArrowRight size={16} />
               </Link>
             </div>
@@ -263,7 +263,7 @@ const HealingIntensive = () => {
           <p className="text-white/50 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
             This is not a conference. This is not a workshop. This is two days of sacred, intimate, life-altering work — and only 12 women will be in that room.
           </p>
-          <Link to="/booking" className="btn-neon-solid shadow-lg">
+          <Link to="/apply?program=healing-intensive" className="btn-neon-solid shadow-lg">
             Reserve Your Spot <ArrowRight size={16} />
           </Link>
         </div>

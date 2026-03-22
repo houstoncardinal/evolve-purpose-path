@@ -21,6 +21,7 @@ import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
 import Account from "./pages/Account";
+import Apply from "./pages/Apply";
 import ProgramOneOnOne from "./pages/programs/OneOnOne";
 import ProgramGroup from "./pages/programs/GroupProgram";
 import ProgramPurposeClarity from "./pages/programs/PurposeClarity";
@@ -51,6 +52,9 @@ const App = () => (
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
+          {/* Standalone routes — own layout, no public navbar/footer */}
+          <Route path="/apply" element={<Apply />} />
+
           {/* Admin routes — own layout, no public navbar/footer */}
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<AdminShell />}>

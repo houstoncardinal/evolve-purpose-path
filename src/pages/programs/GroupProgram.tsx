@@ -86,7 +86,7 @@ const GroupProgram = () => {
             $444 · Payment Plans Available
           </p>
           <div className="flex flex-wrap gap-4 mb-12">
-            <Link to="/community" className="btn-neon-solid shadow-lg">
+            <Link to="/apply?program=group" className="btn-neon-solid shadow-lg">
               Join the Waitlist <ArrowRight size={16} />
             </Link>
             <Link to="/programs" className="btn-neon-outline">
@@ -203,7 +203,7 @@ const GroupProgram = () => {
                 <p className="font-heading text-3xl font-bold" style={{ color: "#FF2DAA" }}>$444</p>
                 <p className="text-muted-foreground text-xs mt-1">Payment plans available · Cohort-based enrollment</p>
               </div>
-              <Link to="/community" className="btn-neon-solid shadow-lg">
+              <Link to="/apply?program=group" className="btn-neon-solid shadow-lg">
                 Join the Waitlist <ArrowRight size={16} />
               </Link>
             </div>
@@ -265,7 +265,7 @@ const GroupProgram = () => {
           <p className="text-white/50 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
             Join the waitlist today for early access, early-bird pricing, and first notification when enrollment opens.
           </p>
-          <Link to="/community" className="btn-neon-solid shadow-lg">
+          <Link to="/apply?program=group" className="btn-neon-solid shadow-lg">
             Join the Waitlist <ArrowRight size={16} />
           </Link>
         </div>

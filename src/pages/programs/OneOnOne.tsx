@@ -84,7 +84,7 @@ const OneOnOne = () => {
             Starting at $111 · Application Required
           </p>
           <div className="flex flex-wrap gap-4 mb-12">
-            <Link to="/booking" className="btn-neon-solid shadow-lg">
+            <Link to="/apply?program=one-on-one" className="btn-neon-solid shadow-lg">
               Apply Now <ArrowRight size={16} />
             </Link>
             <Link to="/programs" className="btn-neon-outline">
@@ -251,7 +251,7 @@ const OneOnOne = () => {
           <p className="text-white/50 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
             Sarah takes a maximum of 6 private clients at a time. This is intimate by design — because your transformation deserves her full attention.
           </p>
-          <Link to="/booking" className="btn-neon-solid shadow-lg">
+          <Link to="/apply?program=one-on-one" className="btn-neon-solid shadow-lg">
             Apply for 1:1 Coaching <ArrowRight size={16} />
           </Link>
         </div>

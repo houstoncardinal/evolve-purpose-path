@@ -355,22 +355,14 @@ const Programs = () => {
                   </li>
                 ))}
               </ul>
-              <div className="flex flex-col sm:flex-row gap-3">
+              {p.learnMore && (
                 <Link
-                  to={p.ctaLink}
-                  className="btn-neon-solid !py-4 text-center shadow-lg flex-1"
+                  to={p.learnMore}
+                  className="btn-neon-solid !py-5 text-center shadow-lg"
                 >
-                  {p.cta} <ArrowRight size={16} />
+                  Learn More <ArrowRight size={16} />
                 </Link>
-                {p.learnMore && (
-                  <Link
-                    to={p.learnMore}
-                    className="btn-neon-outline !py-4 text-center"
-                  >
-                    Learn More
-                  </Link>
-                )}
-              </div>
+              )}
             </div>
           </div>
         ))}
@@ -401,23 +393,14 @@ const Programs = () => {
                     </li>
                   ))}
                 </ul>
-                <div className="flex flex-col gap-2">
+                {p.learnMore && (
                   <Link
-                    to={p.ctaLink}
-                    className="btn-neon-outline !py-3.5 !text-xs text-center"
+                    to={p.learnMore}
+                    className="btn-neon-solid !py-3.5 !text-xs text-center"
                   >
-                    {p.cta} <ArrowRight size={13} />
+                    Learn More <ArrowRight size={13} />
                   </Link>
-                  {p.learnMore && (
-                    <Link
-                      to={p.learnMore}
-                      className="text-center text-[10px] font-bold letter-luxury uppercase transition-colors py-2"
-                      style={{ color: "#FF2DAA" }}
-                    >
-                      Learn More →
-                    </Link>
-                  )}
-                </div>
+                )}
               </div>
             </div>
           ))}

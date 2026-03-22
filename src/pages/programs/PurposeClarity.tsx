@@ -100,7 +100,7 @@ const PurposeClarity = () => {
             Starting at $197 · Book Today
           </p>
           <div className="flex flex-wrap gap-4 mb-12">
-            <Link to="/booking" className="btn-neon-solid shadow-lg">
+            <Link to="/apply?program=purpose-clarity" className="btn-neon-solid shadow-lg">
               Book Your Session <ArrowRight size={16} />
             </Link>
             <Link to="/programs" className="btn-neon-outline">
@@ -217,7 +217,7 @@ const PurposeClarity = () => {
                 <p className="font-heading text-3xl font-bold" style={{ color: "#FF2DAA" }}>Starting at $197</p>
                 <p className="text-muted-foreground text-xs mt-1">Book directly online · Immediate confirmation</p>
               </div>
-              <Link to="/booking" className="btn-neon-solid shadow-lg">
+              <Link to="/apply?program=purpose-clarity" className="btn-neon-solid shadow-lg">
                 Book Your Session <ArrowRight size={16} />
               </Link>
             </div>
@@ -279,7 +279,7 @@ const PurposeClarity = () => {
           <p className="text-white/50 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
             Stop cycling through the same questions. One 90-minute conversation with Sarah can change the entire trajectory of what's next.
           </p>
-          <Link to="/booking" className="btn-neon-solid shadow-lg">
+          <Link to="/apply?program=purpose-clarity" className="btn-neon-solid shadow-lg">
             Book Your Session <ArrowRight size={16} />
           </Link>
         </div>
