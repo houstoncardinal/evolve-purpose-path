@@ -1,15 +1,12 @@
 import { useState, useEffect, useMemo } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
-import { loadStripe } from "@stripe/stripe-js";
 import {
   ArrowRight, ArrowLeft, Check, Lock, User, Eye, EyeOff,
   ChevronLeft, ChevronRight, Clock, Calendar, CreditCard,
 } from "lucide-react";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import useSEO from "@/hooks/useSEO";
-
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ?? "");
 
 // ── Program config ───────────────────────────────────────────────────────────
 const PROGRAMS = {
@@ -273,21 +270,45 @@ const Apply = () => {
   useSEO({ title: `Apply — ${program.title} | Evolve 2 Purpose`, description: `Apply for ${program.title} with Sarah Adams. ${program.price}.` });
 
   useEffect(() => {
-    // If returning from Stripe with ?paid=true, save enrollment and show confirmed
+    // If returning from Stripe with ?paid=true, restore saved state, persist enrollment, show confirmed
     if (paidParam === "true") {
       supabase.auth.getSession().then(async ({ data }) => {
         const u = data.session?.user ?? null;
         setUser(u);
+
+        // Restore pre-redirect state from sessionStorage
+        const storageKey = `apply_${programKey}`;
+        const savedDate = sessionStorage.getItem(`${storageKey}_date`);
+        const savedTime = sessionStorage.getItem(`${storageKey}_time`);
+        const savedAnswers = sessionStorage.getItem(`${storageKey}_answers`);
+        const parsedAnswers: Record<string, string> = savedAnswers ? JSON.parse(savedAnswers) : {};
+
+        if (savedDate) setSelectedDate(new Date(savedDate));
+        if (savedTime) setSelectedTime(savedTime);
+        if (savedAnswers) setAnswers(parsedAnswers);
+
         if (u) {
           const name = u.user_metadata?.full_name || u.email?.split("@")[0] || "Applicant";
-          await supabase.from("program_enrollments").insert({
+          const { error } = await supabase.from("program_enrollments").insert({
+            user_id: u.id,
             name,
             email: u.email,
             program: program.title,
             amount: program.amount,
             status: "enrolled",
+            scheduled_date: savedDate ? new Date(savedDate).toISOString().split("T")[0] : null,
+            scheduled_time: savedTime || null,
+            answers: parsedAnswers,
           });
+          if (!error) {
+            // Clean up storage and replace URL to prevent double-insert on refresh
+            sessionStorage.removeItem(`${storageKey}_date`);
+            sessionStorage.removeItem(`${storageKey}_time`);
+            sessionStorage.removeItem(`${storageKey}_answers`);
+            window.history.replaceState({}, "", `/apply?program=${programKey}&confirmed=true`);
+          }
         }
+
         setStep("confirmed");
         setAuthLoading(false);
       });
@@ -303,7 +324,8 @@ const Apply = () => {
     const { data: listener } = supabase.auth.onAuthStateChange((_e, session) => {
       const u = session?.user ?? null;
       setUser(u);
-      if (u && step === "account") setStep("application");
+      // Only advance from account step — functional update reads current state
+      setStep((prev) => (u && prev === "account" ? "application" : prev));
     });
     return () => listener.subscription.unsubscribe();
   }, []);
@@ -348,6 +370,11 @@ const Apply = () => {
       });
       const data = await res.json();
       if (data.url) {
+        // Persist state before leaving — Stripe redirect resets React state
+        const storageKey = `apply_${programKey}`;
+        if (selectedDate) sessionStorage.setItem(`${storageKey}_date`, selectedDate.toISOString());
+        sessionStorage.setItem(`${storageKey}_time`, selectedTime);
+        sessionStorage.setItem(`${storageKey}_answers`, JSON.stringify(answers));
         window.location.href = data.url;
       } else {
         setPayError(data.error ?? "Something went wrong. Please try again.");

@@ -124,11 +124,15 @@ create table community_applications (
 -- ─── Program Enrollments ─────────────────────────────────────
 create table program_enrollments (
   id uuid primary key default uuid_generate_v4(),
+  user_id uuid references auth.users(id) on delete set null,
   name text not null,
   email text not null,
   program text not null,
   amount numeric(10,2) not null default 0,
-  status text not null default 'active' check (status in ('active', 'completed', 'paused')),
+  status text not null default 'pending' check (status in ('pending', 'enrolled', 'active', 'completed', 'paused')),
+  scheduled_date date,
+  scheduled_time text,
+  answers jsonb default '{}'::jsonb,
   enrolled_at timestamptz default now()
 );
 
@@ -213,6 +217,8 @@ create index on subscribers(created_at desc);
 create index on booking_inquiries(status);
 create index on community_applications(status);
 create index on program_enrollments(status);
+create index on program_enrollments(user_id);
+create index on program_enrollments(email);
 create index on testimonials(featured);
 create index on testimonials(sort_order);
 create index on community_posts(pinned);
