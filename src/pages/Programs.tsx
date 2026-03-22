@@ -11,6 +11,7 @@ const programs = [
     subtitle: "Private, Personalized Transformation",
     price: "Custom Investment",
     priceNote: "Application required — limited availability",
+    learnMore: "/programs/one-on-one",
     description:
       "The most powerful and intimate pathway Sarah offers. This is reserved for women who are serious about deep, lasting change — not surface-level shifts. You get Sarah's full attention, custom strategy, and ongoing support.",
     includes: [
@@ -55,6 +56,7 @@ const programs = [
     cta: "Join the Waitlist",
     ctaLink: "/community",
     featured: false,
+    learnMore: "/programs/group",
   },
   {
     id: "guidance",
@@ -76,6 +78,7 @@ const programs = [
     cta: "Book a Session",
     ctaLink: "/booking",
     featured: false,
+    learnMore: "/programs/purpose-clarity",
   },
   {
     id: "intensive",
@@ -98,6 +101,7 @@ const programs = [
     cta: "Reserve Your Spot",
     ctaLink: "/booking",
     featured: false,
+    learnMore: "/programs/healing-intensive",
   },
 ];
 
@@ -373,12 +377,22 @@ const Programs = () => {
                   </li>
                 ))}
               </ul>
-              <Link
-                to={p.ctaLink}
-                className="btn-neon-solid !py-5 text-center shadow-lg"
-              >
-                {p.cta} <ArrowRight size={16} />
-              </Link>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link
+                  to={p.ctaLink}
+                  className="btn-neon-solid !py-4 text-center shadow-lg flex-1"
+                >
+                  {p.cta} <ArrowRight size={16} />
+                </Link>
+                {p.learnMore && (
+                  <Link
+                    to={p.learnMore}
+                    className="btn-neon-outline !py-4 text-center"
+                  >
+                    Learn More
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
         ))}
@@ -409,12 +423,23 @@ const Programs = () => {
                     </li>
                   ))}
                 </ul>
-                <Link
-                  to={p.ctaLink}
-                  className="btn-neon-outline !py-3.5 !text-xs text-center"
-                >
-                  {p.cta} <ArrowRight size={13} />
-                </Link>
+                <div className="flex flex-col gap-2">
+                  <Link
+                    to={p.ctaLink}
+                    className="btn-neon-outline !py-3.5 !text-xs text-center"
+                  >
+                    {p.cta} <ArrowRight size={13} />
+                  </Link>
+                  {p.learnMore && (
+                    <Link
+                      to={p.learnMore}
+                      className="text-center text-[10px] font-bold letter-luxury uppercase transition-colors py-2"
+                      style={{ color: "#FF2DAA" }}
+                    >
+                      Learn More →
+                    </Link>
+                  )}
+                </div>
               </div>
             </div>
           ))}
