@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Download } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, Download, UserCircle, LogOut, User } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 const navLinks = [
   { label: "About", path: "/about" },
@@ -14,7 +16,34 @@ const navLinks = [
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setUser(data.session?.user ?? null));
+    const { data: listener } = supabase.auth.onAuthStateChange((_e, session) => setUser(session?.user ?? null));
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
+  // Close user dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const handleSignOut = async () => {
+    setUserMenuOpen(false);
+    await supabase.auth.signOut();
+    navigate("/");
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -80,6 +109,53 @@ const Navbar = () => {
             <Download size={10} />
             Free PDF
           </a>
+
+          {/* User account icon */}
+          {user ? (
+            <div className="relative" ref={userMenuRef}>
+              <button
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white transition-all hover:scale-105"
+                style={{ background: "linear-gradient(135deg, #FF2DAA, #d91f90)", boxShadow: "0 2px 10px rgba(255,45,170,0.35)" }}
+                aria-label="Account menu"
+              >
+                {(user.user_metadata?.full_name || user.email || "U").charAt(0).toUpperCase()}
+              </button>
+              {userMenuOpen && (
+                <div
+                  className="absolute right-0 top-11 w-52 rounded-2xl shadow-xl border py-2 z-50"
+                  style={{ background: "white", border: "1px solid #EEEEF3", boxShadow: "0 8px 32px rgba(0,0,0,0.12)" }}
+                >
+                  <div className="px-4 py-2.5 border-b border-[#F2F2F6]">
+                    <p className="text-xs font-semibold text-[#1A1A2E] truncate">{user.user_metadata?.full_name || "My Account"}</p>
+                    <p className="text-[11px] text-[#AAAABC] truncate mt-0.5">{user.email}</p>
+                  </div>
+                  <Link
+                    to="/account"
+                    onClick={() => setUserMenuOpen(false)}
+                    className="flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-[#444] hover:text-[#FF2DAA] hover:bg-[#FFF5FB] transition-colors"
+                  >
+                    <User size={13} /> My Account
+                  </Link>
+                  <button
+                    onClick={handleSignOut}
+                    className="w-full flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-[#888] hover:text-red-500 hover:bg-red-50 transition-colors"
+                  >
+                    <LogOut size={13} /> Sign Out
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link
+              to="/account"
+              className="w-8 h-8 rounded-full flex items-center justify-center text-[#888] border border-[#E2E2EA] hover:border-[#FF2DAA] hover:text-[#FF2DAA] transition-all hover:bg-[#FFF5FB]"
+              aria-label="Sign in"
+            >
+              <UserCircle size={17} />
+            </Link>
+          )}
+
           <Link
             to="/booking"
             className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-[10px] font-bold letter-luxury uppercase text-white shadow-md transition-all duration-300 hover:shadow-[0_0_24px_rgba(255,45,170,0.45)] hover:-translate-y-px active:translate-y-0"
@@ -89,15 +165,35 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* Mobile toggle */}
-        <button
-          onClick={() => setOpen(!open)}
-          className="lg:hidden text-foreground p-2 rounded-lg hover:bg-muted/50 transition-colors"
-          aria-label="Toggle menu"
-          aria-expanded={open}
-        >
-          {open ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        {/* Mobile: user icon + hamburger */}
+        <div className="lg:hidden flex items-center gap-1.5">
+          {user ? (
+            <Link
+              to="/account"
+              className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white"
+              style={{ background: "linear-gradient(135deg, #FF2DAA, #d91f90)" }}
+              aria-label="My account"
+            >
+              {(user.user_metadata?.full_name || user.email || "U").charAt(0).toUpperCase()}
+            </Link>
+          ) : (
+            <Link
+              to="/account"
+              className="w-8 h-8 rounded-full flex items-center justify-center text-[#888] border border-[#E2E2EA] hover:border-[#FF2DAA] hover:text-[#FF2DAA] transition-all"
+              aria-label="Sign in"
+            >
+              <UserCircle size={17} />
+            </Link>
+          )}
+          <button
+            onClick={() => setOpen(!open)}
+            className="text-foreground p-2 rounded-lg hover:bg-muted/50 transition-colors"
+            aria-label="Toggle menu"
+            aria-expanded={open}
+          >
+            {open ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}

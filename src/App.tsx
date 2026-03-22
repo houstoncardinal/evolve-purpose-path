@@ -20,6 +20,7 @@ import Community from "./pages/Community";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
+import Account from "./pages/Account";
 
 // Admin pages
 import AdminLogin from "./pages/AdminLogin";
@@ -75,6 +76,7 @@ const App = () => (
             <Route path="/evolve-2-purpose" element={<EvolePurpose />} />
             <Route path="/booking" element={<Booking />} />
             <Route path="/community" element={<Community />} />
+            <Route path="/account" element={<Account />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="*" element={<NotFound />} />
