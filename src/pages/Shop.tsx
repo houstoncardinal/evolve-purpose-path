@@ -199,9 +199,16 @@ const Shop = () => {
           <h1 className="font-heading text-5xl md:text-6xl mb-6 letter-tight">
             Tools for Your <span className="italic neon-text">Transformation</span>
           </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-8">
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-6">
             Every resource in this shop was created with one purpose: to meet you where you are and give you exactly what you need to move forward. Practical. Intentional. Powerful.
           </p>
+          {/* Pre-order notice */}
+          <div className="inline-flex items-center gap-2.5 px-5 py-3 rounded-2xl border mb-6" style={{ background: "rgba(255,45,170,0.06)", borderColor: "rgba(255,45,170,0.2)" }}>
+            <span className="w-2 h-2 rounded-full flex-shrink-0 animate-pulse" style={{ background: "#FF2DAA" }} />
+            <p className="text-sm font-semibold" style={{ color: "#FF2DAA" }}>
+              Shop launching soon — all products available for pre-order now
+            </p>
+          </div>
           {cart.length > 0 && (
             <div className="flex flex-col sm:flex-row items-center gap-3 justify-center mt-4">
               <div
@@ -209,10 +216,10 @@ const Shop = () => {
                 style={{ background: "rgba(255,45,170,0.1)", color: "#FF2DAA" }}
               >
                 <ShoppingBag size={14} />
-                {cart.length} item{cart.length > 1 ? "s" : ""} in cart
+                {cart.length} item{cart.length > 1 ? "s" : ""} pre-ordered
               </div>
               <Link to="/booking" className="btn-neon-solid !text-sm !py-2.5 shadow-md">
-                Complete Order <ArrowRight size={14} />
+                Complete Pre-Order <ArrowRight size={14} />
               </Link>
             </div>
           )}
@@ -276,7 +283,7 @@ const Shop = () => {
                     className="w-full btn-neon-solid !py-3 !text-xs shadow-md"
                     style={cart.includes(bundle.title) ? { background: "#0B0B0F" } : {}}
                   >
-                    {cart.includes(bundle.title) ? "✓ Added" : "Add Bundle to Cart"} <Package size={13} />
+                    {cart.includes(bundle.title) ? "✓ Pre-Ordered" : "Pre-Order Bundle"} <Package size={13} />
                   </button>
                 </div>
               </div>
@@ -346,7 +353,7 @@ const Shop = () => {
                         className="btn-neon-solid !text-xs !px-5 !py-2.5 shadow-md"
                         style={cart.includes(p.id) ? { background: "#0B0B0F" } : {}}
                       >
-                        {cart.includes(p.id) ? "✓ Added" : "Add to Cart"}
+                        {cart.includes(p.id) ? "✓ Pre-Ordered" : "Pre-Order"}
                       </button>
                     )}
                   </div>
@@ -357,16 +364,16 @@ const Shop = () => {
         </div>
       </section>
 
-      {/* Notify me for coming soon */}
+      {/* Notify me — shop launch */}
       <section className="py-14 bg-[#F6F6F8]">
         <div className="container-narrow text-center">
-          <p className="text-xs font-bold letter-luxury uppercase text-muted-foreground mb-3">Anointing Oil — Coming Soon</p>
-          <h3 className="font-heading text-2xl md:text-3xl mb-4 letter-tight">Be First to Know When It Drops</h3>
+          <p className="text-xs font-bold letter-luxury uppercase text-muted-foreground mb-3">Shop Launch — Coming Soon</p>
+          <h3 className="font-heading text-2xl md:text-3xl mb-4 letter-tight">Get Notified When the Shop Goes Live</h3>
           <p className="text-muted-foreground text-sm mb-6 max-w-sm mx-auto">
-            The Restoration Anointing Oil is hand-blended in limited batches. Drop your email to get early access.
+            Drop your email and be the first to know the moment the full shop opens — plus get early access to launch deals.
           </p>
           {notifyDone ? (
-            <p className="font-heading font-semibold text-primary">You're on the list! We'll notify you at launch.</p>
+            <p className="font-heading font-semibold text-primary">You're on the list — we'll reach out the moment we launch!</p>
           ) : (
             <form
               onSubmit={handleNotify}
