@@ -61,7 +61,7 @@ const EmailCapture = ({ variant = "default" }: { variant?: "default" | "hero" | 
 
   if (variant === "fullwidth") {
     const darkInputClass =
-      "flex-1 px-6 py-3.5 rounded-full border bg-white/8 backdrop-blur-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 text-sm transition-all " +
+      "flex-1 px-6 py-3.5 rounded-full border bg-white/[0.08] backdrop-blur-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 text-sm transition-all " +
       (error ? "border-red-400/60 focus:ring-red-400/30" : "border-white/15 focus:ring-white/20 focus:border-white/30");
 
     return (
@@ -102,8 +102,7 @@ const EmailCapture = ({ variant = "default" }: { variant?: "default" | "hero" | 
               />
               <button
                 type="submit"
-                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full font-bold text-sm text-white whitespace-nowrap transition-all duration-300 shadow-lg hover:shadow-[0_0_32px_rgba(255,45,170,0.5)] hover:-translate-y-px"
-                style={{ background: "#FF2DAA" }}
+                className="btn-neon-solid !py-3.5 !text-sm whitespace-nowrap shadow-lg"
               >
                 Send My Guide <ArrowRight size={14} />
               </button>
