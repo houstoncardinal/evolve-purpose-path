@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useSEO from "@/hooks/useSEO";
-import { Link } from "react-router-dom";
-import { store } from "@/lib/adminStore";
+import { Link, useSearchParams } from "react-router-dom";
+import { supabase } from "@/lib/supabase";
+import type { User as SupabaseUser } from "@supabase/supabase-js";
 import {
   ArrowRight,
   MessageCircle,
@@ -13,6 +14,8 @@ import {
   CheckCircle,
   Heart,
   Video,
+  CreditCard,
+  ShoppingBag,
 } from "lucide-react";
 
 const features = [
@@ -145,23 +148,43 @@ const Community = () => {
       },
     ],
   });
-  const [form, setForm] = useState({ name: "", email: "", reason: "" });
-  const [joined, setJoined] = useState(false);
+  const [searchParams] = useSearchParams();
+  const justSubscribed = searchParams.get("subscribed") === "true";
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  const [user, setUser] = useState<SupabaseUser | null>(null);
+  const [subLoading, setSubLoading] = useState(false);
+  const [subError, setSubError] = useState("");
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setUser(data.session?.user ?? null));
+  }, []);
+
+  const handleSubscribe = async () => {
+    setSubLoading(true);
+    setSubError("");
+    const origin = window.location.origin;
+    try {
+      const res = await fetch("/.netlify/functions/create-subscription", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: user?.email ?? "",
+          successUrl: `${origin}/community?subscribed=true`,
+          cancelUrl: `${origin}/community`,
+        }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        setSubError(data.error ?? "Something went wrong. Please try again.");
+        setSubLoading(false);
+      }
+    } catch {
+      setSubError("Network error. Please check your connection and try again.");
+      setSubLoading(false);
+    }
   };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await store.addCommunityApp({ name: form.name, email: form.email, reason: form.reason });
-    setJoined(true);
-  };
-
-  const inputClass =
-    "w-full bg-[#F6F6F8] border border-border rounded-xl px-5 py-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 transition-all duration-200";
 
   return (
     <div>
@@ -380,114 +403,121 @@ const Community = () => {
         </div>
       </section>
 
-      {/* Join form */}
+      {/* Join / Subscribe */}
       <section id="join" className="section-padding relative overflow-hidden">
         <div className="glow-orb w-[500px] h-[500px] top-[-100px] left-[30%]" />
         <div className="container-narrow relative z-10">
-          <div className="text-center mb-14">
-            <div className="flex items-center gap-3 justify-center mb-4">
-              <div className="ornament-line !w-8" />
-              <p className="text-primary font-semibold letter-luxury text-[10px] uppercase">Join Now</p>
-              <div className="ornament-line !w-8" />
-            </div>
-            <h2 className="font-heading text-4xl md:text-5xl mb-5 letter-tight">Apply to Join the Community</h2>
-            <p className="text-muted-foreground text-lg max-w-lg mx-auto">
-              Membership is by application. We review each request to ensure the community remains a safe, intentional space for growth.
-            </p>
-          </div>
 
-          {joined ? (
-            <div className="text-center py-20">
-              <div
-                className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
-                style={{ background: "rgba(255,45,170,0.1)" }}
-              >
+          {justSubscribed ? (
+            /* Success state */
+            <div className="text-center py-16 max-w-lg mx-auto">
+              <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
+                style={{ background: "rgba(255,45,170,0.12)", border: "1px solid rgba(255,45,170,0.2)" }}>
                 <CheckCircle size={36} style={{ color: "#FF2DAA" }} />
               </div>
-              <h3 className="font-heading text-3xl mb-4 letter-tight">Application Submitted!</h3>
-              <p className="text-muted-foreground text-lg max-w-md mx-auto mb-8">
-                Thank you for applying. You'll receive an email within 48 hours with next steps to access the community.
+              <h3 className="font-heading text-4xl mb-4 letter-tight">Welcome to the Community!</h3>
+              <p className="text-muted-foreground text-lg max-w-md mx-auto mb-8 leading-relaxed">
+                Your membership is active. Check your email for access details — we'll have you inside within 24 hours.
               </p>
-              <Link to="/" className="btn-neon-solid shadow-lg">
-                Back to Home <ArrowRight size={16} />
-              </Link>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Link to="/account" className="btn-neon-solid shadow-lg">
+                  My Account <ArrowRight size={16} />
+                </Link>
+                <Link to="/" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full text-sm font-bold border border-border text-muted-foreground hover:border-primary hover:text-primary transition-all">
+                  Back to Home
+                </Link>
+              </div>
             </div>
           ) : (
-            <form
-              onSubmit={handleSubmit}
-              className="bg-white rounded-3xl border border-border p-8 md:p-12 shadow-sm"
-            >
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
-                <div>
-                  <label className="block text-xs font-bold letter-luxury uppercase mb-2 text-foreground">Full Name *</label>
-                  <input
-                    type="text"
-                    name="name"
-                    required
-                    value={form.name}
-                    onChange={handleChange}
-                    placeholder="Your full name"
-                    className={inputClass}
-                  />
+            <>
+              <div className="text-center mb-12">
+                <div className="flex items-center gap-3 justify-center mb-4">
+                  <div className="ornament-line !w-8" />
+                  <p className="text-primary font-semibold letter-luxury text-[10px] uppercase">Join Now</p>
+                  <div className="ornament-line !w-8" />
                 </div>
-                <div>
-                  <label className="block text-xs font-bold letter-luxury uppercase mb-2 text-foreground">Email Address *</label>
-                  <input
-                    type="email"
-                    name="email"
-                    required
-                    value={form.email}
-                    onChange={handleChange}
-                    placeholder="your@email.com"
-                    className={inputClass}
-                  />
+                <h2 className="font-heading text-4xl md:text-5xl mb-5 letter-tight">Join the Community</h2>
+                <p className="text-muted-foreground text-lg max-w-lg mx-auto">
+                  A private, members-only space for women committed to real transformation — direct access to Sarah, live events, and community built to last.
+                </p>
+              </div>
+
+              {/* Pricing card */}
+              <div className="max-w-lg mx-auto">
+                <div className="bg-white rounded-3xl border border-border shadow-sm overflow-hidden">
+                  {/* Card header */}
+                  <div className="px-8 pt-8 pb-6 border-b border-border">
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <p className="text-[10px] font-bold letter-luxury uppercase mb-1" style={{ color: "#FF2DAA" }}>Monthly Membership</p>
+                        <h3 className="font-heading text-2xl font-bold">Evolve 2 Purpose Community</h3>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-heading text-4xl font-bold" style={{ color: "#FF2DAA" }}>$9.99</p>
+                        <p className="text-muted-foreground text-xs">per month</p>
+                      </div>
+                    </div>
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      Cancel anytime. No long-term commitment required.
+                    </p>
+                  </div>
+
+                  {/* Included list */}
+                  <div className="px-8 py-6">
+                    <p className="text-xs font-bold letter-luxury uppercase text-muted-foreground mb-4">Everything included:</p>
+                    <ul className="space-y-3 mb-8">
+                      {[
+                        "Direct posts, voice notes & updates from Sarah",
+                        "4+ live events & workshops every month",
+                        "Member-to-member chat & community feed",
+                        "Full resource & replay library",
+                        "Accountability circle placement",
+                        "Priority access to new content & announcements",
+                      ].map((item) => (
+                        <li key={item} className="flex items-center gap-3 text-sm text-foreground">
+                          <CheckCircle size={14} style={{ color: "#FF2DAA" }} className="flex-shrink-0" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* CTA */}
+                    {subError && (
+                      <div className="flex items-center gap-2 px-4 py-3 rounded-xl text-xs font-medium mb-4"
+                        style={{ background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.2)", color: "#ef4444" }}>
+                        <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />{subError}
+                      </div>
+                    )}
+                    <button
+                      onClick={handleSubscribe}
+                      disabled={subLoading}
+                      className="w-full btn-neon-solid !py-5 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {subLoading
+                        ? <><span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" /> Processing...</>
+                        : <><CreditCard size={16} /> Join for $9.99/month</>}
+                    </button>
+                    <p className="text-center text-muted-foreground text-xs mt-3">
+                      Secure payment via Stripe · Cancel anytime from your account
+                    </p>
+                  </div>
+                </div>
+
+                {/* Product-owner note */}
+                <div className="mt-5 flex items-start gap-3 px-6 py-4 rounded-2xl border border-border bg-[#F6F6F8]">
+                  <ShoppingBag size={16} style={{ color: "#FF2DAA" }} className="flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-foreground mb-0.5">Already purchased a product?</p>
+                    <p className="text-muted-foreground text-xs leading-relaxed">
+                      Product purchases from the shop automatically include community access. Sign into your account to activate it — no subscription required.
+                    </p>
+                    <Link to="/account" className="inline-flex items-center gap-1 text-xs font-semibold mt-2 hover:opacity-80 transition-opacity" style={{ color: "#FF2DAA" }}>
+                      Go to My Account <ArrowRight size={11} />
+                    </Link>
+                  </div>
                 </div>
               </div>
-
-              <div className="mb-8">
-                <label className="block text-xs font-bold letter-luxury uppercase mb-2 text-foreground">
-                  What brings you here? *
-                </label>
-                <textarea
-                  name="reason"
-                  required
-                  value={form.reason}
-                  onChange={handleChange}
-                  rows={4}
-                  placeholder="Share where you are in your journey and what you're hoping to find in this community..."
-                  className={`${inputClass} resize-none`}
-                />
-              </div>
-
-              {/* What's included reminder */}
-              <div className="bg-[#F6F6F8] rounded-xl p-5 mb-8">
-                <p className="text-xs font-bold letter-luxury uppercase text-foreground mb-3">Your membership includes:</p>
-                <ul className="space-y-2">
-                  {[
-                    "Direct access to Sarah's posts & updates",
-                    "Monthly live events & workshops",
-                    "Member-to-member chat & community feed",
-                    "Full resource & replay library",
-                    "Accountability circle placement",
-                  ].map((item) => (
-                    <li key={item} className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#FF2DAA" }} />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full btn-neon-solid !py-5 !text-sm shadow-lg"
-              >
-                Submit My Application <ArrowRight size={16} />
-              </button>
-              <p className="text-center text-muted-foreground text-xs mt-4">
-                We review applications within 24–48 hours. You'll receive an email confirmation.
-              </p>
-            </form>
+            </>
           )}
         </div>
       </section>

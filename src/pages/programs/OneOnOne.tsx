@@ -233,6 +233,104 @@ const OneOnOne = () => {
         </div>
       </section>
 
+      {/* What Comes Next */}
+      <section className="section-padding bg-white">
+        <div className="container-narrow">
+          <div className="text-center mb-12">
+            <div className="flex items-center gap-3 justify-center mb-4">
+              <div className="ornament-line !w-8" />
+              <p className="font-semibold letter-luxury text-[10px] uppercase" style={{ color: "#FF2DAA" }}>Your Pathway</p>
+              <div className="ornament-line !w-8" />
+            </div>
+            <h2 className="font-heading text-4xl md:text-5xl letter-tight mb-5" style={{ color: "#1A1A2E" }}>
+              What Comes After 1:1
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-xl mx-auto">
+              Completing your 1:1 program is the gateway to every other program Evolve 2 Purpose offers. Here's how the pathway works.
+            </p>
+          </div>
+
+          <div className="relative">
+            {/* Connecting line */}
+            <div className="hidden md:block absolute top-8 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(255,45,170,0.3), rgba(255,45,170,0.3), transparent)" }} />
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              {[
+                {
+                  num: "1",
+                  label: "Complete 1:1",
+                  desc: "Finish your 1:1 Deep-Dive Coaching program — the full L.A.T.T. framework.",
+                  active: true,
+                },
+                {
+                  num: "2",
+                  label: "Submit Teaching Video",
+                  desc: "Record yourself teaching someone what you learned. This seals your transformation.",
+                  cta: { label: "Step 4: Teaching", href: "/programs/submit-teaching" },
+                  active: false,
+                },
+                {
+                  num: "3",
+                  label: "Get Approved",
+                  desc: "Sarah's team reviews your video within 3–5 business days and unlocks your pathway.",
+                  active: false,
+                },
+                {
+                  num: "4",
+                  label: "Access All Programs",
+                  desc: "Group, Healing Intensive, and Mentorship open to you — choose your next evolution.",
+                  cta: { label: "View All Programs", href: "/programs" },
+                  active: false,
+                },
+              ].map((item) => (
+                <div key={item.num} className="relative flex flex-col items-center text-center">
+                  <div
+                    className="w-14 h-14 rounded-full flex items-center justify-center font-heading text-xl font-bold mb-5 border-2 relative z-10"
+                    style={
+                      item.active
+                        ? { background: "linear-gradient(135deg, #FF2DAA, #d91f90)", borderColor: "#FF2DAA", color: "#fff" }
+                        : { background: "#fff", borderColor: "rgba(255,45,170,0.3)", color: "#FF2DAA" }
+                    }
+                  >
+                    {item.num}
+                  </div>
+                  <h3 className="font-heading text-base font-bold mb-2" style={{ color: "#1A1A2E" }}>{item.label}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-3">{item.desc}</p>
+                  {item.cta && (
+                    <Link
+                      to={item.cta.href}
+                      className="inline-flex items-center gap-1 text-xs font-bold hover:opacity-80 transition-opacity"
+                      style={{ color: "#FF2DAA" }}
+                    >
+                      {item.cta.label} <ArrowRight size={11} />
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Teaching video CTA box */}
+          <div className="mt-14 rounded-2xl p-7 md:p-8 border border-border bg-[#F6F6F8]">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+              <div className="flex-1">
+                <p className="text-[10px] font-bold letter-luxury uppercase mb-1.5" style={{ color: "#FF2DAA" }}>Step 4 of the L.A.T.T. Framework</p>
+                <h3 className="font-heading text-xl font-bold mb-2" style={{ color: "#1A1A2E" }}>Ready to submit your teaching video?</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  Teach someone else what you learned — a friend, family member, or colleague. Record it, submit it, and unlock the next chapter of your journey.
+                </p>
+              </div>
+              <Link
+                to="/programs/submit-teaching"
+                className="btn-neon-solid shadow-lg flex-shrink-0"
+              >
+                Submit Teaching Video <ArrowRight size={15} />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Final CTA */}
       <section className="section-padding relative overflow-hidden" style={{ backgroundColor: "#0B0B0F" }}>
         <div

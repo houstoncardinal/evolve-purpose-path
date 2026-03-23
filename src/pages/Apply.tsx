@@ -134,9 +134,11 @@ const stepIdx = (s: Step) => STEP_LIST.findIndex((x) => x.id === s);
 const BookingCalendar = ({
   value,
   onChange,
+  thursdayOnly = false,
 }: {
   value: Date | null;
   onChange: (d: Date) => void;
+  thursdayOnly?: boolean;
 }) => {
   const [viewYear, setViewYear] = useState(new Date().getFullYear());
   const [viewMonth, setViewMonth] = useState(new Date().getMonth());
@@ -153,6 +155,7 @@ const BookingCalendar = ({
 
   const isSelectable = (d: Date) => {
     const day = d.getDay(); // 0=Sun, 6=Sat
+    if (thursdayOnly) return d >= today && day === 4; // Group: Thursdays only
     return d >= today && day !== 0 && day !== 6;
   };
 
@@ -267,6 +270,13 @@ const Apply = () => {
   const [payLoading, setPayLoading] = useState(false);
   const [payError, setPayError] = useState("");
 
+  // Prerequisite: non-1:1 programs require a prior 1:1 enrollment
+  const [hasPrereq, setHasPrereq] = useState<boolean | null>(
+    programKey === "one-on-one" ? true : null
+  );
+
+  const isGroupProgram = programKey === "group";
+
   useSEO({ title: `Apply — ${program.title} | Evolve 2 Purpose`, description: `Apply for ${program.title} with Sarah Adams. ${program.price}.` });
 
   useEffect(() => {
@@ -329,6 +339,18 @@ const Apply = () => {
     });
     return () => listener.subscription.unsubscribe();
   }, []);
+
+  // Check prereq (1:1 enrollment) for non-1:1 programs
+  useEffect(() => {
+    if (!user || programKey === "one-on-one") return;
+    supabase
+      .from("program_enrollments")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("program", "1:1 Deep-Dive Coaching")
+      .in("status", ["enrolled", "active", "completed"])
+      .then(({ data }) => setHasPrereq(!!(data?.length)));
+  }, [user, programKey]);
 
   // Auth handlers
   const handleSignIn = async (e: React.FormEvent) => {
@@ -582,6 +604,54 @@ const Apply = () => {
             {/* ── STEP 2: Application ───────────────────────────────────────── */}
             {step === "application" && user && (
               <div className="max-w-xl">
+
+                {/* Prereq gate — shown while checking or if 1:1 not completed */}
+                {hasPrereq === null && (
+                  <div className="flex items-center gap-3 py-8">
+                    <span className="w-5 h-5 rounded-full border-2 border-[#FF2DAA]/30 border-t-[#FF2DAA] animate-spin" />
+                    <p className="text-white/40 text-sm">Checking eligibility...</p>
+                  </div>
+                )}
+
+                {hasPrereq === false && (
+                  <div className="max-w-md">
+                    <div className="w-14 h-14 rounded-full flex items-center justify-center mb-6"
+                      style={{ background: "rgba(255,45,170,0.1)", border: "1px solid rgba(255,45,170,0.2)" }}>
+                      <Lock size={22} style={{ color: "#FF2DAA" }} />
+                    </div>
+                    <h2 className="font-heading text-2xl md:text-3xl text-white font-bold letter-tight mb-3">
+                      Complete 1:1 Coaching First
+                    </h2>
+                    <p className="text-white/50 text-sm leading-relaxed mb-6">
+                      The <span className="text-white font-semibold">{program.title}</span> is the next step in your journey — but the 1:1 Deep-Dive Coaching is the gateway. It's designed to give you the root-level foundation and personal breakthrough you need before entering a group or intensive experience.
+                    </p>
+                    <div className="rounded-2xl p-5 mb-8 border border-white/[0.07]" style={{ background: "rgba(255,255,255,0.03)" }}>
+                      <p className="text-[10px] font-bold letter-luxury uppercase text-white/25 mb-4">The Pathway</p>
+                      {[
+                        { step: "1", label: "1:1 Deep-Dive Coaching", desc: "Your foundation — enroll here first.", active: true },
+                        { step: "2", label: "Submit Teaching Video", desc: "Teach someone what you learned. Step 4 of the L.A.T.T. framework." },
+                        { step: "3", label: program.title, desc: "Unlocked after your teaching video is approved.", active: false },
+                      ].map((item) => (
+                        <div key={item.step} className="flex gap-3 mb-3 last:mb-0">
+                          <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5 ${item.active ? "bg-[#FF2DAA] text-white" : "text-white/30"}`}
+                            style={!item.active ? { background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" } : {}}>
+                            {item.step}
+                          </div>
+                          <div>
+                            <p className={`text-sm font-semibold ${item.active ? "text-white" : "text-white/35"}`}>{item.label}</p>
+                            <p className="text-white/30 text-xs mt-0.5">{item.desc}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <Link to="/apply?program=one-on-one" className="btn-neon-solid shadow-lg inline-flex">
+                      Start with 1:1 Coaching <ArrowRight size={15} />
+                    </Link>
+                  </div>
+                )}
+
+                {/* Show application only when prereq is confirmed */}
+                {hasPrereq === true && <>
                 <div className="flex items-center gap-3 mb-8">
                   <div className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0" style={{ background: "linear-gradient(135deg, #FF2DAA, #d91f90)" }}>
                     {(user.user_metadata?.full_name || user.email || "U").charAt(0).toUpperCase()}
@@ -630,6 +700,7 @@ const Apply = () => {
                     {program.applyLabel} <ArrowRight size={15} />
                   </button>
                 </div>
+                </>}
               </div>
             )}
 
@@ -639,31 +710,62 @@ const Apply = () => {
                 <button type="button" onClick={() => setStep("application")} className="inline-flex items-center gap-2 text-white/35 hover:text-white/70 text-xs font-semibold mb-8 transition-colors">
                   <ArrowLeft size={13} /> Back to application
                 </button>
-                <h1 className="font-heading text-3xl md:text-4xl text-white font-bold letter-tight mb-2">Choose your session time</h1>
-                <p className="text-white/45 text-base mb-8 leading-relaxed">Select a date and time for your first session. Monday–Friday, 8:00 AM–5:00 PM EST. All sessions via video call.</p>
+                <h1 className="font-heading text-3xl md:text-4xl text-white font-bold letter-tight mb-2">
+                  {isGroupProgram ? "Choose your Thursday" : "Choose your session time"}
+                </h1>
+                <p className="text-white/45 text-base mb-8 leading-relaxed">
+                  {isGroupProgram
+                    ? "Group classes meet every Thursday at 7:00 PM ET. Select your start Thursday below."
+                    : "Select a date and time for your first session. Monday–Friday, 8:00 AM–5:00 PM EST. All sessions via video call."}
+                </p>
 
-                <BookingCalendar value={selectedDate} onChange={(d) => { setSelectedDate(d); setSelectedTime(""); }} />
+                <BookingCalendar
+                  value={selectedDate}
+                  onChange={(d) => {
+                    setSelectedDate(d);
+                    // Group program: auto-lock time to 7 PM
+                    setSelectedTime(isGroupProgram ? "7:00 PM" : "");
+                  }}
+                  thursdayOnly={isGroupProgram}
+                />
 
                 {selectedDate && (
                   <div className="mt-6">
-                    <p className="text-[11px] font-bold letter-luxury uppercase text-white/35 mb-3">
-                      Available times — {selectedDate.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
-                    </p>
-                    <div className="grid grid-cols-3 gap-2">
-                      {TIME_SLOTS.map((slot) => (
-                        <button key={slot} type="button" onClick={() => setSelectedTime(slot)}
-                          className="py-2.5 rounded-xl text-xs font-bold transition-all duration-150"
-                          style={selectedTime === slot
-                            ? { background: "linear-gradient(135deg, #FF2DAA, #d91f90)", color: "white", boxShadow: "0 2px 12px rgba(255,45,170,0.4)" }
-                            : { background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.65)", border: "1px solid rgba(255,255,255,0.08)" }
-                          }
-                          onMouseEnter={(e) => { if (selectedTime !== slot) e.currentTarget.style.background = "rgba(255,45,170,0.12)"; }}
-                          onMouseLeave={(e) => { if (selectedTime !== slot) e.currentTarget.style.background = "rgba(255,255,255,0.06)"; }}
-                        >
-                          {slot}
-                        </button>
-                      ))}
-                    </div>
+                    {isGroupProgram ? (
+                      /* Group: time is fixed — just show confirmation */
+                      <div className="flex items-center gap-3 p-4 rounded-2xl border border-white/10"
+                        style={{ background: "rgba(255,45,170,0.07)" }}>
+                        <Clock size={14} style={{ color: "#FF2DAA" }} />
+                        <div>
+                          <p className="text-white font-bold text-sm">7:00 PM ET — Every Thursday</p>
+                          <p className="text-white/40 text-xs mt-0.5">
+                            Your cohort begins {selectedDate.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      /* Regular programs: time picker */
+                      <>
+                        <p className="text-[11px] font-bold letter-luxury uppercase text-white/35 mb-3">
+                          Available times — {selectedDate.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
+                        </p>
+                        <div className="grid grid-cols-3 gap-2">
+                          {TIME_SLOTS.map((slot) => (
+                            <button key={slot} type="button" onClick={() => setSelectedTime(slot)}
+                              className="py-2.5 rounded-xl text-xs font-bold transition-all duration-150"
+                              style={selectedTime === slot
+                                ? { background: "linear-gradient(135deg, #FF2DAA, #d91f90)", color: "white", boxShadow: "0 2px 12px rgba(255,45,170,0.4)" }
+                                : { background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.65)", border: "1px solid rgba(255,255,255,0.08)" }
+                              }
+                              onMouseEnter={(e) => { if (selectedTime !== slot) e.currentTarget.style.background = "rgba(255,45,170,0.12)"; }}
+                              onMouseLeave={(e) => { if (selectedTime !== slot) e.currentTarget.style.background = "rgba(255,255,255,0.06)"; }}
+                            >
+                              {slot}
+                            </button>
+                          ))}
+                        </div>
+                      </>
+                    )}
                   </div>
                 )}
 
@@ -761,7 +863,7 @@ const Apply = () => {
                   </div>
                 )}
 
-                <div className="rounded-2xl p-6 mb-10" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}>
+                <div className="rounded-2xl p-6 mb-6" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}>
                   <p className="text-[10px] font-bold letter-luxury uppercase text-white/25 mb-5">What Happens Next</p>
                   {[
                     { num: "01", text: "You'll receive a confirmation email with your session details and a calendar invite." },
@@ -774,6 +876,23 @@ const Apply = () => {
                     </div>
                   ))}
                 </div>
+
+                {/* Teaching video CTA — only shown for 1:1 graduates */}
+                {programKey === "one-on-one" && (
+                  <div className="rounded-2xl p-6 mb-8 border border-[#FF2DAA]/20" style={{ background: "rgba(255,45,170,0.06)" }}>
+                    <p className="text-[10px] font-bold letter-luxury uppercase mb-3" style={{ color: "#FF2DAA" }}>
+                      Your Path to the Next Programs
+                    </p>
+                    <p className="text-white/70 text-sm leading-relaxed mb-4">
+                      After completing your 1:1 program, the final step is to <strong className="text-white">teach someone else</strong> what you've learned. Submit a short video of you teaching a friend, family member, or colleague — and unlock your access to the Group Program, Healing Intensive, and Mentorship.
+                    </p>
+                    <Link to="/programs/submit-teaching"
+                      className="inline-flex items-center gap-2 text-sm font-bold transition-colors"
+                      style={{ color: "#FF2DAA" }}>
+                      Submit Your Teaching Video <ArrowRight size={13} />
+                    </Link>
+                  </div>
+                )}
 
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link to="/" className="btn-neon-solid !py-3.5 text-center">Back to Home <ArrowRight size={14} /></Link>

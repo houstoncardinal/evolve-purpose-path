@@ -27,6 +27,7 @@ import ProgramGroup from "./pages/programs/GroupProgram";
 import ProgramPurposeClarity from "./pages/programs/PurposeClarity";
 import ProgramHealingIntensive from "./pages/programs/HealingIntensive";
 import ProgramMentorship from "./pages/programs/Mentorship";
+import SubmitTeaching from "./pages/programs/SubmitTeaching";
 
 // Admin pages
 import AdminLogin from "./pages/AdminLogin";
@@ -55,6 +56,7 @@ const App = () => (
         <Routes>
           {/* Standalone routes — own layout, no public navbar/footer */}
           <Route path="/apply" element={<Apply />} />
+          <Route path="/programs/submit-teaching" element={<SubmitTeaching />} />
 
           {/* Admin routes — own layout, no public navbar/footer */}
           <Route path="/admin/login" element={<AdminLogin />} />
