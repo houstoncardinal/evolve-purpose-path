@@ -7,10 +7,10 @@ const AnnouncementBar = () => (
       <span className="text-[#FF2DAA] font-bold mr-1.5">New Launch</span>
       This platform recently launched — we're making powerful upgrades for the community. Spotted an error or have a suggestion?{" "}
       <a
-        href="mailto:hello@evolve2purpose.com"
+        href="mailto:Info@Evolve2Purpose.com"
         className="text-[#FF2DAA] hover:text-white transition-colors underline underline-offset-2"
       >
-        hello@evolve2purpose.com
+        Info@Evolve2Purpose.com
       </a>
     </p>
   </div>

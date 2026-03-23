@@ -250,7 +250,7 @@ export const ORGANIZATION_SCHEMA: Record<string, unknown> = {
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "Customer Support",
-    email: "hello@evolve2purpose.com",
+    email: "Info@Evolve2Purpose.com",
     availableLanguage: "English",
     areaServed: "Worldwide",
   },

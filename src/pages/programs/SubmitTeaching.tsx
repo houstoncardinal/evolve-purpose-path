@@ -55,6 +55,18 @@ const SubmitTeaching = () => {
     if (err) {
       setError("Something went wrong saving your submission. Please try again.");
     } else {
+      fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          "form-name": "teaching-submission",
+          "video-url": videoUrl.trim(),
+          "taught-name": taughtName.trim(),
+          "taught-what": taughtWhat.trim(),
+          "taught-result": taughtResult.trim(),
+          reflection: reflection.trim(),
+        }).toString(),
+      }).catch(() => {});
       setSubmitted(true);
     }
     setSubmitting(false);
@@ -206,7 +218,8 @@ const SubmitTeaching = () => {
                   Record a video of yourself teaching someone — a friend, family member, or colleague — something meaningful you learned through your 1:1 program. This is Step 4: Teaching.
                 </p>
 
-                <form onSubmit={handleSubmit} className="space-y-7">
+                <form name="teaching-submission" data-netlify="true" onSubmit={handleSubmit} className="space-y-7">
+                  <input type="hidden" name="form-name" value="teaching-submission" />
                   <div>
                     <label className="block text-[11px] font-semibold text-white/30 uppercase tracking-wider mb-1.5 ml-1">
                       <span className="text-[10px] font-bold letter-luxury uppercase mr-2" style={{ color: "#FF2DAA" }}>01</span>

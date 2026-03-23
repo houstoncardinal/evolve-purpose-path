@@ -174,7 +174,7 @@ const Terms = () => {
                       "Provide accurate, current, and complete information during registration",
                       "Maintain and update your account information to keep it accurate",
                       "Keep your password confidential and not share your account with others",
-                      "Notify us immediately at hello@evolve2purpose.com if you suspect unauthorized use of your account",
+                      "Notify us immediately at Info@Evolve2Purpose.com if you suspect unauthorized use of your account",
                       "Accept responsibility for all activity that occurs under your account",
                     ].map((item) => (
                       <li key={item} className="flex items-start gap-2.5">
@@ -249,7 +249,7 @@ const Terms = () => {
                     ))}
                   </div>
                   <p className="mt-4">
-                    Exceptions to this policy may be made on a case-by-case basis at the sole discretion of Evolve 2 Purpose. To discuss your situation, contact us at hello@evolve2purpose.com.
+                    Exceptions to this policy may be made on a case-by-case basis at the sole discretion of Evolve 2 Purpose. To discuss your situation, contact us at Info@Evolve2Purpose.com.
                   </p>
                 </div>
 
@@ -417,7 +417,7 @@ const Terms = () => {
                     These Terms shall be governed by and construed in accordance with the laws of the United States, without regard to conflict of law principles.
                   </p>
                   <p className="mb-4">
-                    Before filing any formal claim, you agree to first contact us at hello@evolve2purpose.com and make a good-faith effort to resolve the dispute informally. Most concerns can be resolved quickly and directly.
+                    Before filing any formal claim, you agree to first contact us at Info@Evolve2Purpose.com and make a good-faith effort to resolve the dispute informally. Most concerns can be resolved quickly and directly.
                   </p>
                   <p>
                     If informal resolution is not possible, any disputes shall be resolved through binding arbitration, except where prohibited by law. You waive any right to participate in a class action lawsuit or class-wide arbitration.
@@ -448,12 +448,12 @@ const Terms = () => {
                     <p className="font-heading text-base font-bold text-foreground mb-1">Evolve 2 Purpose — Sarah Adams</p>
                     <p className="text-sm text-muted-foreground mb-4">Legal & Policy Inquiries</p>
                     <a
-                      href="mailto:hello@evolve2purpose.com"
+                      href="mailto:Info@Evolve2Purpose.com"
                       className="inline-flex items-center gap-2 font-semibold text-sm hover:opacity-75 transition-opacity"
                       style={{ color: "#FF2DAA" }}
                     >
                       <Mail size={14} />
-                      hello@evolve2purpose.com
+                      Info@Evolve2Purpose.com
                     </a>
                     <p className="text-xs text-muted-foreground mt-4">
                       We aim to respond to all legal and policy inquiries within 5 business days.

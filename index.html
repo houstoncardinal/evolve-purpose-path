@@ -94,7 +94,7 @@
       "serviceType": ["Life Coaching", "Purpose Coaching", "Transformation Coaching", "Healing Coaching", "Christian Counseling", "Speaking Engagements"],
       "areaServed": { "@type": "Place", "name": "Worldwide" },
       "knowsAbout": ["Generational Cycle Breaking", "Trauma Healing", "Purpose Coaching", "Women's Empowerment", "Christian Counseling"],
-      "contactPoint": { "@type": "ContactPoint", "contactType": "Customer Support", "email": "hello@evolve2purpose.com", "availableLanguage": "English" },
+      "contactPoint": { "@type": "ContactPoint", "contactType": "Customer Support", "email": "Info@Evolve2Purpose.com", "availableLanguage": "English" },
       "sameAs": ["https://instagram.com/evolve2purpose", "https://facebook.com/evolve2purpose", "https://youtube.com/@evolve2purpose"],
       "aggregateRating": { "@type": "AggregateRating", "ratingValue": "5.0", "bestRating": "5", "worstRating": "1", "ratingCount": "500", "reviewCount": "500" }
     }
@@ -121,5 +121,32 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Hidden forms for Netlify build-time detection (React renders dynamically) -->
+    <form name="booking-inquiry" netlify hidden>
+      <input type="text" name="firstName" />
+      <input type="text" name="lastName" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <input type="text" name="organization" />
+      <input type="text" name="eventType" />
+      <input type="text" name="audienceSize" />
+      <input type="date" name="eventDate" />
+      <textarea name="message"></textarea>
+    </form>
+    <form name="email-capture" netlify hidden>
+      <input type="email" name="email" />
+      <input type="hidden" name="source" />
+    </form>
+    <form name="free-guide-download" netlify hidden>
+      <input type="email" name="email" />
+    </form>
+    <form name="teaching-submission" netlify hidden>
+      <input type="url" name="video-url" />
+      <input type="text" name="taught-name" />
+      <textarea name="taught-what"></textarea>
+      <textarea name="taught-result"></textarea>
+      <textarea name="reflection"></textarea>
+    </form>
   </body>
 </html>

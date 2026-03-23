@@ -277,7 +277,7 @@ const PrivacyPolicy = () => {
                     ))}
                   </ul>
                   <p className="mt-4">
-                    You may request deletion of your personal data at any time by contacting us at hello@evolve2purpose.com. We will fulfill deletion requests within 30 days, subject to legal retention obligations.
+                    You may request deletion of your personal data at any time by contacting us at Info@Evolve2Purpose.com. We will fulfill deletion requests within 30 days, subject to legal retention obligations.
                   </p>
                 </div>
 
@@ -309,7 +309,7 @@ const PrivacyPolicy = () => {
                     ))}
                   </div>
                   <p className="mt-2">
-                    To exercise any of these rights, please email us at <a href="mailto:hello@evolve2purpose.com" className="font-semibold" style={{ color: "#FF2DAA" }}>hello@evolve2purpose.com</a>. We will respond within 30 days. We may need to verify your identity before fulfilling your request.
+                    To exercise any of these rights, please email us at <a href="mailto:Info@Evolve2Purpose.com" className="font-semibold" style={{ color: "#FF2DAA" }}>Info@Evolve2Purpose.com</a>. We will respond within 30 days. We may need to verify your identity before fulfilling your request.
                   </p>
                 </div>
 
@@ -346,7 +346,7 @@ const PrivacyPolicy = () => {
                     <h2 className="font-heading text-xl font-bold text-foreground">Children's Privacy</h2>
                   </div>
                   <p>
-                    Our website and services are intended for individuals 18 years of age and older. We do not knowingly collect personal information from anyone under the age of 13. If you are a parent or guardian and believe your child has submitted information to us without your consent, please contact us immediately at hello@evolve2purpose.com and we will promptly delete that information.
+                    Our website and services are intended for individuals 18 years of age and older. We do not knowingly collect personal information from anyone under the age of 13. If you are a parent or guardian and believe your child has submitted information to us without your consent, please contact us immediately at Info@Evolve2Purpose.com and we will promptly delete that information.
                   </p>
                 </div>
 
@@ -374,12 +374,12 @@ const PrivacyPolicy = () => {
                     <p className="font-heading text-base font-bold text-foreground mb-1">Evolve 2 Purpose — Sarah Adams</p>
                     <p className="text-sm text-muted-foreground mb-4">Privacy & Data Inquiries</p>
                     <a
-                      href="mailto:hello@evolve2purpose.com"
+                      href="mailto:Info@Evolve2Purpose.com"
                       className="inline-flex items-center gap-2 font-semibold text-sm hover:opacity-75 transition-opacity"
                       style={{ color: "#FF2DAA" }}
                     >
                       <Mail size={14} />
-                      hello@evolve2purpose.com
+                      Info@Evolve2Purpose.com
                     </a>
                     <p className="text-xs text-muted-foreground mt-4">
                       We aim to respond to all privacy-related inquiries within 5 business days.

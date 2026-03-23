@@ -113,11 +113,11 @@ const Footer = () => (
           <h4 className="font-heading text-[10px] font-bold letter-luxury uppercase mb-5 text-foreground">Contact</h4>
           <p className="text-muted-foreground text-xs mb-1.5">Speaking &amp; Media Inquiries</p>
           <a
-            href="mailto:hello@evolve2purpose.com"
+            href="mailto:Info@Evolve2Purpose.com"
             className="text-primary font-semibold text-sm hover:opacity-75 transition-opacity flex items-center gap-1.5"
           >
             <Mail size={13} />
-            hello@evolve2purpose.com
+            Info@Evolve2Purpose.com
           </a>
 
           <div className="mt-7 pt-5 border-t border-border">

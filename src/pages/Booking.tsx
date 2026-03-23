@@ -133,6 +133,23 @@ const Booking = () => {
       eventDate: form.eventDate,
       details: form.message,
     });
+    // Also send to Netlify Forms
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        "form-name": "booking-inquiry",
+        firstName: form.firstName,
+        lastName: form.lastName,
+        email: form.email,
+        phone: form.phone,
+        organization: form.organization,
+        eventType: form.eventType,
+        audienceSize: form.audienceSize,
+        eventDate: form.eventDate,
+        message: form.message,
+      }).toString(),
+    }).catch(() => {});
     setSubmitted(true);
   };
 
@@ -324,9 +341,12 @@ const Booking = () => {
             </div>
           ) : (
             <form
+              name="booking-inquiry"
+              data-netlify="true"
               onSubmit={handleSubmit}
               className="bg-white rounded-3xl border border-border p-8 md:p-12 shadow-sm"
             >
+              <input type="hidden" name="form-name" value="booking-inquiry" />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
                 <div>
                   <label className="block text-xs font-bold letter-luxury uppercase mb-2 text-foreground">First Name *</label>

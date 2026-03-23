@@ -56,7 +56,7 @@ const AdminSettings = () => {
             value={settings.contactEmail}
             onChange={(e) => setSettings({ ...settings, contactEmail: e.target.value })}
             className={inputClass}
-            placeholder="hello@evolve2purpose.com"
+            placeholder="Info@Evolve2Purpose.com"
           />
         </div>
         <div>

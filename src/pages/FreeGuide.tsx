@@ -118,6 +118,11 @@ const FreeGuide = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await store.addSubscriber({ email: email.trim(), source: "free-guide" });
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ "form-name": "free-guide-download", email: email.trim() }).toString(),
+    }).catch(() => {});
     setDone(true);
   };
 
@@ -164,7 +169,8 @@ const FreeGuide = () => {
                 </a>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form name="free-guide-download" data-netlify="true" onSubmit={handleSubmit} className="space-y-4">
+                <input type="hidden" name="form-name" value="free-guide-download" />
                 <div>
                   <input
                     type="email"

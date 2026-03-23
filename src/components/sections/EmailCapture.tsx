@@ -28,6 +28,11 @@ const EmailCapture = ({
     }
     setError("");
     await store.addSubscriber({ email: email.trim(), source });
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ "form-name": "email-capture", email: email.trim(), source }).toString(),
+    }).catch(() => {});
     setSubmitted(true);
     setEmail("");
   };
@@ -97,7 +102,9 @@ const EmailCapture = ({
           <p className="text-white/55 max-w-xl mx-auto mb-10 text-lg leading-relaxed">
             Download the free 4-Step Guide — your first step toward breaking cycles, healing at the root, and walking in purpose.
           </p>
-          <form onSubmit={handleSubmit} className="max-w-md mx-auto">
+          <form name="email-capture" data-netlify="true" onSubmit={handleSubmit} className="max-w-md mx-auto">
+            <input type="hidden" name="form-name" value="email-capture" />
+            <input type="hidden" name="source" value={source} />
             <div className="flex flex-col sm:flex-row gap-3">
               <input
                 type="email"
@@ -126,7 +133,9 @@ const EmailCapture = ({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md">
+    <form name="email-capture" data-netlify="true" onSubmit={handleSubmit} className="max-w-md">
+      <input type="hidden" name="form-name" value="email-capture" />
+      <input type="hidden" name="source" value={source} />
       <div className="flex flex-col sm:flex-row gap-3">
         <input
           type="email"
