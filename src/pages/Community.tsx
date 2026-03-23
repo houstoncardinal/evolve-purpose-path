@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import {
   ArrowRight,
+  ArrowLeft,
   MessageCircle,
   Calendar,
   Bell,
@@ -16,7 +17,10 @@ import {
   Video,
   CreditCard,
   ShoppingBag,
+  Shield,
 } from "lucide-react";
+
+type CheckoutStep = "idle" | "checkout" | "processing" | "success";
 
 const features = [
   {
@@ -155,10 +159,21 @@ const Community = () => {
   const [subLoading, setSubLoading] = useState(false);
   const [subError, setSubError] = useState("");
 
+  // Checkout flow state
+  const [checkoutStep, setCheckoutStep] = useState<CheckoutStep>(justSubscribed ? "success" : "idle");
+  const [checkoutEmail, setCheckoutEmail] = useState("");
+  const [cardName, setCardName] = useState("");
+  const [cardNumber, setCardNumber] = useState("");
+  const [cardExpiry, setCardExpiry] = useState("");
+  const [cardCvv, setCardCvv] = useState("");
+  const [checkoutError, setCheckoutError] = useState("");
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setUser(data.session?.user ?? null));
   }, []);
 
+  // Kick off checkout — calls Netlify function; if Stripe configured redirects to Stripe,
+  // otherwise enters the demo checkout flow
   const handleSubscribe = async () => {
     setSubLoading(true);
     setSubError("");
@@ -175,7 +190,14 @@ const Community = () => {
       });
       const data = await res.json();
       if (data.url) {
+        // Stripe configured — redirect to hosted checkout
         window.location.href = data.url;
+      } else if (data.demo) {
+        // Stripe not configured yet — show in-page checkout flow
+        setCheckoutEmail(user?.email ?? "");
+        setCheckoutStep("checkout");
+        setSubLoading(false);
+        setTimeout(() => document.getElementById("checkout-form")?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
       } else {
         setSubError(data.error ?? "Something went wrong. Please try again.");
         setSubLoading(false);
@@ -184,6 +206,30 @@ const Community = () => {
       setSubError("Network error. Please check your connection and try again.");
       setSubLoading(false);
     }
+  };
+
+  // Demo checkout submit — simulates processing then shows success
+  const handleCheckoutSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setCheckoutError("");
+    if (!checkoutEmail.trim()) { setCheckoutError("Please enter your email address."); return; }
+    if (cardNumber.replace(/\s/g, "").length < 16) { setCheckoutError("Please enter a complete card number."); return; }
+    if (cardExpiry.length < 5) { setCheckoutError("Please enter a valid expiry date (MM/YY)."); return; }
+    if (cardCvv.length < 3) { setCheckoutError("Please enter your security code (CVV)."); return; }
+    setCheckoutStep("processing");
+    await new Promise((r) => setTimeout(r, 1800));
+    setCheckoutStep("success");
+  };
+
+  const formatCardNumber = (val: string) => {
+    const digits = val.replace(/\D/g, "").slice(0, 16);
+    return digits.replace(/(.{4})/g, "$1 ").trim();
+  };
+
+  const formatExpiry = (val: string) => {
+    const digits = val.replace(/\D/g, "").slice(0, 4);
+    if (digits.length >= 3) return digits.slice(0, 2) + "/" + digits.slice(2);
+    return digits;
   };
 
   return (
@@ -403,22 +449,36 @@ const Community = () => {
         </div>
       </section>
 
-      {/* Join / Subscribe */}
+      {/* Join / Subscribe / Checkout */}
       <section id="join" className="section-padding relative overflow-hidden">
         <div className="glow-orb w-[500px] h-[500px] top-[-100px] left-[30%]" />
         <div className="container-narrow relative z-10">
 
-          {justSubscribed ? (
-            /* Success state */
+          {/* ── SUCCESS ── */}
+          {checkoutStep === "success" && (
             <div className="text-center py-16 max-w-lg mx-auto">
-              <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
-                style={{ background: "rgba(255,45,170,0.12)", border: "1px solid rgba(255,45,170,0.2)" }}>
-                <CheckCircle size={36} style={{ color: "#FF2DAA" }} />
+              <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-7"
+                style={{ background: "linear-gradient(135deg, #FF2DAA22, #FF2DAA11)", border: "1.5px solid rgba(255,45,170,0.3)" }}>
+                <CheckCircle size={42} style={{ color: "#FF2DAA" }} />
               </div>
-              <h3 className="font-heading text-4xl mb-4 letter-tight">Welcome to the Community!</h3>
-              <p className="text-muted-foreground text-lg max-w-md mx-auto mb-8 leading-relaxed">
+              <p className="text-[10px] font-bold letter-luxury uppercase mb-3" style={{ color: "#FF2DAA" }}>You're In</p>
+              <h3 className="font-heading text-4xl md:text-5xl mb-5 letter-tight">Welcome to the Community!</h3>
+              <p className="text-muted-foreground text-lg max-w-md mx-auto mb-10 leading-relaxed">
                 Your membership is active. Check your email for access details — we'll have you inside within 24 hours.
               </p>
+              <div className="rounded-2xl p-6 mb-10 text-left" style={{ background: "#F6F6F8", border: "1px solid rgba(0,0,0,0.06)" }}>
+                <p className="text-[10px] font-bold letter-luxury uppercase text-muted-foreground mb-4">What happens next</p>
+                {[
+                  { n: "01", t: "Check your inbox for a confirmation email." },
+                  { n: "02", t: "You'll receive your community access link within 24 hours." },
+                  { n: "03", t: "Introduce yourself inside and meet the community." },
+                ].map((item) => (
+                  <div key={item.n} className="flex items-start gap-4 mb-3 last:mb-0">
+                    <span className="font-heading text-sm font-bold flex-shrink-0 mt-0.5" style={{ color: "#FF2DAA" }}>{item.n}</span>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{item.t}</p>
+                  </div>
+                ))}
+              </div>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link to="/account" className="btn-neon-solid shadow-lg">
                   My Account <ArrowRight size={16} />
@@ -428,7 +488,10 @@ const Community = () => {
                 </Link>
               </div>
             </div>
-          ) : (
+          )}
+
+          {/* ── PRICING CARD (idle) ── */}
+          {checkoutStep === "idle" && (
             <>
               <div className="text-center mb-12">
                 <div className="flex items-center gap-3 justify-center mb-4">
@@ -442,27 +505,22 @@ const Community = () => {
                 </p>
               </div>
 
-              {/* Pricing card */}
               <div className="max-w-lg mx-auto">
                 <div className="bg-white rounded-3xl border border-border shadow-sm overflow-hidden">
-                  {/* Card header */}
                   <div className="px-8 pt-8 pb-6 border-b border-border">
-                    <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-start justify-between mb-3">
                       <div>
                         <p className="text-[10px] font-bold letter-luxury uppercase mb-1" style={{ color: "#FF2DAA" }}>Monthly Membership</p>
                         <h3 className="font-heading text-2xl font-bold">Evolve 2 Purpose Community</h3>
                       </div>
-                      <div className="text-right">
-                        <p className="font-heading text-4xl font-bold" style={{ color: "#FF2DAA" }}>$9.99</p>
-                        <p className="text-muted-foreground text-xs">per month</p>
+                      <div className="text-right flex-shrink-0 ml-4">
+                        <p className="font-heading text-4xl font-bold leading-none" style={{ color: "#FF2DAA" }}>$9.99</p>
+                        <p className="text-muted-foreground text-xs mt-1">per month</p>
                       </div>
                     </div>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      Cancel anytime. No long-term commitment required.
-                    </p>
+                    <p className="text-muted-foreground text-sm">Cancel anytime. No long-term commitment.</p>
                   </div>
 
-                  {/* Included list */}
                   <div className="px-8 py-6">
                     <p className="text-xs font-bold letter-luxury uppercase text-muted-foreground mb-4">Everything included:</p>
                     <ul className="space-y-3 mb-8">
@@ -481,7 +539,6 @@ const Community = () => {
                       ))}
                     </ul>
 
-                    {/* CTA */}
                     {subError && (
                       <div className="flex items-center gap-2 px-4 py-3 rounded-xl text-xs font-medium mb-4"
                         style={{ background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.2)", color: "#ef4444" }}>
@@ -494,22 +551,21 @@ const Community = () => {
                       className="w-full btn-neon-solid !py-5 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {subLoading
-                        ? <><span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" /> Processing...</>
+                        ? <><span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" /> Loading checkout...</>
                         : <><CreditCard size={16} /> Join for $9.99/month</>}
                     </button>
                     <p className="text-center text-muted-foreground text-xs mt-3">
-                      Secure payment via Stripe · Cancel anytime from your account
+                      Secure payment · Cancel anytime from your account
                     </p>
                   </div>
                 </div>
 
-                {/* Product-owner note */}
                 <div className="mt-5 flex items-start gap-3 px-6 py-4 rounded-2xl border border-border bg-[#F6F6F8]">
                   <ShoppingBag size={16} style={{ color: "#FF2DAA" }} className="flex-shrink-0 mt-0.5" />
                   <div>
                     <p className="text-sm font-semibold text-foreground mb-0.5">Already purchased a product?</p>
                     <p className="text-muted-foreground text-xs leading-relaxed">
-                      Product purchases from the shop automatically include community access. Sign into your account to activate it — no subscription required.
+                      Shop purchases automatically include community access. Sign in to activate it — no subscription needed.
                     </p>
                     <Link to="/account" className="inline-flex items-center gap-1 text-xs font-semibold mt-2 hover:opacity-80 transition-opacity" style={{ color: "#FF2DAA" }}>
                       Go to My Account <ArrowRight size={11} />
@@ -519,6 +575,181 @@ const Community = () => {
               </div>
             </>
           )}
+
+          {/* ── CHECKOUT FORM (demo / pre-Stripe) ── */}
+          {(checkoutStep === "checkout" || checkoutStep === "processing") && (
+            <div id="checkout-form" className="max-w-3xl mx-auto">
+              {/* Back */}
+              <button
+                onClick={() => { setCheckoutStep("idle"); setCheckoutError(""); }}
+                className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground text-xs font-semibold mb-8 transition-colors"
+              >
+                <ArrowLeft size={13} /> Back to plan
+              </button>
+
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8">
+
+                {/* Order summary */}
+                <div className="lg:col-span-2 order-2 lg:order-1">
+                  <div className="rounded-2xl border border-border bg-[#F6F6F8] p-6 sticky top-8">
+                    <p className="text-[10px] font-bold letter-luxury uppercase mb-4 text-muted-foreground">Order Summary</p>
+                    <div className="flex items-start justify-between mb-4 pb-4 border-b border-border">
+                      <div>
+                        <p className="font-heading text-sm font-bold">Community Membership</p>
+                        <p className="text-muted-foreground text-xs mt-0.5">Evolve 2 Purpose · Monthly</p>
+                      </div>
+                      <p className="font-heading text-lg font-bold flex-shrink-0 ml-3" style={{ color: "#FF2DAA" }}>$9.99</p>
+                    </div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-muted-foreground">Subtotal</span>
+                      <span className="font-semibold">$9.99</span>
+                    </div>
+                    <div className="flex justify-between text-sm mb-4 pb-4 border-b border-border">
+                      <span className="text-muted-foreground">Billed</span>
+                      <span className="font-semibold">Monthly</span>
+                    </div>
+                    <div className="flex justify-between text-sm font-bold mb-5">
+                      <span>Total due today</span>
+                      <span style={{ color: "#FF2DAA" }}>$9.99</span>
+                    </div>
+                    <ul className="space-y-2 mb-5">
+                      {[
+                        "Sarah's direct posts & voice notes",
+                        "4+ live events every month",
+                        "Member chat & resource library",
+                        "Accountability circle placement",
+                      ].map((item) => (
+                        <li key={item} className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <CheckCircle size={11} style={{ color: "#FF2DAA" }} className="flex-shrink-0" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="flex items-center gap-2 pt-4 border-t border-border">
+                      <Shield size={13} className="text-muted-foreground flex-shrink-0" />
+                      <p className="text-xs text-muted-foreground">Cancel anytime · No contracts</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Payment form */}
+                <div className="lg:col-span-3 order-1 lg:order-2">
+                  <h2 className="font-heading text-2xl font-bold mb-1">Complete your subscription</h2>
+                  <p className="text-muted-foreground text-sm mb-7">You'll get immediate access after subscribing.</p>
+
+                  <form onSubmit={handleCheckoutSubmit} className="space-y-5">
+                    {/* Contact */}
+                    <div>
+                      <p className="text-xs font-bold letter-luxury uppercase text-muted-foreground mb-3">Contact</p>
+                      <div>
+                        <label className="block text-xs font-semibold mb-1.5 text-foreground">Email address</label>
+                        <input
+                          type="email"
+                          value={checkoutEmail}
+                          onChange={(e) => setCheckoutEmail(e.target.value)}
+                          placeholder="your@email.com"
+                          required
+                          className="w-full px-4 py-3 rounded-xl border border-border bg-white text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Payment */}
+                    <div>
+                      <p className="text-xs font-bold letter-luxury uppercase text-muted-foreground mb-3">Payment details</p>
+                      <div className="space-y-3">
+                        {/* Card number */}
+                        <div className="relative">
+                          <label className="block text-xs font-semibold mb-1.5 text-foreground">Card number</label>
+                          <div className="relative">
+                            <input
+                              type="text"
+                              inputMode="numeric"
+                              value={cardNumber}
+                              onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
+                              placeholder="1234 5678 9012 3456"
+                              maxLength={19}
+                              className="w-full pl-4 pr-12 py-3 rounded-xl border border-border bg-white text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                            />
+                            <CreditCard size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                          </div>
+                        </div>
+
+                        {/* Name on card */}
+                        <div>
+                          <label className="block text-xs font-semibold mb-1.5 text-foreground">Name on card</label>
+                          <input
+                            type="text"
+                            value={cardName}
+                            onChange={(e) => setCardName(e.target.value)}
+                            placeholder="Full name as it appears on card"
+                            className="w-full px-4 py-3 rounded-xl border border-border bg-white text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                          />
+                        </div>
+
+                        {/* Expiry + CVV */}
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <label className="block text-xs font-semibold mb-1.5 text-foreground">Expiry date</label>
+                            <input
+                              type="text"
+                              inputMode="numeric"
+                              value={cardExpiry}
+                              onChange={(e) => setCardExpiry(formatExpiry(e.target.value))}
+                              placeholder="MM/YY"
+                              maxLength={5}
+                              className="w-full px-4 py-3 rounded-xl border border-border bg-white text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-semibold mb-1.5 text-foreground">Security code</label>
+                            <input
+                              type="text"
+                              inputMode="numeric"
+                              value={cardCvv}
+                              onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 4))}
+                              placeholder="CVV"
+                              maxLength={4}
+                              className="w-full px-4 py-3 rounded-xl border border-border bg-white text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {checkoutError && (
+                      <div className="flex items-center gap-2 px-4 py-3 rounded-xl text-xs font-medium"
+                        style={{ background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.2)", color: "#ef4444" }}>
+                        <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />{checkoutError}
+                      </div>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={checkoutStep === "processing"}
+                      className="w-full btn-neon-solid !py-4 shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
+                    >
+                      {checkoutStep === "processing"
+                        ? <><span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" /> Processing payment...</>
+                        : <><Lock size={14} /> Subscribe for $9.99/month</>}
+                    </button>
+
+                    <div className="flex items-center justify-center gap-4 pt-1">
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <Shield size={12} />
+                        <span>Secure & encrypted</span>
+                      </div>
+                      <span className="text-border">·</span>
+                      <span className="text-xs text-muted-foreground">Cancel anytime</span>
+                      <span className="text-border">·</span>
+                      <span className="text-xs text-muted-foreground">No contracts</span>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          )}
+
         </div>
       </section>
 

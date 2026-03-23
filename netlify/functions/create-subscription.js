@@ -1,9 +1,9 @@
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-
-// Required Netlify env var: STRIPE_COMMUNITY_PRICE_ID
-// Create a recurring $9.99/month Price in your Stripe Dashboard:
-//   Products → Add Product → Name: "Community Membership"
-//   Pricing: $9.99 / month (recurring)
+// Required Netlify env vars (set in Netlify Dashboard → Site Settings → Environment Variables):
+//   STRIPE_SECRET_KEY          = sk_live_... (from Stripe Dashboard → Developers → API keys)
+//   STRIPE_COMMUNITY_PRICE_ID  = price_...   (recurring $9.99/month Price ID from Stripe Dashboard)
+//
+// To create the Price in Stripe:
+//   Products → Add Product → Name: "Community Membership" → $9.99 / month (recurring)
 //   Copy the Price ID (starts with price_...) → set as STRIPE_COMMUNITY_PRICE_ID in Netlify
 
 exports.handler = async (event) => {
@@ -11,24 +11,28 @@ exports.handler = async (event) => {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
 
+  // Demo mode: Stripe not configured yet — frontend will handle checkout flow
+  if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_COMMUNITY_PRICE_ID) {
+    return {
+      statusCode: 200,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ demo: true }),
+    };
+  }
+
   try {
+    const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
     const { email, successUrl, cancelUrl } = JSON.parse(event.body);
 
     const sessionParams = {
       payment_method_types: ["card"],
       mode: "subscription",
-      line_items: [
-        {
-          price: process.env.STRIPE_COMMUNITY_PRICE_ID,
-          quantity: 1,
-        },
-      ],
+      line_items: [{ price: process.env.STRIPE_COMMUNITY_PRICE_ID, quantity: 1 }],
       success_url: successUrl,
       cancel_url: cancelUrl,
       metadata: { email: email || "" },
     };
 
-    // Pre-fill email if provided (skips that field in Stripe Checkout)
     if (email) sessionParams.customer_email = email;
 
     const session = await stripe.checkout.sessions.create(sessionParams);
@@ -42,6 +46,7 @@ exports.handler = async (event) => {
     console.error("Stripe subscription error:", err);
     return {
       statusCode: 500,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ error: err.message }),
     };
   }
