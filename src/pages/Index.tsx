@@ -556,7 +556,7 @@ const Index = () => {
       </section>
 
       {/* EMAIL CAPTURE */}
-      <EmailCapture variant="fullwidth" />
+      <EmailCapture variant="fullwidth" source="homepage" />
 
       {/* TRANSFORMATION PROMISE */}
       <section className="section-padding text-center relative overflow-hidden">

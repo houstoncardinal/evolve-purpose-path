@@ -570,7 +570,7 @@ const About = () => {
         </div>
       </section>
 
-      <EmailCapture variant="fullwidth" />
+      <EmailCapture variant="fullwidth" source="about" />
     </div>
   );
 };

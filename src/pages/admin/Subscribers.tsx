@@ -1,16 +1,66 @@
 import { useState, useEffect, useMemo } from "react";
-import { Search, Download, Plus, Trash2, X } from "lucide-react";
+import { Search, Download, Plus, Trash2, X, MapPin } from "lucide-react";
 import { store, Subscriber } from "@/lib/adminStore";
 import { useToast } from "@/hooks/use-toast";
 
-const sourceColors: Record<Subscriber["source"], { bg: string; text: string }> = {
-  homepage: { bg: "rgba(99,102,241,0.1)", text: "#6366F1" },
-  "free-guide": { bg: "rgba(255,45,170,0.1)", text: "#FF2DAA" },
-  programs: { bg: "rgba(16,185,129,0.1)", text: "#10B981" },
-  footer: { bg: "rgba(245,158,11,0.1)", text: "#F59E0B" },
-  shop: { bg: "rgba(139,92,246,0.1)", text: "#8B5CF6" },
-  manual: { bg: "rgba(0,0,0,0.06)", text: "#666" },
+// Human-readable labels for each source
+const sourceLabels: Record<Subscriber["source"], string> = {
+  homepage:                    "Homepage",
+  about:                       "About Page",
+  framework:                   "Framework Page",
+  testimonials:                "Testimonials Page",
+  programs:                    "Programs (All)",
+  "programs-one-on-one":       "Program: 1:1 Coaching",
+  "programs-group":            "Program: Group Class",
+  "programs-healing-intensive":"Program: Healing Intensive",
+  "programs-mentorship":       "Program: Mentorship",
+  "programs-purpose-clarity":  "Program: Purpose Clarity",
+  shop:                        "Shop",
+  "free-guide":                "Free Guide / E2P Page",
+  footer:                      "Footer",
+  manual:                      "Added Manually",
 };
+
+// Color coding by category
+const sourceColors: Record<Subscriber["source"], { bg: string; text: string }> = {
+  homepage:                    { bg: "rgba(99,102,241,0.1)",   text: "#6366F1" },
+  about:                       { bg: "rgba(99,102,241,0.08)",  text: "#818CF8" },
+  framework:                   { bg: "rgba(99,102,241,0.08)",  text: "#A5B4FC" },
+  testimonials:                { bg: "rgba(99,102,241,0.06)",  text: "#C7D2FE" },
+  programs:                    { bg: "rgba(16,185,129,0.1)",   text: "#10B981" },
+  "programs-one-on-one":       { bg: "rgba(16,185,129,0.12)", text: "#059669" },
+  "programs-group":            { bg: "rgba(16,185,129,0.08)", text: "#34D399" },
+  "programs-healing-intensive":{ bg: "rgba(16,185,129,0.06)", text: "#6EE7B7" },
+  "programs-mentorship":       { bg: "rgba(16,185,129,0.06)", text: "#047857" },
+  "programs-purpose-clarity":  { bg: "rgba(16,185,129,0.06)", text: "#065F46" },
+  shop:                        { bg: "rgba(139,92,246,0.1)",   text: "#8B5CF6" },
+  "free-guide":                { bg: "rgba(255,45,170,0.1)",   text: "#FF2DAA" },
+  footer:                      { bg: "rgba(245,158,11,0.1)",   text: "#F59E0B" },
+  manual:                      { bg: "rgba(0,0,0,0.06)",       text: "#666" },
+};
+
+// Group chips for filter bar
+const filterGroups = [
+  {
+    label: "General Pages",
+    sources: ["homepage", "about", "framework", "testimonials"] as Subscriber["source"][],
+  },
+  {
+    label: "Programs",
+    sources: [
+      "programs",
+      "programs-one-on-one",
+      "programs-group",
+      "programs-healing-intensive",
+      "programs-mentorship",
+      "programs-purpose-clarity",
+    ] as Subscriber["source"][],
+  },
+  {
+    label: "Other",
+    sources: ["shop", "free-guide", "footer", "manual"] as Subscriber["source"][],
+  },
+];
 
 const AdminSubscribers = () => {
   const { toast } = useToast();
@@ -53,8 +103,10 @@ const AdminSubscribers = () => {
   };
 
   const exportCSV = () => {
-    const header = "Name,Email,Source,Joined";
-    const rows = filtered.map((s) => `"${s.name}","${s.email}",${s.source},${s.joinedAt}`);
+    const header = "Name,Email,Source,Page,Joined";
+    const rows = filtered.map((s) =>
+      `"${s.name}","${s.email}","${s.source}","${sourceLabels[s.source] ?? s.source}","${s.joinedAt}"`
+    );
     const blob = new Blob([[header, ...rows].join("\n")], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -69,6 +121,15 @@ const AdminSubscribers = () => {
     subscribers.forEach((s) => { m[s.source] = (m[s.source] || 0) + 1; });
     return m;
   }, [subscribers]);
+
+  // Top sources by volume for the insight strip
+  const topSources = useMemo(() =>
+    Object.entries(sourceCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([src, count]) => ({ src: src as Subscriber["source"], count })),
+    [sourceCounts]
+  );
 
   return (
     <div className="p-6 lg:p-8 space-y-6">
@@ -95,33 +156,70 @@ const AdminSubscribers = () => {
         </div>
       </div>
 
-      {/* Source breakdown chips */}
-      <div className="flex flex-wrap gap-2">
-        <button
-          onClick={() => setFilterSource("all")}
-          className="px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
-          style={filterSource === "all" ? { background: "#FF2DAA", color: "white" } : { background: "white", color: "#888", border: "1px solid rgba(0,0,0,0.08)" }}
-        >
-          All ({subscribers.length})
-        </button>
-        {(Object.keys(sourceColors) as Subscriber["source"][]).map((src) => {
-          const count = sourceCounts[src] || 0;
-          if (!count) return null;
-          const c = sourceColors[src];
-          return (
-            <button
-              key={src}
-              onClick={() => setFilterSource(filterSource === src ? "all" : src)}
-              className="px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
-              style={filterSource === src
-                ? { background: c.text, color: "white" }
-                : { background: c.bg, color: c.text, border: `1px solid ${c.text}30` }
-              }
-            >
-              {src} ({count})
-            </button>
-          );
-        })}
+      {/* Top sources insight strip */}
+      {topSources.length > 0 && (
+        <div className="bg-white rounded-2xl border border-border p-5">
+          <div className="flex items-center gap-2 mb-4">
+            <MapPin size={14} style={{ color: "#FF2DAA" }} />
+            <p className="text-xs font-bold letter-luxury uppercase text-muted-foreground">Top Sources</p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            {topSources.map(({ src, count }) => {
+              const c = sourceColors[src] ?? { bg: "rgba(0,0,0,0.06)", text: "#666" };
+              return (
+                <button
+                  key={src}
+                  onClick={() => setFilterSource(filterSource === src ? "all" : src)}
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold transition-all hover:opacity-80"
+                  style={{ background: c.bg, color: c.text }}
+                >
+                  <span className="font-bold text-sm">{count}</span>
+                  {sourceLabels[src] ?? src}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Filter chips */}
+      <div className="space-y-2">
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => setFilterSource("all")}
+            className="px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
+            style={filterSource === "all"
+              ? { background: "#FF2DAA", color: "white" }
+              : { background: "white", color: "#888", border: "1px solid rgba(0,0,0,0.08)" }}
+          >
+            All ({subscribers.length})
+          </button>
+          {filterGroups.map((group) => {
+            const groupSources = group.sources.filter((s) => (sourceCounts[s] ?? 0) > 0);
+            if (!groupSources.length) return null;
+            return (
+              <div key={group.label} className="flex flex-wrap gap-1.5 items-center">
+                <span className="text-[10px] font-semibold text-muted-foreground uppercase mr-1">{group.label}:</span>
+                {groupSources.map((src) => {
+                  const c = sourceColors[src];
+                  const count = sourceCounts[src] ?? 0;
+                  return (
+                    <button
+                      key={src}
+                      onClick={() => setFilterSource(filterSource === src ? "all" : src)}
+                      className="px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all"
+                      style={filterSource === src
+                        ? { background: c.text, color: "white" }
+                        : { background: c.bg, color: c.text, border: `1px solid ${c.text}30` }}
+                    >
+                      {sourceLabels[src]} ({count})
+                    </button>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       {/* Search */}
@@ -142,14 +240,14 @@ const AdminSubscribers = () => {
           <table className="w-full">
             <thead>
               <tr style={{ borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
-                {["Subscriber", "Email", "Source", "Joined", ""].map((h, i) => (
+                {["Subscriber", "Email", "Where They Signed Up", "Joined", ""].map((h, i) => (
                   <th key={i} className="text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider px-5 py-4">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {filtered.map((s) => {
-                const sc = sourceColors[s.source];
+                const sc = sourceColors[s.source] ?? { bg: "rgba(0,0,0,0.06)", text: "#666" };
                 return (
                   <tr key={s.id} className="border-b border-border/50 hover:bg-gray-50/50 transition-colors last:border-0">
                     <td className="px-5 py-4">
@@ -158,7 +256,7 @@ const AdminSubscribers = () => {
                           className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0"
                           style={{ background: "rgba(255,45,170,0.7)" }}
                         >
-                          {s.name.charAt(0)}
+                          {s.name.charAt(0).toUpperCase()}
                         </div>
                         <span className="text-sm font-semibold text-foreground">{s.name}</span>
                       </div>
@@ -167,9 +265,14 @@ const AdminSubscribers = () => {
                       <span className="text-sm text-muted-foreground">{s.email}</span>
                     </td>
                     <td className="px-5 py-4">
-                      <span className="text-[11px] font-semibold uppercase px-2.5 py-1 rounded-full" style={{ background: sc.bg, color: sc.text }}>
-                        {s.source}
-                      </span>
+                      <div className="flex flex-col gap-1">
+                        <span
+                          className="text-[11px] font-semibold px-2.5 py-1 rounded-full w-fit"
+                          style={{ background: sc.bg, color: sc.text }}
+                        >
+                          {sourceLabels[s.source] ?? s.source}
+                        </span>
+                      </div>
                     </td>
                     <td className="px-5 py-4">
                       <span className="text-sm text-muted-foreground">{s.joinedAt}</span>
@@ -189,7 +292,9 @@ const AdminSubscribers = () => {
           </table>
         </div>
         {filtered.length === 0 && (
-          <div className="text-center py-16 text-muted-foreground text-sm">No subscribers match your search.</div>
+          <div className="text-center py-16 text-muted-foreground text-sm">
+            {subscribers.length === 0 ? "No subscribers yet. They'll appear here as people sign up." : "No subscribers match your search."}
+          </div>
         )}
       </div>
 

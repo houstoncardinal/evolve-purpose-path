@@ -1,11 +1,17 @@
 import { useState } from "react";
-import { Mail, ArrowRight, Check, AlertCircle } from "lucide-react";
-import { store } from "@/lib/adminStore";
+import { ArrowRight, Check, AlertCircle } from "lucide-react";
+import { store, Subscriber } from "@/lib/adminStore";
 
 const isValidEmail = (val: string) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.trim());
 
-const EmailCapture = ({ variant = "default" }: { variant?: "default" | "hero" | "fullwidth" }) => {
+const EmailCapture = ({
+  variant = "default",
+  source = "homepage",
+}: {
+  variant?: "default" | "hero" | "fullwidth";
+  source?: Subscriber["source"];
+}) => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -21,7 +27,7 @@ const EmailCapture = ({ variant = "default" }: { variant?: "default" | "hero" | 
       return;
     }
     setError("");
-    await store.addSubscriber({ email: email.trim(), source: "email-capture" });
+    await store.addSubscriber({ email: email.trim(), source });
     setSubmitted(true);
     setEmail("");
   };
@@ -97,7 +103,7 @@ const EmailCapture = ({ variant = "default" }: { variant?: "default" | "hero" | 
                 type="email"
                 value={email}
                 onChange={(e) => { setEmail(e.target.value); if (error) setError(""); }}
-                placeholder="Enter your email address"
+                placeholder="your@email.com"
                 className={darkInputClass}
               />
               <button
@@ -126,7 +132,7 @@ const EmailCapture = ({ variant = "default" }: { variant?: "default" | "hero" | 
           type="email"
           value={email}
           onChange={(e) => { setEmail(e.target.value); if (error) setError(""); }}
-          placeholder="Enter your email"
+          placeholder="your@email.com"
           className={inputClass}
         />
         <button type="submit" className="btn-neon-solid !py-3.5 !px-8 whitespace-nowrap !text-sm shadow-lg">

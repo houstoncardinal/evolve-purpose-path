@@ -443,7 +443,7 @@ const Shop = () => {
         </div>
       </section>
 
-      <EmailCapture variant="fullwidth" />
+      <EmailCapture variant="fullwidth" source="shop" />
     </div>
   );
 };

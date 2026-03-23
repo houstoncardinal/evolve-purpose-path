@@ -50,7 +50,21 @@ export interface Subscriber {
   email: string;
   name: string;
   joinedAt: string;
-  source: "homepage" | "free-guide" | "programs" | "footer" | "shop" | "manual";
+  source:
+    | "homepage"
+    | "about"
+    | "framework"
+    | "testimonials"
+    | "programs"
+    | "programs-one-on-one"
+    | "programs-group"
+    | "programs-healing-intensive"
+    | "programs-mentorship"
+    | "programs-purpose-clarity"
+    | "shop"
+    | "free-guide"
+    | "footer"
+    | "manual";
 }
 
 export interface BookingInquiry {

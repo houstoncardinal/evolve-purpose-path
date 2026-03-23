@@ -328,7 +328,7 @@ const HealingIntensive = () => {
         </div>
       </section>
 
-      <EmailCapture variant="fullwidth" />
+      <EmailCapture variant="fullwidth" source="programs-healing-intensive" />
     </div>
   );
 };

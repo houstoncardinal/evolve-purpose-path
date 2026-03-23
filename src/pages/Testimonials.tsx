@@ -241,7 +241,7 @@ const Testimonials = () => {
       </div>
     </section>
 
-    <EmailCapture variant="fullwidth" />
+    <EmailCapture variant="fullwidth" source="testimonials" />
   </div>
 );
 };

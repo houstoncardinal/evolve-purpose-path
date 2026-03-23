@@ -218,7 +218,7 @@ const EvolePurpose = () => {
       </div>
     </section>
 
-    <EmailCapture variant="fullwidth" />
+    <EmailCapture variant="fullwidth" source="free-guide" />
   </div>
 );
 };

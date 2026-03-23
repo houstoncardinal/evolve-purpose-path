@@ -202,7 +202,7 @@ const Framework = () => {
       </div>
     </section>
 
-    <EmailCapture variant="fullwidth" />
+    <EmailCapture variant="fullwidth" source="framework" />
   </div>
 );
 };

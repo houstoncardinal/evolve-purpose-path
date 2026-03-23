@@ -285,7 +285,7 @@ const PurposeClarity = () => {
         </div>
       </section>
 
-      <EmailCapture variant="fullwidth" />
+      <EmailCapture variant="fullwidth" source="programs-purpose-clarity" />
     </div>
   );
 };
