@@ -66,7 +66,7 @@ const AdminShell = () => {
     if (!store.isAuthenticated()) {
       navigate("/admin/login", { replace: true });
     }
-  }, [navigate]);
+  }, [navigate]);  // isAuthenticated is synchronous — no async needed
 
   useEffect(() => {
     setSidebarOpen(false);
@@ -79,7 +79,7 @@ const AdminShell = () => {
 
   const handleLogout = () => {
     store.logout();
-    navigate("/admin/login");
+    navigate("/admin/login", { replace: true });
   };
 
   const isActive = (item: { path: string; exact?: boolean }) => {

@@ -343,20 +343,25 @@ function mapResource(r: Record<string, unknown>): Resource {
 // ─── no-op for backward compat (pages still call initStore) ──────────────────
 export function initStore() {}
 
+const ADMIN_KEY = "e2p_admin_auth";
+const ADMIN_PASSWORD = "H34L3R2026";
+
 // ─── Store ───────────────────────────────────────────────────────────────────
 
 export const store = {
-  // ── Auth (Supabase) ──────────────────────────────────────────────────────
-  isAuthenticated: async () => {
-    const { data } = await supabase.auth.getSession();
-    return !!data.session;
+  // ── Auth (password-only, sessionStorage) ─────────────────────────────────
+  isAuthenticated: () => {
+    return sessionStorage.getItem(ADMIN_KEY) === "1";
   },
-  login: async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return !error;
+  login: (_email: string, password: string) => {
+    if (password === ADMIN_PASSWORD) {
+      sessionStorage.setItem(ADMIN_KEY, "1");
+      return true;
+    }
+    return false;
   },
-  logout: async () => {
-    await supabase.auth.signOut();
+  logout: () => {
+    sessionStorage.removeItem(ADMIN_KEY);
   },
 
   // ── Settings ─────────────────────────────────────────────────────────────

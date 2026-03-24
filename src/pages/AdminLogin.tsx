@@ -4,23 +4,19 @@ import { Eye, EyeOff, Lock, ArrowRight } from "lucide-react";
 import { store } from "@/lib/adminStore";
 
 const AdminLogin = () => {
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError("");
-    const ok = await store.login(email, password);
+    const ok = store.login("", password);
     if (ok) {
       navigate("/admin");
     } else {
-      setError("Invalid email or password. Please try again.");
-      setLoading(false);
+      setError("Incorrect password. Please try again.");
     }
   };
 
@@ -101,34 +97,12 @@ const AdminLogin = () => {
               <Lock size={20} style={{ color: "#FF2DAA" }} />
             </div>
             <div>
-              <h1 className="font-heading text-xl text-white font-bold leading-tight">Sign in</h1>
-              <p className="text-white/35 text-xs mt-0.5">Admin dashboard access</p>
+              <h1 className="font-heading text-xl text-white font-bold leading-tight">Admin Access</h1>
+              <p className="text-white/35 text-xs mt-0.5">Enter your secret password</p>
             </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-3 relative z-10">
-            {/* Email */}
-            <div className="group">
-              <label className="block text-[11px] font-semibold text-white/30 uppercase tracking-wider mb-1.5 ml-1">
-                Email
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => { setEmail(e.target.value); setError(""); }}
-                placeholder="you@example.com"
-                required
-                autoFocus
-                className="w-full px-4 py-3 rounded-xl text-sm text-white placeholder:text-white/20 focus:outline-none transition-all"
-                style={{
-                  background: "rgba(255,255,255,0.05)",
-                  border: `1px solid ${error ? "rgba(248,113,113,0.4)" : "rgba(255,255,255,0.08)"}`,
-                }}
-                onFocus={(e) => (e.currentTarget.style.border = "1px solid rgba(255,45,170,0.4)")}
-                onBlur={(e) => (e.currentTarget.style.border = `1px solid ${error ? "rgba(248,113,113,0.4)" : "rgba(255,255,255,0.08)"}`)}
-              />
-            </div>
-
             {/* Password */}
             <div>
               <label className="block text-[11px] font-semibold text-white/30 uppercase tracking-wider mb-1.5 ml-1">
@@ -139,8 +113,9 @@ const AdminLogin = () => {
                   type={show ? "text" : "password"}
                   value={password}
                   onChange={(e) => { setPassword(e.target.value); setError(""); }}
-                  placeholder="••••••••"
+                  placeholder="••••••••••"
                   required
+                  autoFocus
                   className="w-full px-4 py-3 rounded-xl text-sm text-white placeholder:text-white/20 pr-11 focus:outline-none transition-all"
                   style={{
                     background: "rgba(255,255,255,0.05)",
@@ -174,27 +149,16 @@ const AdminLogin = () => {
             {/* Submit */}
             <button
               type="submit"
-              disabled={loading || !email || !password}
+              disabled={!password}
               className="w-full py-3.5 rounded-xl font-bold text-sm text-white flex items-center justify-center gap-2 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed mt-1"
               style={{
-                background: loading || !email || !password
+                background: !password
                   ? "rgba(255,45,170,0.4)"
                   : "linear-gradient(135deg, #FF2DAA, #d91f90)",
-                boxShadow: loading || !email || !password ? "none" : "0 4px 20px rgba(255,45,170,0.35)",
+                boxShadow: !password ? "none" : "0 4px 20px rgba(255,45,170,0.35)",
               }}
             >
-              {loading ? (
-                <>
-                  <span
-                    className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin"
-                  />
-                  Signing in...
-                </>
-              ) : (
-                <>
-                  Sign In <ArrowRight size={15} />
-                </>
-              )}
+              Enter Dashboard <ArrowRight size={15} />
             </button>
           </form>
         </div>
