@@ -48,6 +48,47 @@ const faqs = [
   { q: "How do I apply?", a: "Click 'Apply for Mentorship' below to begin your application. Because cohort sizes are capped at 10, applications are reviewed on a rolling basis and Sarah personally reviews each one. You will hear back within 48–72 hours of submission." },
 ];
 
+const MENTORSHIP_SCHEMA = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "@id": "https://evolve2purpose.com/programs/mentorship#course",
+    name: "Mentorship Program — 16-Week Immersive Coaching + Retreat with Sarah Adams",
+    description: "Sarah Adams' most comprehensive transformation experience. Combines a 3-day immersive retreat, 16 weeks of live group classes, and 5 private 1:1 sessions in an intimate cohort of maximum 10 women.",
+    url: "https://evolve2purpose.com/programs/mentorship",
+    provider: { "@id": "https://evolve2purpose.com/#organization" },
+    instructor: { "@id": "https://evolve2purpose.com/#sarah-adams" },
+    courseMode: ["blended", "onsite"],
+    timeRequired: "P16W",
+    numberOfCredits: 16,
+    offers: {
+      "@type": "Offer",
+      price: "2222",
+      priceCurrency: "USD",
+      availability: "https://schema.org/LimitedAvailability",
+      url: "https://evolve2purpose.com/programs/mentorship",
+      description: "Maximum 10 women per cohort — application required",
+    },
+    hasCourseInstance: curriculum.map((c, i) => ({
+      "@type": "CourseInstance",
+      courseMode: "online",
+      name: c.title,
+      description: c.desc,
+      position: i + 1,
+    })),
+    audience: { "@type": "Audience", audienceType: "Women ready for comprehensive long-term transformation" },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(({ q, a }) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: { "@type": "Answer", text: a },
+    })),
+  },
+];
+
 const Mentorship = () => {
   useSEO({
     title: "Mentorship Program — 16-Week Immersive Coaching + Retreat with Sarah Adams",
@@ -57,6 +98,7 @@ const Mentorship = () => {
       { name: "Coaching Programs", url: "/programs" },
       { name: "Mentorship Program", url: "/programs/mentorship" },
     ],
+    schema: MENTORSHIP_SCHEMA,
   });
 
   return (

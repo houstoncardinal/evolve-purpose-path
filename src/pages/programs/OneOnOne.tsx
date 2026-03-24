@@ -40,6 +40,48 @@ const faqs = [
   { q: "What makes this different from therapy?", a: "Therapy is invaluable — and this isn't therapy. Sarah doesn't diagnose; she dismantles. Where therapy often explores the past, Sarah's coaching moves you from insight into identity and action. Many of her clients come from therapy because they want someone who will challenge them, hold them accountable, and call them higher — not just hold space." },
 ];
 
+const ONE_ON_ONE_SCHEMA = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": "https://evolve2purpose.com/programs/one-on-one#service",
+    name: "1:1 Deep-Dive Coaching with Sarah Adams",
+    description: "The most intimate, powerful coaching Sarah Adams offers. Weekly private sessions, unlimited support, and a fully custom transformation roadmap tailored to your specific healing needs and purpose calling.",
+    url: "https://evolve2purpose.com/programs/one-on-one",
+    provider: { "@id": "https://evolve2purpose.com/#organization" },
+    offers: {
+      "@type": "Offer",
+      price: "111",
+      priceCurrency: "USD",
+      priceSpecification: { "@type": "PriceSpecification", minPrice: "111", priceCurrency: "USD", description: "Starting price — final investment shared after discovery call" },
+      availability: "https://schema.org/LimitedAvailability",
+      url: "https://evolve2purpose.com/programs/one-on-one",
+    },
+    serviceType: "Life Transformation Coaching",
+    areaServed: { "@type": "Place", name: "Worldwide" },
+    audience: { "@type": "Audience", audienceType: "Women seeking personal transformation and purpose clarity" },
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "1:1 Coaching Includes",
+      itemListElement: includes.map((item, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: item.title,
+        description: item.desc,
+      })),
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(({ q, a }) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: { "@type": "Answer", text: a },
+    })),
+  },
+];
+
 const OneOnOne = () => {
   useSEO({
     title: "1:1 Deep-Dive Coaching — Private Transformation with Sarah Adams",
@@ -49,6 +91,7 @@ const OneOnOne = () => {
       { name: "Coaching Programs", url: "/programs" },
       { name: "1:1 Deep-Dive Coaching", url: "/programs/one-on-one" },
     ],
+    schema: ONE_ON_ONE_SCHEMA,
   });
 
   return (

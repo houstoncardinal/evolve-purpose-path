@@ -49,6 +49,40 @@ const retreatPhotos = [
   { src: "https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=800&q=80", label: "Forest Reflection Walk", large: false },
 ];
 
+const HEALING_INTENSIVE_SCHEMA = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "@id": "https://evolve2purpose.com/programs/healing-intensive#event",
+    name: "Healing Intensive Weekend with Sarah Adams",
+    description: "Compress months of healing into one transformative 2-day weekend. Full L.A.T.T. framework delivered in an intimate small-group in-person setting of maximum 16 women.",
+    url: "https://evolve2purpose.com/programs/healing-intensive",
+    organizer: { "@id": "https://evolve2purpose.com/#organization" },
+    performer: { "@id": "https://evolve2purpose.com/#sarah-adams" },
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    eventStatus: "https://schema.org/EventScheduled",
+    maximumAttendeeCapacity: 16,
+    offers: {
+      "@type": "Offer",
+      price: "999",
+      priceCurrency: "USD",
+      availability: "https://schema.org/LimitedAvailability",
+      url: "https://evolve2purpose.com/programs/healing-intensive",
+      description: "Includes both days, all materials, 60-day post-intensive group support",
+    },
+    audience: { "@type": "Audience", audienceType: "Women seeking accelerated healing and breakthrough" },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(({ q, a }) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: { "@type": "Answer", text: a },
+    })),
+  },
+];
+
 const HealingIntensive = () => {
   useSEO({
     title: "Healing Intensive Weekend — 2-Day Immersive Breakthrough with Sarah Adams",
@@ -58,6 +92,7 @@ const HealingIntensive = () => {
       { name: "Coaching Programs", url: "/programs" },
       { name: "Healing Intensive Weekend", url: "/programs/healing-intensive" },
     ],
+    schema: HEALING_INTENSIVE_SCHEMA,
   });
 
   return (

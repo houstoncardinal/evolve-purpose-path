@@ -56,6 +56,38 @@ const faqs = [
   { q: "What if I want to continue working with Sarah after?", a: "You can. If the session reveals you need deeper, sustained support, Sarah will walk you through your best next step — whether that's the Group Program, the Healing Intensive Weekend, or 1:1 Coaching. No pressure. Just clarity." },
 ];
 
+const PURPOSE_CLARITY_SCHEMA = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": "https://evolve2purpose.com/programs/purpose-clarity#service",
+    name: "Purpose Clarity Session — 90-Minute Breakthrough with Sarah Adams",
+    description: "In 90 minutes, walk away knowing exactly what's next. Includes pre-session intake, full session recording, written action plan, and 14-day follow-up support.",
+    url: "https://evolve2purpose.com/programs/purpose-clarity",
+    provider: { "@id": "https://evolve2purpose.com/#organization" },
+    offers: {
+      "@type": "Offer",
+      price: "197",
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+      url: "https://evolve2purpose.com/programs/purpose-clarity",
+    },
+    serviceType: "Purpose Coaching Session",
+    areaServed: { "@type": "Place", name: "Worldwide" },
+    audience: { "@type": "Audience", audienceType: "Women seeking life direction and clarity" },
+    serviceOutput: "Written personalized action plan and 90-minute session recording",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(({ q, a }) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: { "@type": "Answer", text: a },
+    })),
+  },
+];
+
 const PurposeClarity = () => {
   useSEO({
     title: "Purpose Clarity Session — 90-Minute Breakthrough with Sarah Adams",
@@ -65,6 +97,7 @@ const PurposeClarity = () => {
       { name: "Coaching Programs", url: "/programs" },
       { name: "Purpose Clarity Session", url: "/programs/purpose-clarity" },
     ],
+    schema: PURPOSE_CLARITY_SCHEMA,
   });
 
   return (

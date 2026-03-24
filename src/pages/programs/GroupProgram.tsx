@@ -42,6 +42,47 @@ const faqs = [
   { q: "How is this different from other group programs?", a: "Most group programs are pre-recorded courses with a Facebook group bolted on. This is live, intimate, led personally by Sarah every week, and rooted in a proven framework specifically designed for women breaking generational cycles. It is not a content library — it is a guided transformation experience." },
 ];
 
+const GROUP_SCHEMA = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "@id": "https://evolve2purpose.com/programs/group#course",
+    name: "Evolve 2 Purpose Group Program — 8-Week Live Coaching Journey",
+    description: "Walk the full L.A.T.T. framework in an 8-week live group coaching program led personally by Sarah Adams. Includes live sessions, guided workbook, private community access, weekly accountability, and lifetime session recordings.",
+    url: "https://evolve2purpose.com/programs/group",
+    provider: { "@id": "https://evolve2purpose.com/#organization" },
+    instructor: { "@id": "https://evolve2purpose.com/#sarah-adams" },
+    courseMode: "online",
+    numberOfCredits: 8,
+    timeRequired: "P8W",
+    offers: {
+      "@type": "Offer",
+      price: "444",
+      priceCurrency: "USD",
+      availability: "https://schema.org/PreOrder",
+      url: "https://evolve2purpose.com/programs/group",
+      description: "Payment plans available",
+    },
+    hasCourseInstance: weeks.map((w, i) => ({
+      "@type": "CourseInstance",
+      courseMode: "online",
+      name: `${w.week}: ${w.title}`,
+      description: w.desc,
+      position: i + 1,
+    })),
+    audience: { "@type": "Audience", audienceType: "Women seeking group transformation coaching" },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(({ q, a }) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: { "@type": "Answer", text: a },
+    })),
+  },
+];
+
 const GroupProgram = () => {
   useSEO({
     title: "Evolve 2 Purpose Group Program — 8-Week Coaching Journey",
@@ -51,6 +92,7 @@ const GroupProgram = () => {
       { name: "Coaching Programs", url: "/programs" },
       { name: "Group Program", url: "/programs/group" },
     ],
+    schema: GROUP_SCHEMA,
   });
 
   return (
