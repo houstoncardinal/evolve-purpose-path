@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import useSEO from "@/hooks/useSEO";
-import { ArrowRight, Mic, Users, Heart, Lightbulb, Globe, CheckCircle } from "lucide-react";
+import { ArrowRight, Mic, Users, Heart, Lightbulb, Globe, CheckCircle, Phone } from "lucide-react";
 import { store, SpeakingTopic, EventFormat, FAQ } from "@/lib/adminStore";
 
 const TOPIC_ICONS = [Heart, CheckCircle, Lightbulb, Users, Globe, Mic];
@@ -175,12 +175,21 @@ const Booking = () => {
           <p className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-10">
             Sarah brings a rare combination of raw honesty, practical wisdom, and genuine heart to every stage. Her message moves audiences from passive listening to active transformation.
           </p>
-          <a
-            href="#inquiry"
-            className="btn-neon-solid shadow-lg"
-          >
-            Submit a Speaking Inquiry <ArrowRight size={16} />
-          </a>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a
+              href="#inquiry"
+              className="btn-neon-solid shadow-lg"
+            >
+              Submit a Speaking Inquiry <ArrowRight size={16} />
+            </a>
+            <a
+              href="tel:+13468571574"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border-2 text-sm font-bold transition-all hover:bg-primary/5"
+              style={{ borderColor: "rgba(255,45,170,0.4)", color: "#FF2DAA" }}
+            >
+              <Phone size={15} /> Call (346) 857-1574
+            </a>
+          </div>
         </div>
       </section>
 

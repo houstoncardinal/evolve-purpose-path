@@ -19,7 +19,6 @@ const AdminSettings = () => {
       contactEmail: settings.contactEmail,
       bookingEmail: settings.bookingEmail,
       socialInstagram: settings.socialInstagram,
-      socialYoutube: settings.socialYoutube,
       socialFacebook: settings.socialFacebook,
     });
     setSaving(false);
@@ -75,9 +74,8 @@ const AdminSettings = () => {
       <div className="bg-white rounded-2xl border border-border p-6 space-y-5">
         <h2 className="font-heading text-base font-bold">Social Media</h2>
         {[
-          { key: "socialInstagram" as const, label: "Instagram URL", placeholder: "https://instagram.com/evolve2purpose" },
-          { key: "socialYoutube" as const, label: "YouTube URL", placeholder: "https://youtube.com/@evolve2purpose" },
-          { key: "socialFacebook" as const, label: "Facebook URL", placeholder: "https://facebook.com/evolve2purpose" },
+          { key: "socialInstagram" as const, label: "Instagram URL", placeholder: "https://www.instagram.com/ms_sarahadams/" },
+          { key: "socialFacebook" as const, label: "Facebook URL", placeholder: "https://www.facebook.com/share/1D2TxyrEfZ/?mibextid=wwXIfr" },
         ].map(({ key, label, placeholder }) => (
           <div key={key}>
             <label className="text-xs font-semibold text-muted-foreground uppercase">{label}</label>

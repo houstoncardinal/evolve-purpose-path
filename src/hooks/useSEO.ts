@@ -103,9 +103,8 @@ export const SARAH_PERSON_SCHEMA: Record<string, unknown> = {
     url: BASE_URL,
   },
   sameAs: [
-    "https://instagram.com/evolve2purpose",
-    "https://facebook.com/evolve2purpose",
-    "https://youtube.com/@evolve2purpose",
+    "https://www.instagram.com/ms_sarahadams/",
+    "https://www.facebook.com/share/1D2TxyrEfZ/?mibextid=wwXIfr",
   ],
   hasOccupation: [
     {
@@ -251,13 +250,13 @@ export const ORGANIZATION_SCHEMA: Record<string, unknown> = {
     "@type": "ContactPoint",
     contactType: "Customer Support",
     email: "Info@Evolve2Purpose.com",
+    telephone: "+1-346-857-1574",
     availableLanguage: "English",
     areaServed: "Worldwide",
   },
   sameAs: [
-    "https://instagram.com/evolve2purpose",
-    "https://facebook.com/evolve2purpose",
-    "https://youtube.com/@evolve2purpose",
+    "https://www.instagram.com/ms_sarahadams/",
+    "https://www.facebook.com/share/1D2TxyrEfZ/?mibextid=wwXIfr",
   ],
   aggregateRating: {
     "@type": "AggregateRating",

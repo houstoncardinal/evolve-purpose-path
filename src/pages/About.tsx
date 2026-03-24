@@ -111,9 +111,8 @@ const About = () => {
           url: "https://evolve2purpose.com",
         },
         sameAs: [
-          "https://instagram.com/evolve2purpose",
-          "https://facebook.com/evolve2purpose",
-          "https://youtube.com/@evolve2purpose",
+          "https://www.instagram.com/ms_sarahadams/",
+          "https://www.facebook.com/share/1D2TxyrEfZ/?mibextid=wwXIfr",
         ],
       },
       {

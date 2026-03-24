@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Download, Instagram, Youtube, Facebook, Mail, ArrowRight } from "lucide-react";
+import { Download, Instagram, Facebook, Mail, Phone, ArrowRight } from "lucide-react";
 
 const Footer = () => (
   <footer className="bg-white border-t border-border">
@@ -47,9 +47,8 @@ const Footer = () => (
           {/* Social */}
           <div className="flex items-center gap-2.5">
             {[
-              { icon: Instagram, label: "Instagram", href: "https://instagram.com/evolve2purpose" },
-              { icon: Facebook, label: "Facebook", href: "https://facebook.com/evolve2purpose" },
-              { icon: Youtube, label: "YouTube", href: "https://youtube.com/@evolve2purpose" },
+              { icon: Instagram, label: "Instagram", href: "https://www.instagram.com/ms_sarahadams/" },
+              { icon: Facebook, label: "Facebook", href: "https://www.facebook.com/share/1D2TxyrEfZ/?mibextid=wwXIfr" },
             ].map(({ icon: Icon, label, href }) => (
               <a
                 key={label}
@@ -119,8 +118,22 @@ const Footer = () => (
             <Mail size={13} />
             Info@Evolve2Purpose.com
           </a>
+          <a
+            href="tel:+13468571574"
+            className="mt-2.5 text-muted-foreground hover:text-primary text-sm transition-colors flex items-center gap-1.5 font-medium"
+          >
+            <Phone size={13} />
+            (346) 857-1574
+          </a>
+          <a
+            href="tel:+13468571574"
+            className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white transition-all hover:opacity-90"
+            style={{ background: "#FF2DAA" }}
+          >
+            <Phone size={11} /> Call Now
+          </a>
 
-          <div className="mt-7 pt-5 border-t border-border">
+          <div className="mt-5 pt-5 border-t border-border">
             <Link
               to="/booking"
               className="inline-flex items-center gap-1.5 text-[10px] font-bold letter-luxury uppercase text-muted-foreground hover:text-primary transition-colors"
