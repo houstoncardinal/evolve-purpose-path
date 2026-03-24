@@ -6,9 +6,9 @@ import {
 } from "recharts";
 import {
   TrendingUp, ShoppingCart, Mail, Calendar, Users, GraduationCap,
-  ArrowUpRight, Plus, Package, BookOpen, ChevronRight,
+  ArrowUpRight, Plus, Package, BookOpen, ChevronRight, Video,
 } from "lucide-react";
-import { store, REVENUE_CHART, Order, Subscriber, BookingInquiry } from "@/lib/adminStore";
+import { store, Order, Subscriber, BookingInquiry } from "@/lib/adminStore";
 
 const fmt$ = (n: number) =>
   n >= 1000 ? `$${(n / 1000).toFixed(1)}k` : `$${n.toFixed(0)}`;
@@ -108,6 +108,7 @@ const defaultStats = {
   totalRevenue: 0, monthlyRevenue: 0, totalOrders: 0, pendingOrders: 0,
   subscribers: 0, newBookings: 0, totalBookings: 0, pendingApps: 0,
   approvedMembers: 0, activeEnrollments: 0, totalEnrollmentRevenue: 0,
+  pendingTeaching: 0,
 };
 
 /* ══════════════════════════════════════════ */
@@ -116,12 +117,14 @@ const Overview = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [bookings, setBookings] = useState<BookingInquiry[]>([]);
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
+  const [revenueChart, setRevenueChart] = useState<{ month: string; revenue: number }[]>([]);
 
   useEffect(() => {
     store.getStats().then(setStats);
     store.getOrders().then(setOrders);
     store.getBookings().then(setBookings);
     store.getSubscribers().then(setSubscribers);
+    store.getRevenueChart().then(setRevenueChart);
   }, []);
 
   const ordersByProduct = useMemo(() => {
@@ -139,9 +142,9 @@ const Overview = () => {
   const recentOrders = orders.slice(0, 5);
   const recentSubs = subscribers.slice(0, 5);
 
-  const revenueGrowth = REVENUE_CHART[0].revenue > 0
-    ? Math.round(((REVENUE_CHART[11].revenue - REVENUE_CHART[0].revenue) / REVENUE_CHART[0].revenue) * 100)
-    : 0;
+  const revenueGrowth = revenueChart.length === 12 && revenueChart[0].revenue > 0
+    ? Math.round(((revenueChart[11].revenue - revenueChart[0].revenue) / revenueChart[0].revenue) * 100)
+    : null;
 
   return (
     <div className="p-6 lg:p-8 space-y-6 max-w-[1400px]">
@@ -234,17 +237,19 @@ const Overview = () => {
               <h2 className="font-heading text-base font-bold text-white">Revenue</h2>
               <p className="text-white/40 text-xs mt-0.5">Last 12 months</p>
             </div>
-            <div className="flex items-center gap-2">
-              <span
-                className="flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full"
-                style={{ background: "rgba(16,185,129,0.12)", color: "#10B981" }}
-              >
-                <TrendingUp size={11} /> +{revenueGrowth}%
-              </span>
-            </div>
+            {revenueGrowth !== null && (
+              <div className="flex items-center gap-2">
+                <span
+                  className="flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full"
+                  style={{ background: "rgba(16,185,129,0.12)", color: "#10B981" }}
+                >
+                  <TrendingUp size={11} /> +{revenueGrowth}%
+                </span>
+              </div>
+            )}
           </div>
           <ResponsiveContainer width="100%" height={190}>
-            <AreaChart data={REVENUE_CHART} margin={{ top: 4, right: 4, left: -18, bottom: 0 }}>
+            <AreaChart data={revenueChart} margin={{ top: 4, right: 4, left: -18, bottom: 0 }}>
               <defs>
                 <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="#FF2DAA" stopOpacity={0.25} />
@@ -396,28 +401,45 @@ const Overview = () => {
         </div>
       </div>
 
-      {/* ── Booking alert ── */}
-      {stats.newBookings > 0 && (
-        <Link
-          to="/admin/bookings"
-          className="flex items-center gap-4 bg-white rounded-2xl p-5 transition-all hover:shadow-md group"
-          style={{ border: "1px solid rgba(245,158,11,0.25)", background: "rgba(245,158,11,0.02)" }}
-        >
-          <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-            style={{ background: "rgba(245,158,11,0.1)" }}
+      {/* ── Alerts ── */}
+      <div className="space-y-3">
+        {stats.newBookings > 0 && (
+          <Link
+            to="/admin/bookings"
+            className="flex items-center gap-4 bg-white rounded-2xl p-5 transition-all hover:shadow-md group"
+            style={{ border: "1px solid rgba(245,158,11,0.25)", background: "rgba(245,158,11,0.02)" }}
           >
-            <Calendar size={18} style={{ color: "#F59E0B" }} />
-          </div>
-          <div className="flex-1">
-            <p className="font-semibold text-sm text-foreground">
-              {stats.newBookings} new speaking {stats.newBookings === 1 ? "inquiry" : "inquiries"} awaiting review
-            </p>
-            <p className="text-xs text-muted-foreground mt-0.5">Review and respond to booking requests</p>
-          </div>
-          <ArrowUpRight size={16} className="text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
-        </Link>
-      )}
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "rgba(245,158,11,0.1)" }}>
+              <Calendar size={18} style={{ color: "#F59E0B" }} />
+            </div>
+            <div className="flex-1">
+              <p className="font-semibold text-sm text-foreground">
+                {stats.newBookings} new speaking {stats.newBookings === 1 ? "inquiry" : "inquiries"} awaiting review
+              </p>
+              <p className="text-xs text-muted-foreground mt-0.5">Review and respond to booking requests</p>
+            </div>
+            <ArrowUpRight size={16} className="text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
+          </Link>
+        )}
+        {stats.pendingTeaching > 0 && (
+          <Link
+            to="/admin/teaching-submissions"
+            className="flex items-center gap-4 bg-white rounded-2xl p-5 transition-all hover:shadow-md group"
+            style={{ border: "1px solid rgba(255,45,170,0.25)", background: "rgba(255,45,170,0.02)" }}
+          >
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "rgba(255,45,170,0.1)" }}>
+              <Video size={18} style={{ color: "#FF2DAA" }} />
+            </div>
+            <div className="flex-1">
+              <p className="font-semibold text-sm text-foreground">
+                {stats.pendingTeaching} teaching {stats.pendingTeaching === 1 ? "submission" : "submissions"} awaiting review
+              </p>
+              <p className="text-xs text-muted-foreground mt-0.5">Review Step 4 videos from 1:1 program graduates</p>
+            </div>
+            <ArrowUpRight size={16} className="text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
+          </Link>
+        )}
+      </div>
     </div>
   );
 };

@@ -4,7 +4,7 @@ import {
   LayoutDashboard, Package, ShoppingCart, Mail, Calendar,
   Users, GraduationCap, LogOut, Menu, X, ChevronRight,
   ExternalLink, Star, FileText, MessageSquare, Settings,
-  Bell, Search, ChevronDown, Sparkles, Home, TrendingUp,
+  Bell, Search, Sparkles, Home, Video,
 } from "lucide-react";
 import { store, initStore } from "@/lib/adminStore";
 
@@ -33,7 +33,6 @@ const navSections: { label: string; items: NavItem[] }[] = [
     label: "Growth",
     items: [
       { label: "Subscribers", path: "/admin/subscribers", icon: Mail },
-      { label: "Program Enrollments", path: "/admin/programs", icon: GraduationCap },
       { label: "Speaking Bookings", path: "/admin/bookings", icon: Calendar },
     ],
   },
@@ -42,6 +41,13 @@ const navSections: { label: string; items: NavItem[] }[] = [
     items: [
       { label: "Applications", path: "/admin/community", icon: Users },
       { label: "Posts & Events", path: "/admin/community-content", icon: MessageSquare },
+    ],
+  },
+  {
+    label: "Programs",
+    items: [
+      { label: "Enrollments", path: "/admin/programs", icon: GraduationCap },
+      { label: "Teaching Submissions", path: "/admin/teaching-submissions", icon: Video },
     ],
   },
   {

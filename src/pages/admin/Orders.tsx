@@ -16,6 +16,8 @@ const AdminOrders = () => {
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState<Order["status"] | "all">("all");
   const [selected, setSelected] = useState<Order | null>(null);
+  const [orderNotes, setOrderNotes] = useState("");
+  const [savingNotes, setSavingNotes] = useState(false);
 
   useEffect(() => { store.getOrders().then(setOrders); }, []);
 
@@ -149,7 +151,7 @@ const AdminOrders = () => {
                     </td>
                     <td className="px-5 py-4">
                       <button
-                        onClick={() => setSelected(o)}
+                        onClick={() => { setSelected(o); setOrderNotes(o.notes ?? ""); }}
                         className="p-1.5 rounded-lg hover:bg-gray-100 text-muted-foreground hover:text-foreground transition-colors"
                       >
                         <Eye size={14} />
@@ -206,6 +208,29 @@ const AdminOrders = () => {
                   ))}
                 </select>
               </div>
+            </div>
+            <div className="mt-5">
+              <label className="block text-xs font-semibold text-muted-foreground uppercase mb-1.5">Internal Notes</label>
+              <textarea
+                rows={3}
+                value={orderNotes}
+                onChange={(e) => setOrderNotes(e.target.value)}
+                placeholder="Add private notes about this order..."
+                className="w-full px-3 py-2.5 rounded-xl border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
+              />
+              <button
+                onClick={async () => {
+                  setSavingNotes(true);
+                  await store.updateOrderNotes(selected.id, orderNotes);
+                  setSavingNotes(false);
+                  toast({ title: "Notes saved" });
+                }}
+                disabled={savingNotes}
+                className="mt-2 px-4 py-2 rounded-xl text-xs font-bold text-white disabled:opacity-60 transition-all hover:opacity-90"
+                style={{ background: "#FF2DAA" }}
+              >
+                {savingNotes ? "Saving…" : "Save Notes"}
+              </button>
             </div>
           </div>
         </div>

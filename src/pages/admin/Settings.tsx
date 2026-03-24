@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Save, Eye, EyeOff, AlertCircle } from "lucide-react";
+import { Save, Eye, EyeOff } from "lucide-react";
 import { store, PlatformSettings } from "@/lib/adminStore";
 import { useToast } from "@/hooks/use-toast";
 
@@ -27,13 +27,18 @@ const AdminSettings = () => {
 
   const handlePasswordChange = () => {
     if (!newPass.trim()) return;
+    if (newPass.length < 6) {
+      toast({ title: "Password must be at least 6 characters", variant: "destructive" });
+      return;
+    }
     if (newPass !== confirmPass) {
       toast({ title: "Passwords don't match", variant: "destructive" });
       return;
     }
+    store.changeAdminPassword(newPass);
     setNewPass("");
     setConfirmPass("");
-    toast({ title: "To change your password, use Supabase Dashboard → Authentication → Users" });
+    toast({ title: "Password updated — use it on your next login" });
   };
 
   const inputClass = "mt-1 w-full px-4 py-3 rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm bg-white";
@@ -102,12 +107,9 @@ const AdminSettings = () => {
 
       {/* Password */}
       <div className="bg-white rounded-2xl border border-border p-6 space-y-4">
-        <div className="flex items-start gap-3">
-          <AlertCircle size={16} className="text-amber-500 mt-0.5 shrink-0" />
-          <div>
-            <h2 className="font-heading text-base font-bold">Change Admin Password</h2>
-            <p className="text-xs text-muted-foreground mt-0.5">After changing, you'll need the new password on your next login.</p>
-          </div>
+        <div>
+          <h2 className="font-heading text-base font-bold">Change Admin Password</h2>
+          <p className="text-xs text-muted-foreground mt-0.5">After changing, you'll need the new password on your next login.</p>
         </div>
         <div className="relative">
           <label className="text-xs font-semibold text-muted-foreground uppercase">New Password</label>

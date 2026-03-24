@@ -43,6 +43,7 @@ import AdminTestimonials from "./pages/admin/Testimonials";
 import AdminContentManager from "./pages/admin/ContentManager";
 import AdminCommunityContent from "./pages/admin/CommunityContent";
 import AdminSettings from "./pages/admin/Settings";
+import AdminTeachingSubmissions from "./pages/admin/TeachingSubmissions";
 
 const queryClient = new QueryClient();
 
@@ -71,6 +72,7 @@ const App = () => (
             <Route path="testimonials" element={<AdminTestimonials />} />
             <Route path="content" element={<AdminContentManager />} />
             <Route path="community-content" element={<AdminCommunityContent />} />
+            <Route path="teaching-submissions" element={<AdminTeachingSubmissions />} />
             <Route path="settings" element={<AdminSettings />} />
           </Route>
 

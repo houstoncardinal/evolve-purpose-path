@@ -162,6 +162,20 @@ export interface Resource {
   addedAt: string;
 }
 
+export interface TeachingSubmission {
+  id: string;
+  name: string;
+  email: string;
+  videoUrl: string;
+  taughtName: string;
+  taughtWhat: string;
+  taughtResult: string;
+  reflection: string;
+  status: "pending" | "approved" | "needs_revision";
+  reviewerNotes: string;
+  submittedAt: string;
+}
+
 export interface PlatformSettings {
   contactEmail: string;
   bookingEmail: string;
@@ -345,6 +359,7 @@ export function initStore() {}
 
 const ADMIN_KEY = "e2p_admin_auth";
 const ADMIN_PASSWORD = "H34L3R2026";
+const CUSTOM_PASS_KEY = "e2p_admin_pass";
 
 // ─── Store ───────────────────────────────────────────────────────────────────
 
@@ -354,7 +369,8 @@ export const store = {
     return sessionStorage.getItem(ADMIN_KEY) === "1";
   },
   login: (_email: string, password: string) => {
-    if (password === ADMIN_PASSWORD) {
+    const active = localStorage.getItem(CUSTOM_PASS_KEY) ?? ADMIN_PASSWORD;
+    if (password === active) {
       sessionStorage.setItem(ADMIN_KEY, "1");
       return true;
     }
@@ -362,6 +378,9 @@ export const store = {
   },
   logout: () => {
     sessionStorage.removeItem(ADMIN_KEY);
+  },
+  changeAdminPassword: (newPassword: string) => {
+    localStorage.setItem(CUSTOM_PASS_KEY, newPassword);
   },
 
   // ── Settings ─────────────────────────────────────────────────────────────
@@ -463,6 +482,30 @@ export const store = {
   },
   updateOrderNotes: async (id: string, notes: string) => {
     await supabase.from("orders").update({ notes }).eq("id", id);
+  },
+
+  // ── Teaching Submissions ───────────────────────────────────────────────────
+  getTeachingSubmissions: async (): Promise<TeachingSubmission[]> => {
+    const { data } = await supabase.from("teaching_submissions").select("*").order("created_at", { ascending: false });
+    return (data ?? []).map((r) => ({
+      id: r.id as string,
+      name: (r.name as string) ?? "",
+      email: (r.email as string) ?? "",
+      videoUrl: (r.video_url as string) ?? "",
+      taughtName: (r.taught_name as string) ?? "",
+      taughtWhat: (r.taught_what as string) ?? "",
+      taughtResult: (r.taught_result as string) ?? "",
+      reflection: (r.reflection as string) ?? "",
+      status: (r.status as TeachingSubmission["status"]) ?? "pending",
+      reviewerNotes: (r.reviewer_notes as string) ?? "",
+      submittedAt: ((r.created_at as string) ?? "").split("T")[0],
+    }));
+  },
+  updateTeachingStatus: async (id: string, status: TeachingSubmission["status"]) => {
+    await supabase.from("teaching_submissions").update({ status }).eq("id", id);
+  },
+  updateTeachingNotes: async (id: string, notes: string) => {
+    await supabase.from("teaching_submissions").update({ reviewer_notes: notes }).eq("id", id);
   },
 
   // ── Subscribers ───────────────────────────────────────────────────────────
@@ -700,14 +743,35 @@ export const store = {
     await supabase.from("resources").delete().eq("id", id);
   },
 
+  // ── Revenue Chart (dynamic from orders) ──────────────────────────────────
+  getRevenueChart: async () => {
+    const { data } = await supabase.from("orders").select("amount, status, created_at").eq("status", "fulfilled");
+    const now = new Date();
+    const months = Array.from({ length: 12 }, (_, i) => {
+      const d = new Date(now.getFullYear(), now.getMonth() - (11 - i), 1);
+      return {
+        key: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`,
+        month: d.toLocaleString("en-US", { month: "short" }),
+      };
+    });
+    const byMonth: Record<string, number> = {};
+    (data ?? []).forEach((o) => {
+      const d = new Date(o.created_at as string);
+      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+      byMonth[key] = (byMonth[key] ?? 0) + (o.amount as number);
+    });
+    return months.map(({ month, key }) => ({ month, revenue: byMonth[key] ?? 0 }));
+  },
+
   // ── Stats ─────────────────────────────────────────────────────────────────
   getStats: async () => {
-    const [ordersRes, subsRes, bookingsRes, appsRes, enrollmentsRes] = await Promise.all([
+    const [ordersRes, subsRes, bookingsRes, appsRes, enrollmentsRes, teachingRes] = await Promise.all([
       supabase.from("orders").select("amount, status, created_at"),
       supabase.from("subscribers").select("id", { count: "exact", head: true }),
       supabase.from("booking_inquiries").select("status"),
       supabase.from("community_applications").select("status"),
       supabase.from("program_enrollments").select("amount, status"),
+      supabase.from("teaching_submissions").select("status"),
     ]);
 
     const orders = ordersRes.data ?? [];
@@ -720,6 +784,7 @@ export const store = {
     const bookings = bookingsRes.data ?? [];
     const apps = appsRes.data ?? [];
     const enrollments = enrollmentsRes.data ?? [];
+    const teaching = teachingRes.data ?? [];
 
     return {
       totalRevenue,
@@ -733,22 +798,8 @@ export const store = {
       approvedMembers: apps.filter((a) => a.status === "approved").length,
       activeEnrollments: enrollments.filter((e) => e.status === "active").length,
       totalEnrollmentRevenue: enrollments.reduce((s, e) => s + (e.amount as number), 0),
+      pendingTeaching: teaching.filter((t) => t.status === "pending").length,
     };
   },
 };
 
-// Revenue chart data stays static (replace with real data once orders accumulate)
-export const REVENUE_CHART = [
-  { month: "Apr", revenue: 820 },
-  { month: "May", revenue: 1140 },
-  { month: "Jun", revenue: 1390 },
-  { month: "Jul", revenue: 1820 },
-  { month: "Aug", revenue: 2050 },
-  { month: "Sep", revenue: 2340 },
-  { month: "Oct", revenue: 2780 },
-  { month: "Nov", revenue: 3120 },
-  { month: "Dec", revenue: 3850 },
-  { month: "Jan", revenue: 3420 },
-  { month: "Feb", revenue: 3980 },
-  { month: "Mar", revenue: 4230 },
-];
